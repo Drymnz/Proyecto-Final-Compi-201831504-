@@ -1,0 +1,30 @@
+#jsonOut {
+  margin: 0 auto;
+  position: relative;
+  padding: 10px;
+  background-color: #333;
+  color: #eee;
+  white-space: pre;
+  font-family: monospace;
+  overflow: auto;
+  display: block;
+  content: " ";
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  counter-reset: section;
+}
+#jsonOut > * {
+  width: 100%;
+}
+#jsonOut > *::before {
+  display: inline-block;
+  left: 0;
+  width: 40px;
+  counter-increment: section;
+  content: counter(section) ": ";
+}
+#jsonOut > *:hover {
+  background-color: #555;
+}
