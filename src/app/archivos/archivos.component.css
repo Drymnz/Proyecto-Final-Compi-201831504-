@@ -1,0 +1,11 @@
+.file-name{
+    height: var(--size-height-botton-funcion);
+    width: var(--size-width-botton-funcion) + 15px;
+    color: var(--color-text-file);
+    background-color: var(--color-backgroud-file);
+}
+.botton-funcion{
+    width: var(--size-width-botton-funcion);
+    height: var(--size-height-botton-funcion);
+    background-color: var(--color-backgroud-booton-files);
+}

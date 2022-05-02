@@ -1,23 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
 * {
   /*background boyd*/
-  --color-background-body : #B3B3B3;
+  --color-background-body: #b3b3b3;
   /*text area code*/
   --color-background-text-area: #003049;
   --color-text-text-area: #ffffff;
-  --size-width-area-text:100%;
-  --size-height-area-text:300px;
+  --size-width-area-text: 100%;
+  --size-height-area-text: 300px;
   /*variables botton head*/
   --color-text-botton-head: #fff;
   --color-background-botton-head: #003049;
-  --color-select-botton : #FCBF49;
+  --color-select-botton: #fcbf49;
   /*variables console*/
   --color-background-console: #000000;
   --color-console-text-area: #ffffff;
-  --size-width-console:100%;
-  --size-height-console:130px;
-  --size-separation-marge:20px;
+  --size-width-console: 100%;
+  --size-height-console: 130px;
+  --size-separation-marge: 20px;
+  /*variable de botton files*/
+  --size-width-botton-funcion: 50px;
+  --size-height-botton-funcion: 50px;
+  --color-backgroud-booton-files: #fcbf49;
+  --color-backgroud-file: #005f59;
+  --color-text-file: #ffffffff;
 }
-body{
-  background-color: var(--color-background-body );
+body {
+  background-color: var(--color-background-body);
 }
