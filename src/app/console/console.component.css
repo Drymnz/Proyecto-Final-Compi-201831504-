@@ -1,0 +1,7 @@
+#text-area-console {
+  resize: none;
+  width: var(--size-width-console);
+  height: var(--size-height-console);
+  background-color: var(--color-background-console);
+  color: var(--color-console-text-area);
+}

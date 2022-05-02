@@ -1,30 +1,15 @@
-#jsonOut {
-  margin: 0 auto;
-  position: relative;
-  padding: 10px;
-  background-color: #333;
-  color: #eee;
+
+#text-area-code {
+  width: var(--size-width-area-text);
+  height: var(--size-height-area-text);
+  background: url(http://i.imgur.com/2cOaJ.png);
+  background-attachment: local;
+  background-repeat: no-repeat;
+  padding-left: 35px;
+  padding-top: 10px;
+  background-color: var(--color-background-text-area);
+  color: var(--color-text-text-area);
   white-space: pre;
-  font-family: monospace;
-  overflow: auto;
-  display: block;
-  content: " ";
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
   box-sizing: border-box;
-  counter-reset: section;
-}
-#jsonOut > * {
-  width: 100%;
-}
-#jsonOut > *::before {
-  display: inline-block;
-  left: 0;
-  width: 40px;
-  counter-increment: section;
-  content: counter(section) ": ";
-}
-#jsonOut > *:hover {
-  background-color: #555;
+  resize: none;
 }

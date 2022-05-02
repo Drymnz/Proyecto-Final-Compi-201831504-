@@ -1,16 +1,11 @@
+<div class="tutorial">
+  <ul>
+    <li routerLink="ide">IDE</li>
+    <li routerLink="repot">REPORTES</li>
+    <li routerLink="image-collection">COLECCION DE IMAGENES</li>
+  </ul>
+</div>
 
-<div class="container">
-  <div class="tutorial">
-    <ul>
-      <li>Home</li>
-      <li>Blog</li>
-      <li>Contact</li>
-    </ul>
-    <div class="slider">
-      <app-area-text>
-      </app-area-text>
-    </div>
-    <div class="information">
-      <p>Compilador de phynton</p>
-    </div>
-  </div>
+<div class="slider">
+  <router-outlet></router-outlet>
+</div>
