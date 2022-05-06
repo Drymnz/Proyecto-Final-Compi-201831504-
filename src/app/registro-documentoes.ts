@@ -1,4 +1,4 @@
 export interface RegistroDocumentoes {
     name:string,
-    text:string
+    texto:string
 }

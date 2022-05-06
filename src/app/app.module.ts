@@ -11,8 +11,6 @@ import { IdeComponent } from './ide/ide.component';
 import { ReportComponent } from './report/report.component';
 import { ImageCollectionComponent } from './image-collection/image-collection.component';
 import { ConsoleComponent } from './console/console.component';
-import { CodeFileDirective } from './code-file.directive';
-import { RefertCodeComponent } from './refert-code/refert-code.component';
 
 @NgModule({
   declarations: [
@@ -24,8 +22,6 @@ import { RefertCodeComponent } from './refert-code/refert-code.component';
     ReportComponent,
     ImageCollectionComponent,
     ConsoleComponent,
-    CodeFileDirective,
-    RefertCodeComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,7 +29,6 @@ import { RefertCodeComponent } from './refert-code/refert-code.component';
     routing
   ],
   entryComponents:[
-    RefertCodeComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
