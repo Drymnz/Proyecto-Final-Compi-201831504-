@@ -31,14 +31,14 @@
       <i class="bi bi-cloud-upload"></i>
     </button>
     <!-- boton de descargar archivo -->
-    <button class="botton-funcion col"><i class="bi bi-download"></i></button>
+    <button class="botton-funcion col" (click)="exportarArchivo()"><i class="bi bi-download"></i></button>
     <button class="botton-funcion col">
       <i class="bi bi-play-circle"></i>
     </button>
   </div>
 </div>
 <div class="row">
-  <app-area-text [textArea]="textArea"> </app-area-text>
+  <app-area-text [textArea]="textArea" ></app-area-text>
 </div>
 <div class="row">
   <app-console> </app-console>
