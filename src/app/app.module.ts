@@ -4,18 +4,17 @@ import {routing} from './app.router';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AreaTextComponent } from './area-text/area-text.component';
 import { MenuComponent } from './menu/menu.component';
 import { ArchivosComponent } from './archivos/archivos.component';
 import { IdeComponent } from './ide/ide.component';
 import { ReportComponent } from './report/report.component';
 import { ImageCollectionComponent } from './image-collection/image-collection.component';
 import { ConsoleComponent } from './console/console.component';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';//investigar para usar formularios
 
 @NgModule({
   declarations: [
     AppComponent,
-    AreaTextComponent,
     MenuComponent,
     ArchivosComponent,
     IdeComponent,
@@ -26,7 +25,9 @@ import { ConsoleComponent } from './console/console.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    routing
+    routing,
+    FormsModule,
+    ReactiveFormsModule
   ],
   entryComponents:[
   ],

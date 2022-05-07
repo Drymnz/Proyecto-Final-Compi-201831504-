@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  ComponentFactoryResolver,
-  ElementRef,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RegistroDocumentoes } from '../registro-documentoes';
 @Component({
   selector: 'app-archivos',
@@ -37,7 +31,6 @@ export class ArchivosComponent implements OnInit {
 
   //crear componete para ver su texto
   private addComponetTwo(mensaje: string, name: string): void {
-    this.aguardarTexto(); //se aguarda
     this.listadoFiles.push({ name: name, texto: mensaje }); //añadir componete en listado
     this.possicion = this.listadoFiles.length - 1;
     this.textArea = mensaje; // se muestra
@@ -60,22 +53,13 @@ export class ArchivosComponent implements OnInit {
   }
   //remover archivo
   eliminarArchivo(indixe: number) {
-    this.aguardarTexto(); //se aguarda
-    console.log(this.listadoFiles);
     let self = this;
     this.listadoFiles = this.listadoFiles.filter(function (item) {
       return item !== self.listadoFiles[indixe];
     });
     this.cargarTexto(this.listadoFiles.length - 1); // se muestra
   }
-  //aguardar el texto
-  aguardarTexto() {
-    for (let i = 0; i < this.listadoFiles.length; i++) {
-      if (i === this.possicion) {
-        this.listadoFiles[i].texto = this.textArea;
-      }
-    }
-  }
+ 
   //seleccionar el archio y colocarlo en el text area
   cargarTexto(index: number) {
     for (let i = 0; i < this.listadoFiles.length; i++) {
@@ -87,7 +71,6 @@ export class ArchivosComponent implements OnInit {
   }
   //exporta el archivo que esta en vista
   exportarArchivo(): void {
-    console.log(this.textArea);
     if (this.listadoFiles.length === 0 && this.textArea === '') {
       alert('no de puede descargar nada');
     } else {
@@ -106,7 +89,6 @@ export class ArchivosComponent implements OnInit {
   // construe el archivo para ser descargado
   descargar(nombre: string): void {
     let textPra = document.getElementById('text-area-code');
-    console.log(textPra);
     let blo = window.URL.createObjectURL(
       new Blob([this.textArea], { type: 'octet/steam' })
     );
@@ -118,7 +100,17 @@ export class ArchivosComponent implements OnInit {
     descarga.click();
     document.body.removeChild(descarga);
   }
-  actulizarTexto(dato: any) {
-    this.textArea = dato.value;
+  //compilar
+  compilar() {
+    console.log(this.textArea);
+  }
+  //actualiza el texto cuando termna de ser enfocado
+  actualizar(g: any) {
+    for (let i = 0; i < this.listadoFiles.length; i++) {
+      if (i === this.possicion) {
+        this.listadoFiles[i].texto = g.value;
+      }
+    }
+    this.textArea = g.value;
   }
 }

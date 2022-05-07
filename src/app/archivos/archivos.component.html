@@ -31,14 +31,24 @@
       <i class="bi bi-cloud-upload"></i>
     </button>
     <!-- boton de descargar archivo -->
-    <button class="botton-funcion col" (click)="exportarArchivo()"><i class="bi bi-download"></i></button>
-    <button class="botton-funcion col">
+    <button class="botton-funcion col" (click)="exportarArchivo()">
+      <i class="bi bi-download"></i>
+    </button>
+    <button class="botton-funcion col" (click)="compilar()">
       <i class="bi bi-play-circle"></i>
     </button>
   </div>
 </div>
 <div class="row">
-  <app-area-text [textArea]="textArea" ></app-area-text>
+  <!-- ara tex para ingresar el codigo -->
+  <textarea
+    [(ngModel)]="textArea"
+    #control="ngModel"
+    (change)="actualizar(control)"
+    id="text-area-code"
+    cols="10"
+    rows="40"
+  ></textarea>
 </div>
 <div class="row">
   <app-console> </app-console>
