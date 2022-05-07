@@ -100,17 +100,17 @@ export class ArchivosComponent implements OnInit {
     descarga.click();
     document.body.removeChild(descarga);
   }
-  //compilar
-  compilar() {
-    console.log(this.textArea);
-  }
   //actualiza el texto cuando termna de ser enfocado
-  actualizar(g: any) {
+  actualizar(elementoHTML: any) {
     for (let i = 0; i < this.listadoFiles.length; i++) {
       if (i === this.possicion) {
-        this.listadoFiles[i].texto = g.value;
+        this.listadoFiles[i].texto = elementoHTML.value;
       }
     }
-    this.textArea = g.value;
+    this.textArea = elementoHTML.value;
   }
+    //compilar
+    compilar() {
+      console.log(this.textArea);
+    }
 }
