@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RegistroDocumentoes } from '../registro-documentoes';
+declare var importaciones: any;
+
 @Component({
   selector: 'app-archivos',
   templateUrl: './archivos.component.html',
@@ -7,6 +9,7 @@ import { RegistroDocumentoes } from '../registro-documentoes';
 })
 export class ArchivosComponent implements OnInit {
   //variables
+
   listadoFiles: Array<RegistroDocumentoes> = [];
   private contador: number = 1;
   private possicion: number = 0;
@@ -59,7 +62,7 @@ export class ArchivosComponent implements OnInit {
     });
     this.cargarTexto(this.listadoFiles.length - 1); // se muestra
   }
- 
+
   //seleccionar el archio y colocarlo en el text area
   cargarTexto(index: number) {
     for (let i = 0; i < this.listadoFiles.length; i++) {
@@ -109,8 +112,9 @@ export class ArchivosComponent implements OnInit {
     }
     this.textArea = elementoHTML.value;
   }
-    //compilar
-    compilar() {
-      console.log(this.textArea);
-    }
+  //compilar
+  compilar() {
+    var datos = importaciones.parse(String(this.textArea));
+    //console.log(importaciones)
+  }
 }

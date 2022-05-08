@@ -1,67 +1,34 @@
-//Definicion de analisis lexico
 %lex
-%options cas-insentive
+//%options cas-insentive
+AD  [!] //el simbolo de adminarcion
+CARACTER  [a-zA-Z0-9][a-zA-Z0-9]+
+PUNTO   [.]
 %%
-%%// token
-"!!".*"\n"// comentarios de simple linea
-'\'\'\''[^('\'\'\'')]*'\'\'\''  //comentario multi-linea 
-
-//palabras reservadas
-//HEAD
-"clr"       return'CLR'{text+= yytext.substr(1,yyleng-2);}
-"Importar"  return'IMPORTAR'{text+= yytext.substr(1,yyleng-2);}
-'.'         return'PUNTO'{text+= yytext.substr(1,yyleng-2);}
-//Exprecion regular
-
-([a-zA-Z_])[a-zA-Z0-9_]* { text+= yytext.substr(1,yyleng-2); return 'IDENTIFICADOR'; }
-<<EOF>>				       return 'EOF';
-
-.					{text+= yytext.substr(1,yyleng-2);} 
+/*********************token**********************/
+//COMENTARIOS
+{AD}{AD}.*        {console.log('<'+yytext+'>');}//comentario simple
+//PUNTUACIONES
+{PUNTO}            {console.log('<'+yytext+'>');return 'PUNTO';}
+//HEAD FROM PROYECT
+"importar"        {console.log('<'+yytext+'>');return 'IMPORTAR';}
+"incerteza"        {console.log('<'+yytext+'>');return 'INCERTEZA';}
+"clr"        {console.log('<'+yytext+'>');return 'CLR';}
+//GENERICOS
+[0-9]+("."[0-9]+)?\b    {console.log('<'+yytext+'>');return 'NUMERO';}//YA QUE EL ENUNCIADO PIEDE QUE NO SE DIFERENCIE ENTRE ENTERO Y DECIMAL
+// DE ULTIMO SIEMPRE EL ID
+{CARACTER}       {console.log('<'+yytext+'>');return 'ID';}
+//INORAR
+\s+         {console.log('<'+yytext+'>');}//se come los saltos de linea
 /lex
-
-// el codigo de js
-%{
-var listado = class MiListado {
-  private resultados: Array<String>;
-
-  constructor() {
-    this.resultados = new Array<String>();
-  }
-  public agregarValor(valor: String): void {
-    this.resultados.push(valor);
-  }
-  public listado(): Array<String> {
-    return this.resultados;
-  }
-};
-
-let text: String = '';
-
-};
-
-let text: String = '';
-
-let insertar: boolean = false;
-
-function agregarTextoFinal(valor: String) {
-    if (insertar) {
-        name
-    }
-}
-
-    
-%}
-
-//GRAMTICA PRODUCCIONES
-%start incio
-
+%start inicio
 %%
-
-// el inicio (analisar documento) y el final $
-incio: importaciones EOF ;
-
-import :  importaciones import
-|
-;
-importaciones :  IMPORTAR IDENTIFICADOR {listado.agregarValor( yytext.substr(1,yyleng-2));} PUNTO CLR  ;
-
+//comienzo del programa
+inicio
+    : inicio encabezado
+    | 
+    ;
+/******************ESTE ES EL HEAD********************/
+encabezado 
+    :IMPORTAR ID PUNTO CLR
+    |INCERTEZA NUMERO 
+    ;

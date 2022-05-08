@@ -1,15 +1,9 @@
 //Definicion de analisis lexico
 %lex
-%options cas-insentive
 %%
 %%// token
-"!!".*"\n"// comentarios de simple linea
 '\'\'\''[^('\'\'\'')]*'\'\'\''  //comentario multi-linea 
 //palabras reservadas
-//HEAD
-"clr"  return'CLR'
-"Importar"  return'IMPORTAR'
-"Incerteza"  return'INCERTEZA'
 //VARIABLE
 "Double"  return'DOUBLE'
 "Boolean"  return'BOOLEAN'
@@ -28,7 +22,6 @@
 //Simbolos
 ";" return 'PUNTO_COMA'
 ":" return 'DOUBLE_PUNTO'
-"." return 'PUNTO'
 "~" return 'EQUIVALENCIA'
 "," return 'COMA'
 "(" return 'P_APERTURA'
@@ -62,7 +55,6 @@
 "+" return 'MAS'
 //Exprecion regular
 "\""[^"\""]*"\""  { yytext = yytext.substr(1,yyleng-2); return 'STRING'; }
-[0-9]+("."[0-9]+)?\b    return'NUMERO'//(NO HAY DIFERENCIA ENTRE ENTERO Y DECIMAL)
 
 ([a-zA-Z_])[a-zA-Z0-9_]* return 'IDENTIFICADOR';
 
