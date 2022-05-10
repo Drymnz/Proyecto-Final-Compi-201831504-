@@ -1,19 +1,22 @@
 %lex
 //%options cas-insentive
 AD  [!] //el simbolo de adminarcion
+COMMILA  \'
+TRIPLE_COMILLA {COMMILA}{COMMILA}{COMMILA}
 %%
 /*********************token**********************/
 \f   					{console.log('<Form Feed>');}
-\n   					{console.log('<New Line>');}
-\r   					{console.log('<Carriage Return>');}
+\n   					{/* console.log('<New Line>'); */}
+\r   					{/* console.log('<Carriage Return>'); */}
 \t|[\s][\s][\s][\s]   	{console.log('<Horizontal Tabulator>');			return 'TABULADOR';}
 \v   					{console.log('<Vertical Tabulator>');}
 \s   					{console.log('<ESPACIO>');}
 //COMENTARIOS
 {AD}{AD}.*        		{console.log('<COMENTARIO>');}//comentario simple
+{TRIPLE_COMILLA}[^\'\'\']*{TRIPLE_COMILLA}           {console.log('<COMENTARIO_MULTILINEA>'+'<'+yytext+'>');}//comentario simple
 //PUNTUACIONES
-[.]            			{console.log('<.>');							return 'PUNTO';}
-[,]  					{console.log('<[,]>'+'<'+yytext+'>');			return 'COMA';}
+[.]            			{console.log('PUNTO');							return 'PUNTO';}
+[,]  					{console.log('<COMA>'+'<'+yytext+'>');			return 'COMA';}
 ":"  					{console.log('<DOUBLE_PUNTO>'+'<'+yytext+'>');	return 'DOUBLE_PUNTO';}
 //SIMBOLOS
 //simbolos de igual 
@@ -57,10 +60,10 @@ AD  [!] //el simbolo de adminarcion
 //solo para metodos
 "Void"    				{console.log('<"Void">'+'<'+yytext+'>');return 'VOID';}
 //GENERICOS
-[0-9]+("."[0-9]+)?\b    {console.log('<NUMERO>'+'<'+yytext+'>'+'<'+yytext+'>');return 'NUMERO';}//YA QUE EL ENUNCIADO PIEDE QUE NO SE DIFERENCIE ENTRE ENTERO Y DECIMAL
+[0-9]+("."[0-9]+)?\b    {console.log('<NUMERO>'+'<'+yytext+'>');return 'NUMERO';}//YA QUE EL ENUNCIADO PIEDE QUE NO SE DIFERENCIE ENTRE ENTERO Y DECIMAL
 [a-zA-Z0-9][a-zA-Z0-9]+ {console.log('<ID>'+'<'+yytext+'>');return 'ID';}
 // DE ULTIMO SIEMPRE EL ID
-["].*      { /* yytext = yytext.substr(1,yyleng-2); */console.log('<STRING>'); return 'STRING'; }
+\"[^\"]*\"      { /* yytext = yytext.substr(1,yyleng-2); */console.log('<STRING>'+'<'+yytext+'>'); return 'STRING'; }
 //INORAR
 . {console.log('<"ERROR">'+'<'+yytext+'>');}
 <<EOF>>	return 'EOF';
@@ -155,7 +158,7 @@ tipos_variables//tipos de variables o metodo menos void
     ;
 /******************METODOS********************/
 metodos_archivo
-    :P_APERTURA parametros_metodo P_CIERRE DOUBLE_PUNTO
+    :P_APERTURA parametros_metodo P_CIERRE DOUBLE_PUNTO instrucciones_locales
     ;
 parametros_metodo
     :
@@ -168,7 +171,45 @@ secuencia_parametros
     :
     |COMA parametros
     ;
+/******************************************************instrucciones locales*/
+instrucciones_locales
+    :tabulaciones habito_local instrucciones_locales
+    |
+    ;
+habito_local
+    :variable_local
+    |usar_varaible
+    ;
+/******************************************************usar variable*/
+usar_varaible
+    :ID usar_varaible_factorizacion
+    ;
+usar_varaible_factorizacion
+    :P_APERTURA secuencia_datos P_CIERRE
+    |PUNTO usar_varaible
+    |
+    ;
+/******************VARIABLE LOCAL********************/
+variable_local
+    :tipos_variables ID variable_global// aquie estara la declaracion de las variables
+    ;
+/***************************************************************tabulaciones*/
+tabulaciones
+    :TABULADOR tabulaciones_factorizada
+    ;
+tabulaciones_factorizada
+    :
+    |tabulaciones 
+    ;
 /******************VARIABLE GLOBAL********************/
+secuencia_datos
+    :datos secuencia_datos_factorizado
+    |
+    ;
+secuencia_datos_factorizado
+    :COMA datos secuencia_datos_factorizado
+    |
+    ;
 variable_global
     :varias_declaraciones asignaciones_variable
     ;
@@ -176,8 +217,6 @@ varias_declaraciones
     :COMA ID varias_declaraciones
     |//termina ahi
     ;
-/******************VARIABLE LOCAL********************/
-/******************ASIGNACION DE VARIABLES********************/
 reasignacion_varable
     :ID asignaciones_variable
     ;
@@ -209,4 +248,5 @@ datos
     |P_APERTURA  datos P_CIERRE
     |NUMERO
     |boolean
+    |usar_varaible //VARAIBLE
     ;
