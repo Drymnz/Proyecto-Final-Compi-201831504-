@@ -13,7 +13,6 @@
         <i class="bi bi-x"></i>
       </button>
     </ng-container>
-
     <button class="botton-funcion" (click)="addComponet()">
       <i class="bi bi-file-earmark-plus"></i>
     </button>
@@ -39,16 +38,28 @@
     </button>
   </div>
 </div>
-<div class="row">
+<div class="row" style="width: 100%">
   <!-- ara tex para ingresar el codigo -->
-  <textarea
-    [(ngModel)]="textArea"
-    #control="ngModel"
-    (change)="actualizar(control)"
-    id="text-area-code"
-    cols="10"
-    rows="40"
-  ></textarea>
+    <textarea
+      id="text-area-code-number"
+      class="col-1"
+      cols="1"
+      rows="40"
+      [(ngModel)]="textConador"
+      disabled
+      (mouseenter)="updateCurrentElement('scrollTwo')" (scroll)="updateVerticalScroll($event)" #scrollTwo
+    ></textarea>
+    <textarea
+      [(ngModel)]="textArea"
+      #control="ngModel"
+      class="col"
+      (change)="actualizar(control)"
+      (keypress)="contadorLineas()"
+      id="text-area-code"
+      cols="10"
+      rows="40"
+      (mouseenter)="updateCurrentElement('scrollOne')" (scroll)="updateVerticalScroll($event)" #scrollOne
+    ></textarea>
 </div>
 <div class="row">
   <app-console> </app-console>

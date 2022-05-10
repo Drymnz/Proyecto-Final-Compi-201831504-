@@ -4,55 +4,19 @@
 %%// token
 '\'\'\''[^('\'\'\'')]*'\'\'\''  //comentario multi-linea 
 //palabras reservadas
-//VARIABLE
-"Double"  return'DOUBLE'
-"Boolean"  return'BOOLEAN'
-"String"  return'STRING'
-"Int"  return'INT'
-"Char"  return'CHAR'
-"Void"  return'VOID'
-//SENTENCIA
-"Si"  return'SI'
-"Sino"  return'SINO'
-"Para"  return'PARA'
-"Mientras"  return'MIENTRA'
-"Retorno"  return'RETURN'
-"Detener"  return'BREACK'
-"Continuar"  return'CONTINUAR'
+
+
 //Simbolos
 ";" return 'PUNTO_COMA'
 ":" return 'DOUBLE_PUNTO'
-"~" return 'EQUIVALENCIA'
-"," return 'COMA'
-"(" return 'P_APERTURA'
-")" return 'C_APERTURA'
 //para opereacion
-// relacionales
-"=" return 'IGUAL'
-">="    return 'MAYOR_IGUAL'
-"<="    return 'MENOR_IGUAL'
-"=="    return 'IGUAL_IGUAL'
-"!="return 'AD_IGUAL'
-">" return 'MAYOR'
-"<" return 'MENOR'
 "'"."'" return 'CARACTER_CHAR'
-//logicos
-"&&" return 'AND'
-"!&" return 'AD_AND'
-"||" return 'OR'
-"!" return 'AD'
 "true"  return 'TRUE'
 "false"  return 'FALSE'
 // PARA 
 "++" return 'PLUS_PLUS'
 "--" return 'LESS_LESS'
-//aritmetico
-"-" return 'MENO'
-"^" return 'POW'
-"*" return 'POR'
-"/" return 'DIV'
-"%" return 'MOD'
-"+" return 'MAS'
+
 //Exprecion regular
 "\""[^"\""]*"\""  { yytext = yytext.substr(1,yyleng-2); return 'STRING'; }
 
@@ -93,20 +57,7 @@
     }
 %}
 
-//precedencia
-%left 'MAS'
-%left 'MENOS'
-%left 'MOD'
-%left 'POR'
-%left 'DIV'
-%right 'POW'
-//          ==          !=             <     >          <=              >=          ~ 
-%nonassoc 'IGUAL_IGUAL' 'AD_IGUAL' 'MENOR' 'MAYOR' 'MENOR_IGUAL' 'MAYOR_IGUAL' 'EQUIVALENCIA'
-%left 'OR'
-%left 'AD_AND'
-%left 'AND'
-%left 'AD'
-%nonassoc 'P_APERTURA' 'P_CIERRE'
+
 
 //GRAMTICA PRODUCCIONES
 %start incio

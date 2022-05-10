@@ -1,37 +1,39 @@
-.file-name{
-    height: var(--size-height-botton-funcion);
-    width: var(--size-width-botton-funcion) + 15px;
-    color: var(--color-text-file);
-    background-color: var(--color-backgroud-file);
+.file-name {
+  height: var(--size-height-botton-funcion);
+  width: var(--size-width-botton-funcion) + 15px;
+  color: var(--color-text-file);
+  background-color: var(--color-backgroud-file);
 }
-.botton-funcion{
-    position: relative;
-    padding: 1vmin;
-    width: var(--size-width-botton-funcion);
-    height: var(--size-height-botton-funcion);
-    background-color: var(--color-backgroud-booton-files);
+.botton-funcion {
+  position: relative;
+  padding: 1vmin;
+  width: var(--size-width-botton-funcion);
+  height: var(--size-height-botton-funcion);
+  background-color: var(--color-backgroud-booton-files);
 }
-input#file{
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
+input#file {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
 }
 #text-area-code {
-    width: var(--size-width-area-text);
-    height: var(--size-height-area-text);
-    background: url(http://i.imgur.com/2cOaJ.png);
-    background-attachment: local;
-    background-repeat: no-repeat;
-    padding-left: 35px;
-    padding-top: 10px;
-    background-color: var(--color-background-text-area);
-    color: var(--color-text-text-area);
-    white-space: pre;
-    box-sizing: border-box;
-    resize: none;
-  }
+  /* variables del text area */
+  resize: none;
+  width: 100%;
+  height: var(--size-height-area-text);
+  background-color: var(--color-background-text-area);
+  color: var(--color-text-text-area);
+}
+#text-area-code-number {
+  resize: none;
+  width: 5%;
+  height: var(--size-height-area-text);
+}
+#text-area-code-number::-webkit-scrollbar {
+  display: none;
+}

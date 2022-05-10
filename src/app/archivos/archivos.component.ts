@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { RegistroDocumentoes } from '../registro-documentoes';
 declare var importaciones: any;
 
@@ -9,7 +9,7 @@ declare var importaciones: any;
 })
 export class ArchivosComponent implements OnInit {
   //variables
-
+  textConador:string='1';
   listadoFiles: Array<RegistroDocumentoes> = [];
   private contador: number = 1;
   private possicion: number = 0;
@@ -37,6 +37,7 @@ export class ArchivosComponent implements OnInit {
     this.listadoFiles.push({ name: name, texto: mensaje }); //añadir componete en listado
     this.possicion = this.listadoFiles.length - 1;
     this.textArea = mensaje; // se muestra
+    this.contadorLineas();
   }
   //ingresa nuevo archivo
   onChange($event: any): void {
@@ -52,7 +53,7 @@ export class ArchivosComponent implements OnInit {
       fileReader.readAsText(file);
     } else {
       alert('por favor selecciones un archivo ' + this.extencion);
-    }
+    } 
   }
   //remover archivo
   eliminarArchivo(indixe: number) {
@@ -71,6 +72,7 @@ export class ArchivosComponent implements OnInit {
         this.textArea = this.listadoFiles[i].texto;
       }
     }
+    this.contadorLineas();
   }
   //exporta el archivo que esta en vista
   exportarArchivo(): void {
@@ -112,8 +114,39 @@ export class ArchivosComponent implements OnInit {
     }
     this.textArea = elementoHTML.value;
   }
+  contadorLineas(){
+    this.textConador='';
+    if (this.textArea) {
+      let myArray = this.textArea.split("\n");
+      for (let index = 0; index < myArray.length; index++) {
+        this.textConador+=''+(index+1) +'\n';
+      }
+    }
+    
+  }
+  /*SINCRONIZAR SCROLL*/
+  title = "withivy";
+
+  currentElement!: string;
+
+  @ViewChild('scrollOne') scrollOne!: ElementRef;
+  @ViewChild('scrollTwo') scrollTwo!: ElementRef;
+
+  updateVerticalScroll(event:any): void {
+    if (this.currentElement === 'scrollTwo') {
+      this.scrollOne.nativeElement.scrollTop = event.target.scrollTop;
+    } else if (this.currentElement === 'scrollOne') {
+      this.scrollTwo.nativeElement.scrollTop = event.target.scrollTop;
+    }
+  }
+
+  updateCurrentElement(element: 'scrollOne' | 'scrollTwo') {
+    this.currentElement = element;
+  }
+  /*SINCRONIZAR SCROLL*/
   //compilar
   compilar() {
+    console.log(this.textArea)
     var datos = importaciones.parse(String(this.textArea));
     //console.log(importaciones)
   }

@@ -5,10 +5,19 @@ CARACTER  [a-zA-Z0-9][a-zA-Z0-9]+
 PUNTO   [.]
 %%
 /*********************token**********************/
+[\s][\s][\s][\s]|[\t]   {console.log('espacio<'+yytext+'>');}
 //COMENTARIOS
 {AD}{AD}.*        {console.log('<'+yytext+'>');}//comentario simple
 //PUNTUACIONES
 {PUNTO}            {console.log('<'+yytext+'>');return 'PUNTO';}
+//SENTENCIA
+"Si"        {console.log('<'+yytext+'>');return 'SI';}
+"Sino"      {console.log('<'+yytext+'>');return 'SINO';}
+"Para"      {console.log('<'+yytext+'>');return 'PARA';}
+"Mientras"  {console.log('<'+yytext+'>');return 'MIENTRA';}
+"Retorno"   {console.log('<'+yytext+'>');return 'RETURN';}
+"Detener"   {console.log('<'+yytext+'>');return 'BREACK';}
+"Continuar" {console.log('<'+yytext+'>');return 'CONTINUAR';}
 //SIMBOLOS
 //simbolos de igual 
 "="  {console.log('<'+yytext+'>');return 'IGUAL';}//asignaciones
@@ -53,6 +62,7 @@ PUNTO   [.]
 [0-9]+("."[0-9]+)?\b    {console.log('<'+yytext+'>');return 'NUMERO';}//YA QUE EL ENUNCIADO PIEDE QUE NO SE DIFERENCIE ENTRE ENTERO Y DECIMAL
 // DE ULTIMO SIEMPRE EL ID
 {CARACTER}       {console.log('<'+yytext+'>');return 'ID';}
+["].*      { /* yytext = yytext.substr(1,yyleng-2); */console.log('<'+yytext+'>'); return 'STRING'; }
 //INORAR
 \s+         {console.log('<'+yytext+'>');}//se come los saltos de linea
 /lex
@@ -63,7 +73,7 @@ PUNTO   [.]
 %left 'MOD'
 %left 'POR'
 %left 'DIV'
-%right 'POW'
+%left 'POW'//NO PUEDE SER DERECHA
 //          ==          !=             <     >          <=              >=          ~ 
 %nonassoc 'IGUAL_IGUAL' 'AD_IGUAL' 'MENOR' 'MAYOR' 'MENOR_IGUAL' 'MAYOR_IGUAL' 'EQUIVALENCIA'
 %left 'OR'
@@ -76,8 +86,7 @@ PUNTO   [.]
 %%
 //comienzo del programa
 inicio
-    : inicio documentacion 
-    | 
+    : documentacion inicio  
     ;
 documentacion 
     :import instrucciones
@@ -93,11 +102,41 @@ encabezado
     ;
 /******************INSTRUCCIONES********************/
 instrucciones
-    :declaraciones//declaracion de una variable
+    :declaraciones //declaracion de una variable
+    |usar
+    ;
+/******************USAR DATOS O VARIABLE********************/
+usar
+    :ID factorizacion_usar
+    ;
+factorizacion_usar
+    :PUNTO
+    |IGUAL llamado_metodos
+    ;
+llamado_metodos
+    :datos
+    |ID P_APERTURA vasillo_datos C_APERTURA
+    ;
+vasillo_datos
+    :secuencia_datos
+    |
+    ;
+secuencia_datos
+    :secuencia_datos COMA datos
+    |datos
     ;
 /******************DECLARACION DE VARIABLE********************/
 declaraciones
-    :tipos_variables suseciones_identificacion asignarcion
+    :tipos_variables ID variable_metodo
+    |VOID ID metodo
+    ;
+variable  
+    :COMA ID variable
+    |asignarcion
+    ;
+variable_metodo
+    :variable
+    |metodo
     ;
 tipos_variables
     :DOUBLE
@@ -107,9 +146,31 @@ tipos_variables
     |CHAR
     ;
 ///////////////////////////////////////////////////////////////////
-suseciones_identificacion 
-    :suseciones_identificacion COMA ID
-    |ID
+/******************DECLARACION DE METODOS********************/
+metodo
+    :P_APERTURA parametros P_CIERRE DOUBLE_PUNTO indicaciones
+    ;
+parametros 
+    :parametros COMA ID
+    |tipos_variables ID
+    |
+    ;
+indicaciones
+    :sentencias_uso_variable 
+    ;
+numeracion_tabulacion
+    :numeracion_tabulacion TABULACION
+    |TABULACION
+    ;
+/******************INDICACIONES DENTRO DE UN METODO********************/
+sentencias_uso_variable
+    :usar
+    |sentencias
+    ;
+sentencias
+    :SI
+    |PARA
+    |MIENTRA
     ;
 /******************ASIGNACION DE VARIABLE********************/
 asignarcion
@@ -118,8 +179,7 @@ asignarcion
     ;
 /******************OPERACIONES********************/
 datos
-    :P_APERTURA datos P_CIERRE 
-    |datos MEN datos
+    :datos MEN datos
     |datos POW datos
     |datos POR datos
     |datos DIV datos
@@ -135,7 +195,8 @@ datos
     |datos AD_IGUAL datos
     |datos MAYOR datos
     |datos MENOR datos
+    |P_APERTURA datos C_APERTURA
     /******************DATOS USAR********************/
     |NUMERO
+    |STRING
     ;
-
