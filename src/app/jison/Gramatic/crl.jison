@@ -5,7 +5,14 @@
 '\'\'\''[^('\'\'\'')]*'\'\'\''  //comentario multi-linea 
 //palabras reservadas
 
-
+//SENTENCIA
+"Si"        {console.log('<'+yytext+'>');return 'SI';}
+"Sino"      {console.log('<'+yytext+'>');return 'SINO';}
+"Para"      {console.log('<'+yytext+'>');return 'PARA';}
+"Mientras"  {console.log('<'+yytext+'>');return 'MIENTRA';}
+"Retorno"   {console.log('<'+yytext+'>');return 'RETURN';}
+"Detener"   {console.log('<'+yytext+'>');return 'BREACK';}
+"Continuar" {console.log('<'+yytext+'>');return 'CONTINUAR';}
 //Simbolos
 ";" return 'PUNTO_COMA'
 ":" return 'DOUBLE_PUNTO'

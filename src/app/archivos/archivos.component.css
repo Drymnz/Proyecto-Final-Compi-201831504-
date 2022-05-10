@@ -32,6 +32,7 @@ input#file {
 #text-area-code-number {
   resize: none;
   width: 5%;
+  white-space: pre;/*evita que se oculte parte del texto*/
   height: var(--size-height-area-text);
 }
 #text-area-code-number::-webkit-scrollbar {

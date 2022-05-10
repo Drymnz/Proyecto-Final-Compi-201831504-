@@ -146,8 +146,10 @@ export class ArchivosComponent implements OnInit {
   /*SINCRONIZAR SCROLL*/
   //compilar
   compilar() {
-    console.log(this.textArea)
-    var datos = importaciones.parse(String(this.textArea));
+    //console.log(this.textArea)
+    if(this.textArea){
+      var datos = importaciones.parse(String(this.textArea));
+    }
     //console.log(importaciones)
   }
 }
