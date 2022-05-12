@@ -5,31 +5,15 @@
 '\'\'\''[^('\'\'\'')]*'\'\'\''  //comentario multi-linea 
 //palabras reservadas
 
-//SENTENCIA
-"Si"        {console.log('<'+yytext+'>');return 'SI';}
-"Sino"      {console.log('<'+yytext+'>');return 'SINO';}
-"Para"      {console.log('<'+yytext+'>');return 'PARA';}
-"Mientras"  {console.log('<'+yytext+'>');return 'MIENTRA';}
-"Retorno"   {console.log('<'+yytext+'>');return 'RETURN';}
-"Detener"   {console.log('<'+yytext+'>');return 'BREACK';}
-"Continuar" {console.log('<'+yytext+'>');return 'CONTINUAR';}
+
 //Simbolos
 ";" return 'PUNTO_COMA'
 ":" return 'DOUBLE_PUNTO'
 //para opereacion
 "'"."'" return 'CARACTER_CHAR'
-"true"  return 'TRUE'
-"false"  return 'FALSE'
-// PARA 
-"++" return 'PLUS_PLUS'
-"--" return 'LESS_LESS'
+
 
 //Exprecion regular
-"\""[^"\""]*"\""  { yytext = yytext.substr(1,yyleng-2); return 'STRING'; }
-
-([a-zA-Z_])[a-zA-Z0-9_]* return 'IDENTIFICADOR';
-
-<<EOF>>				return 'EOF';
 
 \s+ // se ignoran los espacios en blanco
 .					{ console.error('Este es un error léxico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column);
