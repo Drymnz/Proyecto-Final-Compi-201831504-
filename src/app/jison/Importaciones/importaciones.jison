@@ -7,20 +7,20 @@ AMPERSAND   [&]
 NID [|]
 %%
 /*********************token**********************/
-\f   					{/* file.appetTexto_salida(yytext); */}
-\n   					{/* file.appetTexto_salida(yytext); */}
-\r   					{/* file.appetTexto_salida(yytext); */}
-\t|[\s][\s][\s][\s]   	{file.appetTexto_salida(yytext);			return 'TABULADOR';}
-\v   					{/* yytext);file.appetTexto_salida(yytext); */}
+\f   					{/* file.appetTexto_salida(yytext+' '); */}
+\n   					{/* file.appetTexto_salida(yytext+' '); */}
+\r   					{/* file.appetTexto_salida(yytext+' '); */}
+\t|[\s][\s][\s][\s]   	{file.appetTexto_salida('\t');			return 'TABULADOR';}
+\v   					{/* yytext);file.appetTexto_salida(yytext+' '); */}
 \s   					{file.appetTexto_salida(yytext);}
 //COMENTARIOS
-{AD}{AD}.*        		                            {/* );file.appetTexto_salida(yytext); */}//comentario simple
-{TRIPLE_COMILLA}[^\'\'\']*{TRIPLE_COMILLA}          {/* );file.appetTexto_salida(yytext); */}//comentario simple
+{AD}{AD}.*        		                            {/* );file.appetTexto_salida(yytext+' '); */}//comentario simple
+{TRIPLE_COMILLA}[^\'\'\']*{TRIPLE_COMILLA}          {/* );file.appetTexto_salida(yytext+' '); */}//comentario simple
 //PUNTUACIONES
-[.]            			{file.appetTexto_salida(yytext);							return 'PUNTO';}
-[,]  					{file.appetTexto_salida(yytext);			return 'COMA';}
-":"  					{file.appetTexto_salida(yytext);	return 'DOUBLE_PUNTO';}
-";"  					{file.appetTexto_salida(yytext);	return 'PUNTO_COMA';}
+[.]            			{file.appetTexto_salida(yytext+' ');							return 'PUNTO';}
+[,]  					{file.appetTexto_salida(yytext+' ');			return 'COMA';}
+":"  					{file.appetTexto_salida(yytext+' ');	return 'DOUBLE_PUNTO';}
+";"  					{file.appetTexto_salida(yytext+' ');	return 'PUNTO_COMA';}
 //SIMBOLOS
 //simbolos de igual 
 "="  					{file.appetTexto_salida(yytext);			return 'IGUAL';}//asignaciones
@@ -31,18 +31,18 @@ NID [|]
 {AD}"=" 				{file.appetTexto_salida(yytext);		return 'AD_IGUAL';}
 ">"     				{file.appetTexto_salida(yytext);			return 'MAYOR';}
 "<"     				{file.appetTexto_salida(yytext);			return 'MENOR';}
-"~"     				{file.appetTexto_salida(yytext);			return 'EQUIVALENCIA';}
+"~"     				{file.appetTexto_salida(yytext+' ');			return 'EQUIVALENCIA';}
 //logicos	return false o true
-{AMPERSAND}{AMPERSAND}    				{file.appetTexto_salida(yytext);			    return 'AND';}
-{NID}{AMPERSAND}    				    {file.appetTexto_salida(yytext);             return 'AD_AND';}
-{NID}{NID}  				            {file.appetTexto_salida(yytext);           return 'OR';}
-{AD}    				                {file.appetTexto_salida(yytext);                return 'AD';}
-"true"    				                {file.appetTexto_salida(yytext);             return 'TRUE';}
-"false"    				                {file.appetTexto_salida(yytext);            return 'FALSE';}
+{AMPERSAND}{AMPERSAND}    				{file.appetTexto_salida(yytext+' ');			    return 'AND';}
+{NID}{AMPERSAND}    				    {file.appetTexto_salida(yytext+' ');             return 'AD_AND';}
+{NID}{NID}  				            {file.appetTexto_salida(yytext+' ');           return 'OR';}
+{AD}    				                {file.appetTexto_salida(yytext+' ');                return 'AD';}
+"true"    				                {file.appetTexto_salida(yytext+' ');             return 'TRUE';}
+"false"    				                {file.appetTexto_salida(yytext+' ');            return 'FALSE';}
 /* ""    {.appetTexto_salida(yytext);return '';} */
 // PARA 
-"++" return 'PLUS_PLUS'
-"--" return 'LESS_LESS'
+"++" {file.appetTexto_salida(yytext);return 'PLUS_PLUS';}
+"--" {file.appetTexto_salida(yytext);return 'LESS_LESS';}
 //aritmetico
 "-" 					{file.appetTexto_salida(yytext);return 'MEN';}
 "^" 					{file.appetTexto_salida(yytext);return 'POW';}
@@ -75,12 +75,12 @@ NID [|]
 "Continuar"             {file.appetTexto_salida(yytext);       return 'CONTINUAR';}
 {COMMILA}.{COMMILA}     {file.appetTexto_salida(yytext);       return 'DATO_CHAR';}
 //GENERICOS
-[0-9]+("."[0-9]+)?\b        {file.appetTexto_salida(yytext);return 'NUMERO';}//YA QUE EL ENUNCIADO PIEDE QUE NO SE DIFERENCIE ENTRE ENTERO Y DECIMAL
-[a-zA-Z0-9]([a-zA-Z0-9]+)?  {file.appetTexto_salida(yytext);return 'ID';}
+[0-9]+("."[0-9]+)?\b        {file.appetTexto_salida(yytext+' ');return 'NUMERO';}//YA QUE EL ENUNCIADO PIEDE QUE NO SE DIFERENCIE ENTRE ENTERO Y DECIMAL
+[a-zA-Z0-9]([a-zA-Z0-9]+)?  {file.appetTexto_salida(yytext+' ');return 'ID';}
 // DE ULTIMO SIEMPRE EL ID
-\"[^\"]*\"      { file.appetTexto_salida(yytext); return 'STRING'; }
+\"[^\"]*\"      { file.appetTexto_salida(yytext+' '); return 'STRING'; }
 //INORAR
-. {file.appetTexto_salida(yytext);}
+. {file.appetTexto_salida(yytext+' ');}
 <<EOF>>	return 'EOF';
 /lex
 

@@ -596,29 +596,29 @@ options: {},
 performAction: function anonymous(yy,yy_,$avoiding_name_collisions,YY_START) {
 var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
-case 0:/* file.appetTexto_salida(yy_.yytext); */
+case 0:/* file.appetTexto_salida(yy_.yytext+' '); */
 break;
-case 1:/* file.appetTexto_salida(yy_.yytext); */
+case 1:/* file.appetTexto_salida(yy_.yytext+' '); */
 break;
-case 2:/* file.appetTexto_salida(yy_.yytext); */
+case 2:/* file.appetTexto_salida(yy_.yytext+' '); */
 break;
-case 3:file.appetTexto_salida(yy_.yytext);			return 85;
+case 3:file.appetTexto_salida('\t');			return 85;
 break;
-case 4:/* yy_.yytext);file.appetTexto_salida(yy_.yytext); */
+case 4:/* yy_.yytext);file.appetTexto_salida(yy_.yytext+' '); */
 break;
 case 5:file.appetTexto_salida(yy_.yytext);
 break;
-case 6:/* );file.appetTexto_salida(yy_.yytext); */
+case 6:/* );file.appetTexto_salida(yy_.yytext+' '); */
 break;
-case 7:/* );file.appetTexto_salida(yy_.yytext); */
+case 7:/* );file.appetTexto_salida(yy_.yytext+' '); */
 break;
-case 8:file.appetTexto_salida(yy_.yytext);							return 11;
+case 8:file.appetTexto_salida(yy_.yytext+' ');							return 11;
 break;
-case 9:file.appetTexto_salida(yy_.yytext);			return 41;
+case 9:file.appetTexto_salida(yy_.yytext+' ');			return 41;
 break;
-case 10:file.appetTexto_salida(yy_.yytext);	return 37;
+case 10:file.appetTexto_salida(yy_.yytext+' ');	return 37;
 break;
-case 11:file.appetTexto_salida(yy_.yytext);	return 81;
+case 11:file.appetTexto_salida(yy_.yytext+' ');	return 81;
 break;
 case 12:file.appetTexto_salida(yy_.yytext);			return 59;
 break;
@@ -634,23 +634,23 @@ case 17:file.appetTexto_salida(yy_.yytext);			return 68;
 break;
 case 18:file.appetTexto_salida(yy_.yytext);			return 69;
 break;
-case 19:file.appetTexto_salida(yy_.yytext);			return 70;
+case 19:file.appetTexto_salida(yy_.yytext+' ');			return 70;
 break;
-case 20:file.appetTexto_salida(yy_.yytext);			    return 60;
+case 20:file.appetTexto_salida(yy_.yytext+' ');			    return 60;
 break;
-case 21:file.appetTexto_salida(yy_.yytext);             return 61;
+case 21:file.appetTexto_salida(yy_.yytext+' ');             return 61;
 break;
-case 22:file.appetTexto_salida(yy_.yytext);           return 62;
+case 22:file.appetTexto_salida(yy_.yytext+' ');           return 62;
 break;
-case 23:file.appetTexto_salida(yy_.yytext);                return 63;
+case 23:file.appetTexto_salida(yy_.yytext+' ');                return 63;
 break;
-case 24:file.appetTexto_salida(yy_.yytext);             return 74;
+case 24:file.appetTexto_salida(yy_.yytext+' ');             return 74;
 break;
-case 25:file.appetTexto_salida(yy_.yytext);            return 75;
+case 25:file.appetTexto_salida(yy_.yytext+' ');            return 75;
 break;
-case 26:return 83
+case 26:file.appetTexto_salida(yy_.yytext);return 83;
 break;
-case 27:return 84
+case 27:file.appetTexto_salida(yy_.yytext);return 84;
 break;
 case 28:file.appetTexto_salida(yy_.yytext);return 20;
 break;
@@ -702,13 +702,13 @@ case 51:file.appetTexto_salida(yy_.yytext);       return 50;
 break;
 case 52:file.appetTexto_salida(yy_.yytext);       return 73;
 break;
-case 53:file.appetTexto_salida(yy_.yytext);return 23;
+case 53:file.appetTexto_salida(yy_.yytext+' ');return 23;
 break;
-case 54:file.appetTexto_salida(yy_.yytext);return 10;
+case 54:file.appetTexto_salida(yy_.yytext+' ');return 10;
 break;
-case 55: file.appetTexto_salida(yy_.yytext); return 33; 
+case 55: file.appetTexto_salida(yy_.yytext+' '); return 33; 
 break;
-case 56:file.appetTexto_salida(yy_.yytext);
+case 56:file.appetTexto_salida(yy_.yytext+' ');
 break;
 case 57:return 5;
 break;
