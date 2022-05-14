@@ -7,82 +7,99 @@ AMPERSAND   [&]
 NID [|]
 %%
 /*********************token**********************/
-\f   					{console.log('<Form Feed>');}
-\n   					{/* console.log('<New Line>'); */}
-\r   					{/* console.log('<Carriage Return>'); */}
-\t|[\s][\s][\s][\s]   	{console.log('<Horizontal Tabulator>');			return 'TABULADOR';}
-\v   					{console.log('<Vertical Tabulator>');}
-\s   					{console.log('<ESPACIO>');}
+\f   					{/* console.log('<Form Feed>'+yytext); */}
+\n   					{/* console.log('<New Line>'+yytext); */}
+\r   					{/* console.log('<Carriage Return>'+yytext); */}
+\t|[\s][\s][\s][\s]   	{console.log('<Horizontal Tabulator>'+yytext);			return 'TABULADOR';}
+\v   					{/* console.log('<Vertical Tabulator>'+yytext); */}
+\s   					{console.log('<ESPACIO>'+yytext);}
 //COMENTARIOS
-{AD}{AD}.*        		                            {console.log('<COMENTARIO>');}//comentario simple
-{TRIPLE_COMILLA}[^\'\'\']*{TRIPLE_COMILLA}          {console.log('<COMENTARIO_MULTILINEA>');}//comentario simple
+{AD}{AD}.*        		                            {/* console.log('<COMENTARIO>'+yytext); */}//comentario simple
+{TRIPLE_COMILLA}[^\'\'\']*{TRIPLE_COMILLA}          {/* console.log('<COMENTARIO_MULTILINEA>'+yytext); */}//comentario simple
 //PUNTUACIONES
-[.]            			{console.log('PUNTO');							return 'PUNTO';}
-[,]  					{console.log('<COMA>');			return 'COMA';}
-":"  					{console.log('<DOUBLE_PUNTO>');	return 'DOUBLE_PUNTO';}
-";"  					{console.log('<PUNTO_COMA>');	return 'PUNTO_COMA';}
+[.]            			{console.log('PUNTO'+yytext);							return 'PUNTO';}
+[,]  					{console.log('<COMA>'+yytext);			return 'COMA';}
+":"  					{console.log('<DOUBLE_PUNTO>'+yytext);	return 'DOUBLE_PUNTO';}
+";"  					{console.log('<PUNTO_COMA>'+yytext);	return 'PUNTO_COMA';}
 //SIMBOLOS
 //simbolos de igual 
-"="  					{console.log('<"=">');			return 'IGUAL';}//asignaciones
+"="  					{console.log('<"=">'+yytext);			return 'IGUAL';}//asignaciones
 // relacionales return false o true
-">="    				{console.log('<>=>');			return 'MAYOR_IGUAL';}
-"<="    				{console.log('<<=>');			return 'MENOR_IGUAL';}
-"=="    				{console.log('<"==">');			return 'IGUAL_IGUAL';}
-{AD}"=" 				{console.log('<{AD}"=">');		return 'AD_IGUAL';}
-">"     				{console.log('<">">');			return 'MAYOR';}
-"<"     				{console.log('<"<">');			return 'MENOR';}
-"~"     				{console.log('<"~">');			return 'EQUIVALENCIA';}
+">="    				{console.log('<>=>'+yytext);			return 'MAYOR_IGUAL';}
+"<="    				{console.log('<<=>'+yytext);			return 'MENOR_IGUAL';}
+"=="    				{console.log('<"==">'+yytext);			return 'IGUAL_IGUAL';}
+{AD}"=" 				{console.log('<{AD}"=">'+yytext);		return 'AD_IGUAL';}
+">"     				{console.log('<">">'+yytext);			return 'MAYOR';}
+"<"     				{console.log('<"<">'+yytext);			return 'MENOR';}
+"~"     				{console.log('<"~">'+yytext);			return 'EQUIVALENCIA';}
 //logicos	return false o true
-{AMPERSAND}{AMPERSAND}    				{console.log('<"&&">');			    return 'AND';}
-{NID}{AMPERSAND}    				    {console.log('<"|&">');             return 'AD_AND';}
-{NID}{NID}  				            {console.log('<[|][|]>');           return 'OR';}
-{AD}    				                {console.log('<!>');                return 'AD';}
-"true"    				                {console.log('<true>');             return 'TRUE';}
-"false"    				                {console.log('<false>');            return 'FALSE';}
-/* ""    {console.log('<>');return '';} */
+{AMPERSAND}{AMPERSAND}    				{console.log('<"&&">'+yytext);			    return 'AND';}
+{NID}{AMPERSAND}    				    {console.log('<"|&">'+yytext);             return 'AD_AND';}
+{NID}{NID}  				            {console.log('<[|][|]>'+yytext);           return 'OR';}
+{AD}    				                {console.log('<!>'+yytext);                return 'AD';}
+"true"    				                {console.log('<true>'+yytext);             return 'TRUE';}
+"false"    				                {console.log('<false>'+yytext);            return 'FALSE';}
+/* ""    {console.log('<>'+yytext);return '';} */
 // PARA 
 "++" return 'PLUS_PLUS'
 "--" return 'LESS_LESS'
 //aritmetico
-"-" 					{console.log('<"-">');return 'MEN';}
-"^" 					{console.log('<"^">');return 'POW';}
-"*" 					{console.log('<"*">');return 'POR';}
-"/" 					{console.log('<"/">');return 'DIV';}
-"%" 					{console.log('<"%">');return 'MOD';}
-"+" 					{console.log('<"+">');return 'MAS';}
+"-" 					{console.log('<"-">'+yytext);return 'MEN';}
+"^" 					{console.log('<"^">'+yytext);return 'POW';}
+"*" 					{console.log('<"*">'+yytext);return 'POR';}
+"/" 					{console.log('<"/">'+yytext);return 'DIV';}
+"%" 					{console.log('<"%">'+yytext);return 'MOD';}
+"+" 					{console.log('<"+">'+yytext);return 'MAS';}
 //agrupacion
-[(]     				{console.log('<[(]>');return 'P_APERTURA';}
-")"     				{console.log('<[)]>');return 'P_CIERRE';}
+[(]     				{console.log('<[(]>'+yytext);return 'P_APERTURA';}
+")"     				{console.log('<[)]>'+yytext);return 'P_CIERRE';}
 //HEAD FROM PROYECT
-"Importar"        		{console.log('<"importar">');    return 'IMPORTAR';}
-"Incerteza"        		{console.log('<"incerteza">');   return 'INCERTEZA';}
-"clr"        			{console.log('<"clr">');         return 'CLR';}
+"Importar"        		{console.log('<"importar">'+yytext);    return 'IMPORTAR';}
+"Incerteza"        		{console.log('<"incerteza">'+yytext);   return 'INCERTEZA';}
+"clr"        			{console.log('<"clr">'+yytext);         return 'CLR';}
 //VARIABLE
-"Double"  				{console.log('<"Double">');  return 'DOUBLE';}
-"Boolean" 				{console.log('<"Boolean">'); return 'BOOLEAN';}
-"String"  				{console.log('<"String">');  return 'STRING';}
-"Int"     				{console.log('<"Int">');     return 'INT';}
-"Char"    				{console.log('<"Char">');    return 'CHAR';}
+"Double"  				{console.log('<"Double">'+yytext);  return 'DOUBLE';}
+"Boolean" 				{console.log('<"Boolean">'+yytext); return 'BOOLEAN';}
+"String"  				{console.log('<"String">'+yytext);  return 'STRING';}
+"Int"     				{console.log('<"Int">'+yytext);     return 'INT';}
+"Char"    				{console.log('<"Char">'+yytext);    return 'CHAR';}
 //solo para metodos
-"Void"    				{console.log('<"Void">');    return 'VOID';}
+"Void"    				{console.log('<"Void">'+yytext);    return 'VOID';}
 //SENTENCIA
-"Si"                    {console.log('<"SI">');              return 'SI';}
-"Sino"                  {console.log('<"SINO">');            return 'SINO';}
-"Para"                  {console.log('<"PARA">');            return 'PARA';}
-"Mientras"              {console.log('<"MIENTRA">');         return 'MIENTRA';}
-"Retorno"               {console.log('<"RETURN">');          return 'RETORNO';}
-"Detener"               {console.log('<"BREACK">');          return 'BREACK';}
-"Continuar"             {console.log('<"CONTINUAR">');       return 'CONTINUAR';}
-
+"Si"                    {console.log('<"SI">'+yytext);              return 'SI';}
+"Sino"                  {console.log('<"SINO">'+yytext);            return 'SINO';}
+"Para"                  {console.log('<"PARA">'+yytext);            return 'PARA';}
+"Mientras"              {console.log('<"MIENTRA">'+yytext);         return 'MIENTRA';}
+"Retorno"               {console.log('<"RETURN">'+yytext);          return 'RETORNO';}
+"Detener"               {console.log('<"BREACK">'+yytext);          return 'BREACK';}
+"Continuar"             {console.log('<"CONTINUAR">'+yytext);       return 'CONTINUAR';}
+{COMMILA}.{COMMILA}      {console.log('<"CHAR">'+yytext);       return 'DATO_CHAR';}
 //GENERICOS
-[0-9]+("."[0-9]+)?\b    {console.log('<NUMERO>');return 'NUMERO';}//YA QUE EL ENUNCIADO PIEDE QUE NO SE DIFERENCIE ENTRE ENTERO Y DECIMAL
-[a-zA-Z0-9]([a-zA-Z0-9]+)? {console.log('<ID>');return 'ID';}
+[0-9]+("."[0-9]+)?\b    {console.log('<NUMERO>'+yytext);return 'NUMERO';}//YA QUE EL ENUNCIADO PIEDE QUE NO SE DIFERENCIE ENTRE ENTERO Y DECIMAL
+[a-zA-Z0-9]([a-zA-Z0-9]+)? {console.log('<ID>'+yytext);return 'ID';}
 // DE ULTIMO SIEMPRE EL ID
-\"[^\"]*\"      { /* yytext = yytext.substr(1,yyleng-2); */console.log('<STRING>'); return 'STRING'; }
+\"[^\"]*\"      { /* yytext = yytext.substr(1,yyleng-2); */console.log('<STRING>'+yytext); return 'STRING'; }
 //INORAR
-. {console.log('<"ERROR">');}
+. {console.log('<"ERROR">'+yytext);}
 <<EOF>>	return 'EOF';
 /lex
+%{
+  class Intreprete {
+  constructor() {
+    this.texto_salida = "";
+    this.texto_errores = "";
+  }
+  setText_Salida(testo) {
+    this.texto_salida = testo;
+  }
+  appetText_salida(testo) {
+    this.texto_salida += testo;
+  }
+}
+const file = new Intreprete();
+file.appetText_salida("hola mundo");
+
+%}
 //precedencia
 %left 'MAS'
 %left 'MEN'
@@ -102,31 +119,31 @@ NID [|]
 %%
 /******************inicio de la sintactico********************/
 inicio
-    : documentacion EOF
+    : documentacion EOF  {$$ = new Intreprete();$$.setText_Salida($1); return $$;}
     ;
 documentacion 
-    :import instrucciones
+    :import instrucciones  {$$=$1;}
     ;
-/******************HEAD , importacines********************/
+/******************Encabezado , importacines********************/
 import  
-    :importar_incerteza import
+    :importar_incerteza import {$$=$1;}
     |
     ;
 importar_incerteza 
-    :IMPORTAR ID PUNTO CLR
-    |INCERTEZA operacion_aritmetica 
+    :IMPORTAR ID PUNTO CLR {$$=$2;}
+    |INCERTEZA operacion_aritmetica    
     ;
 /******************************************************operacion_aritmetica*/
 operacion_aritmetica
-    :operacion_aritmetica POW operacion_aritmetica  /*POTENCIA*/
-    |operacion_aritmetica POR operacion_aritmetica  /*MULTIPLICACION*/
-    |operacion_aritmetica DIV operacion_aritmetica  /*DIVISION*/
-    |operacion_aritmetica MOD operacion_aritmetica  /*MODULO*/
-    |operacion_aritmetica MAS operacion_aritmetica  /*SUMA*/
-    |operacion_aritmetica MEN operacion_aritmetica  /*RESTA*/
-    |P_APERTURA operacion_aritmetica P_CIERRE
-    |NUMERO
-    |ID
+    :operacion_aritmetica POW operacion_aritmetica  /*POTENCIA*/       
+    |operacion_aritmetica POR operacion_aritmetica  /*MULTIPLICACION*/ 
+    |operacion_aritmetica DIV operacion_aritmetica  /*DIVISION*/       
+    |operacion_aritmetica MOD operacion_aritmetica  /*MODULO*/         
+    |operacion_aritmetica MAS operacion_aritmetica  /*SUMA*/            
+    |operacion_aritmetica MEN operacion_aritmetica  /*RESTA*/          
+    |P_APERTURA operacion_aritmetica P_CIERRE 
+    |NUMERO     
+    |ID         
     ;
 /****************************INICIO DE VARIABLES GLOBALES O METODO**************************************************INSTRUCCIONES********************/
 instrucciones
@@ -142,6 +159,7 @@ variable_metodo
     :metodos_archivo // es un metodo
     |variable_global //es variable global
     ;
+///////////////////////////////////////////////////////////TIPOS DE DATOS
 tipos_variables//tipos de variables o metodos menos void 
     :DOUBLE
     |BOOLEAN
@@ -249,6 +267,14 @@ datos
     |NUMERO
     |boolean
     |usar_varaible //VARAIBLE
+    |valores_chart
+    ;
+valores_chart
+    :DATO_CHAR
+    ;
+boolean
+    :TRUE
+    |FALSE
     ;
 /******************SENTENCIAS DE CONTROL********************/
 sentencias_control

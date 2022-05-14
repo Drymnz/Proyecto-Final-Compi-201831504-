@@ -9,13 +9,14 @@ declare var importaciones: any;
 })
 export class ArchivosComponent implements OnInit {
   //variables
-  textConador:string='1';
+  textConador: string = '1';
   listadoFiles: Array<RegistroDocumentoes> = [];
   private contador: number = 1;
   private possicion: number = 0;
   private nombre_archivo_defoul: string = 'file';
   private extencion: string = '.crl';
   textArea!: any;
+  textoConsola!: any;
 
   //constructor
   constructor() {}
@@ -53,7 +54,7 @@ export class ArchivosComponent implements OnInit {
       fileReader.readAsText(file);
     } else {
       alert('por favor selecciones un archivo ' + this.extencion);
-    } 
+    }
   }
   //remover archivo
   eliminarArchivo(indixe: number) {
@@ -114,25 +115,24 @@ export class ArchivosComponent implements OnInit {
     }
     this.textArea = elementoHTML.value;
   }
-  contadorLineas(){
-    this.textConador='';
+  contadorLineas() {
+    this.textConador = '';
     if (this.textArea) {
-      let myArray = this.textArea.split("\n");
+      let myArray = this.textArea.split('\n');
       for (let index = 0; index < myArray.length; index++) {
-        this.textConador+=''+(index+1) +'\n';
+        this.textConador += '' + (index + 1) + '\n';
       }
     }
-    
   }
   /*SINCRONIZAR SCROLL*/
-  title = "withivy";
+  title = 'withivy';
 
   currentElement!: string;
 
   @ViewChild('scrollOne') scrollOne!: ElementRef;
   @ViewChild('scrollTwo') scrollTwo!: ElementRef;
 
-  updateVerticalScroll(event:any): void {
+  updateVerticalScroll(event: any): void {
     if (this.currentElement === 'scrollTwo') {
       this.scrollOne.nativeElement.scrollTop = event.target.scrollTop;
     } else if (this.currentElement === 'scrollOne') {
@@ -146,9 +146,15 @@ export class ArchivosComponent implements OnInit {
   /*SINCRONIZAR SCROLL*/
   //compilar
   compilar() {
-    //console.log(this.textArea)
-    if(this.textArea){
-      var datos = importaciones.parse(String(this.textArea));
+    if (this.textArea) {
+      var datos: any = importaciones.parse(String(this.textArea));
+      if (datos) {
+        if (datos.texto_errores != undefined) {
+          this.textoConsola = 'Resultado' + datos.texto_salida;
+        } else {
+          this.textoConsola = 'Errores' + String(datos.texto_errores);
+        }
+      }
     }
     //console.log(importaciones)
   }
