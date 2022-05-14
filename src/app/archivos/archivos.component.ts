@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { RegistroDocumentoes } from '../registro-documentoes';
 declare var importaciones: any;
+declare var crl: any;
 
 @Component({
   selector: 'app-archivos',
@@ -17,6 +18,7 @@ export class ArchivosComponent implements OnInit {
   private extencion: string = '.crl';
   textArea!: any;
   textoConsola!: any;
+  private textoFinalUsar: String = '';
 
   //constructor
   constructor() {}
@@ -147,15 +149,54 @@ export class ArchivosComponent implements OnInit {
   //compilar
   compilar() {
     if (this.textArea) {
-      var datos: any = importaciones.parse(String(this.textArea));
+      let datos: any = importaciones.parse(String(this.textArea)); //analisara la parte de importaciones
       if (datos) {
-        if (datos.texto_errores != undefined) {
-          this.textoConsola = 'Resultado' + datos.texto_salida;
-        } else {
-          this.textoConsola = 'Errores' + String(datos.texto_errores);
+        console.log(datos.array_importaciiones);
+        if (this.importaciones(datos.array_importaciiones)) {
+          // verifica que existe el archivo a importar
+          this.textoFinalUsar += datos.texto_salida;
+          let final: any = crl.parse(String(this.textoFinalUsar)); //analisara la parte de importaciones
+          //console.log(this.textoFinalUsar);
+          if (final.texto_errores != undefined) {
+            this.textoConsola = 'Resultado' + datos.texto_salida;
+          } else {
+            this.textoConsola = 'Errores' + String(datos.texto_errores);
+          } 
         }
+        //console.log(this.textoFinalUsar)
       }
     }
-    //console.log(importaciones)
+  }
+  /* 
+  @array pide un array
+  @return un verdadero si existe el archivo en listado de archivos
+  */
+  importaciones(listado: any): boolean {
+    console.log(listado)
+    if (listado != undefined) {
+      for (let index = 0; index < listado.length; index++) {
+        let elemeto = listado[index];
+        let encontrado: boolean = false;
+        elemeto += this.extencion;
+        this.listadoFiles.forEach((element) => {
+          if (element.name === elemeto) {
+            let datos: any = importaciones.parse(String(element.texto)); //analisara la parte de importaciones
+            if (this.importaciones(datos.array_importaciiones)) {
+              this.textoFinalUsar += datos.texto_salida;
+              encontrado = true;
+            }
+          }
+        });
+        if (!encontrado) {
+          this.textoConsola =
+            'No puedo encontrar este archivo >>  ' +
+            elemeto +
+            '\n verifique que exita por favor';
+          return false;
+        }
+      }
+      return true;
+    }
+    return true;
   }
 }

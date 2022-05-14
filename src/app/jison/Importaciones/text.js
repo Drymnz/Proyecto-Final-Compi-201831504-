@@ -1,14 +1,25 @@
 class Intreprete {
   constructor() {
-    this.texto_salida = "159";
-    this.texto_errores = "159";
+    this.texto_salida = "";
+    this.texto_errores = "";
+    this.array_importaciiones = new Array();
+    this.acctivar = false;
   }
-  setText_Salida(testo) {
-    this.texto_salida = testo;
+  appetTexto_salida(testo) {
+    if (this.acctivar) {
+      this.texto_salida += testo;
+    }
   }
-  appetText_salida(testo) {
-    this.texto_salida += testo;
+  appetTexto_errores(testo) {
+    this.texto_errores += testo;
+  }
+  pushArray_Importaciiones(text){
+    this.array_importaciiones.push(text);
+  }
+  getText_Salida(){
+    return this.texto_salida;
   }
 }
-const file = new Intreprete();
-file.appetText_salida("hola mundo");
+let file = new Intreprete();
+
+

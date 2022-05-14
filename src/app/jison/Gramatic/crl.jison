@@ -7,109 +7,83 @@ AMPERSAND   [&]
 NID [|]
 %%
 /*********************token**********************/
-\f   					{/* console.log('<Form Feed>'); */}
-\n   					{/* console.log('<New Line>'); */}
-\r   					{/* console.log('<Carriage Return>'); */}
-\t|[\s][\s][\s][\s]   	{console.log('<Horizontal Tabulator>');			return 'TABULADOR';}
-\v   					{/* console.log('<Vertical Tabulator>'); */}
-\s   					{console.log('<ESPACIO>');}
+\f   					{/* console.log('<Form Feed>'+yytext); */}
+\n   					{/* console.log('<New Line>'+yytext); */}
+\r   					{/* console.log('<Carriage Return>'+yytext); */}
+\t|[\s][\s][\s][\s]   	{console.log('<Horizontal Tabulator>'+yytext);			return 'TABULADOR';}
+\v   					{/* console.log('<Vertical Tabulator>'+yytext); */}
+\s   					{console.log('<ESPACIO>'+yytext);}
 //COMENTARIOS
-{AD}{AD}.*        		                            {/* console.log('<COMENTARIO>'); */}//comentario simple
-{TRIPLE_COMILLA}[^\'\'\']*{TRIPLE_COMILLA}          {/* console.log('<COMENTARIO_MULTILINEA>'); */}//comentario simple
+{AD}{AD}.*        		                            {/* console.log('<COMENTARIO>'+yytext); */}//comentario simple
+{TRIPLE_COMILLA}[^\'\'\']*{TRIPLE_COMILLA}          {/* console.log('<COMENTARIO_MULTILINEA>'+yytext); */}//comentario simple
 //PUNTUACIONES
-[.]            			{console.log('PUNTO');							return 'PUNTO';}
-[,]  					{console.log('<COMA>');			return 'COMA';}
-":"  					{console.log('<DOUBLE_PUNTO>');	return 'DOUBLE_PUNTO';}
-";"  					{console.log('<PUNTO_COMA>');	return 'PUNTO_COMA';}
+[.]            			{console.log('PUNTO'+yytext);							return 'PUNTO';}
+[,]  					{console.log('<COMA>'+yytext);			return 'COMA';}
+":"  					{console.log('<DOUBLE_PUNTO>'+yytext);	return 'DOUBLE_PUNTO';}
+";"  					{console.log('<PUNTO_COMA>'+yytext);	return 'PUNTO_COMA';}
 //SIMBOLOS
 //simbolos de igual 
-"="  					{console.log('<"=">');			return 'IGUAL';}//asignaciones
+"="  					{console.log('<"=">'+yytext);			return 'IGUAL';}//asignaciones
 // relacionales return false o true
-">="    				{console.log('<>=>');			return 'MAYOR_IGUAL';}
-"<="    				{console.log('<<=>');			return 'MENOR_IGUAL';}
-"=="    				{console.log('<"==">');			return 'IGUAL_IGUAL';}
-{AD}"=" 				{console.log('<{AD}"=">');		return 'AD_IGUAL';}
-">"     				{console.log('<">">');			return 'MAYOR';}
-"<"     				{console.log('<"<">');			return 'MENOR';}
-"~"     				{console.log('<"~">');			return 'EQUIVALENCIA';}
+">="    				{console.log('<>=>'+yytext);			return 'MAYOR_IGUAL';}
+"<="    				{console.log('<<=>'+yytext);			return 'MENOR_IGUAL';}
+"=="    				{console.log('<"==">'+yytext);			return 'IGUAL_IGUAL';}
+{AD}"=" 				{console.log('<{AD}"=">'+yytext);		return 'AD_IGUAL';}
+">"     				{console.log('<">">'+yytext);			return 'MAYOR';}
+"<"     				{console.log('<"<">'+yytext);			return 'MENOR';}
+"~"     				{console.log('<"~">'+yytext);			return 'EQUIVALENCIA';}
 //logicos	return false o true
-{AMPERSAND}{AMPERSAND}    				{console.log('<"&&">');			    return 'AND';}
-{NID}{AMPERSAND}    				    {console.log('<"|&">');             return 'AD_AND';}
-{NID}{NID}  				            {console.log('<[|][|]>');           return 'OR';}
-{AD}    				                {console.log('<!>');                return 'AD';}
-"true"    				                {console.log('<true>');             return 'TRUE';}
-"false"    				                {console.log('<false>');            return 'FALSE';}
-/* ""    {console.log('<>');return '';} */
+{AMPERSAND}{AMPERSAND}    				{console.log('<"&&">'+yytext);			    return 'AND';}
+{NID}{AMPERSAND}    				    {console.log('<"|&">'+yytext);             return 'AD_AND';}
+{NID}{NID}  				            {console.log('<[|][|]>'+yytext);           return 'OR';}
+{AD}    				                {console.log('<!>'+yytext);                return 'AD';}
+"true"    				                {console.log('<true>'+yytext);             return 'TRUE';}
+"false"    				                {console.log('<false>'+yytext);            return 'FALSE';}
+/* ""    {console.log('<>'+yytext);return '';} */
 // PARA 
 "++" return 'PLUS_PLUS'
 "--" return 'LESS_LESS'
 //aritmetico
-"-" 					{console.log('<"-">');return 'MEN';}
-"^" 					{console.log('<"^">');return 'POW';}
-"*" 					{console.log('<"*">');return 'POR';}
-"/" 					{console.log('<"/">');return 'DIV';}
-"%" 					{console.log('<"%">');return 'MOD';}
-"+" 					{console.log('<"+">');return 'MAS';}
+"-" 					{console.log('<"-">'+yytext);return 'MEN';}
+"^" 					{console.log('<"^">'+yytext);return 'POW';}
+"*" 					{console.log('<"*">'+yytext);return 'POR';}
+"/" 					{console.log('<"/">'+yytext);return 'DIV';}
+"%" 					{console.log('<"%">'+yytext);return 'MOD';}
+"+" 					{console.log('<"+">'+yytext);return 'MAS';}
 //agrupacion
-[(]     				{console.log('<[(]>');return 'P_APERTURA';}
-")"     				{console.log('<[)]>');return 'P_CIERRE';}
+[(]     				{console.log('<[(]>'+yytext);return 'P_APERTURA';}
+")"     				{console.log('<[)]>'+yytext);return 'P_CIERRE';}
 //HEAD FROM PROYECT
-"Importar"        		{console.log('<"importar">');    return 'IMPORTAR';}
-"Incerteza"        		{console.log('<"incerteza">');   return 'INCERTEZA';}
-"clr"        			{console.log('<"clr">');         return 'CLR';}
+"Importar"        		{console.log('<"importar">'+yytext);    return 'IMPORTAR';}
+"Incerteza"        		{console.log('<"incerteza">'+yytext);   return 'INCERTEZA';}
+"clr"        			{console.log('<"clr">'+yytext);         return 'CLR';}
 //VARIABLE
-"Double"  				{console.log('<"Double">');  return 'DOUBLE';}
-"Boolean" 				{console.log('<"Boolean">'); return 'BOOLEAN';}
-"String"  				{console.log('<"String">');  return 'STRING';}
-"Int"     				{console.log('<"Int">');     return 'INT';}
-"Char"    				{console.log('<"Char">');    return 'CHAR';}
+"Double"  				{console.log('<"Double">'+yytext);  return 'DOUBLE';}
+"Boolean" 				{console.log('<"Boolean">'+yytext); return 'BOOLEAN';}
+"String"  				{console.log('<"String">'+yytext);  return 'STRING';}
+"Int"     				{console.log('<"Int">'+yytext);     return 'INT';}
+"Char"    				{console.log('<"Char">'+yytext);    return 'CHAR';}
 //solo para metodos
-"Void"    				{console.log('<"Void">');    return 'VOID';}
+"Void"    				{console.log('<"Void">'+yytext);    return 'VOID';}
 //SENTENCIA
-"Si"                    {console.log('<"SI">');              return 'SI';}
-"Sino"                  {console.log('<"SINO">');            return 'SINO';}
-"Para"                  {console.log('<"PARA">');            return 'PARA';}
-"Mientras"              {console.log('<"MIENTRA">');         return 'MIENTRA';}
-"Retorno"               {console.log('<"RETURN">');          return 'RETORNO';}
-"Detener"               {console.log('<"BREACK">');          return 'BREACK';}
-"Continuar"             {console.log('<"CONTINUAR">');       return 'CONTINUAR';}
-{COMMILA}.{COMMILA}      {console.log('<"CHAR">');       return 'DATO_CHAR';}
+"Si"                    {console.log('<"SI">'+yytext);              return 'SI';}
+"Sino"                  {console.log('<"SINO">'+yytext);            return 'SINO';}
+"Para"                  {console.log('<"PARA">'+yytext);            return 'PARA';}
+"Mientras"              {console.log('<"MIENTRA">'+yytext);         return 'MIENTRA';}
+"Retorno"               {console.log('<"RETURN">'+yytext);          return 'RETORNO';}
+"Detener"               {console.log('<"BREACK">'+yytext);          return 'BREACK';}
+"Continuar"             {console.log('<"CONTINUAR">'+yytext);       return 'CONTINUAR';}
+{COMMILA}.{COMMILA}      {console.log('<"CHAR">'+yytext);       return 'DATO_CHAR';}
 //GENERICOS
-[0-9]+("."[0-9]+)?\b    {console.log('<NUMERO>');return 'NUMERO';}//YA QUE EL ENUNCIADO PIEDE QUE NO SE DIFERENCIE ENTRE ENTERO Y DECIMAL
-[a-zA-Z0-9]([a-zA-Z0-9]+)? {console.log('<ID>');return 'ID';}
+[0-9]+("."[0-9]+)?\b    {console.log('<NUMERO>'+yytext);return 'NUMERO';}//YA QUE EL ENUNCIADO PIEDE QUE NO SE DIFERENCIE ENTRE ENTERO Y DECIMAL
+[a-zA-Z0-9]([a-zA-Z0-9]+)? {console.log('<ID>'+yytext);return 'ID';}
 // DE ULTIMO SIEMPRE EL ID
-\"[^\"]*\"      { /* yytext = yytext.substr(1,yyleng-2); */console.log('<STRING>'); return 'STRING'; }
+\"[^\"]*\"      { /* yytext = yytext.substr(1,yyleng-2); */console.log('<STRING>'+yytext); return 'STRING'; }
 //INORAR
-. {console.log('<"ERROR">');}
+. {console.log('<"ERROR">'+yytext);}
 <<EOF>>	return 'EOF';
 /lex
-%{
-    /*
-    @datos etiqueta, el valor, fila posicioon , columna posision
-    @es el arbol sintactico
-    */
-    function TREE(etiqueta,valor,fila,columna){
-        this.etiqueta=etiqueta;
-        this.valor=valor;
-        this.fila=fila;
-        this.columna=columna;
-        this.hijos=[]
-        this.agregarHijo=agregarHijo;
-        this.obtenerHijo=obtenerHijo;
-        function agregarHijo(){
-            for(var i =0; i< arguments.length;i++){
-                this.hijos.push(arguments[i]);
-                if(arguments[i]!==null){
-                    arguments[i].padre=this;
-                }
-            }
-        }
-        function obtenerHijo(pos){
-            if(pos >this.hijos.length - 1)return null;
-            return this.hijos[pos];
-        }
-    }
-%}
+
 //precedencia
 %left 'MAS'
 %left 'MEN'
@@ -126,62 +100,82 @@ NID [|]
 %nonassoc 'P_APERTURA' 'P_CIERRE'
 
 %start inicio
+
+%{
+  class Intreprete {
+  constructor() {
+    this.texto_errores = "";
+    this.array_importaciiones = new Array();;
+  }
+  appetTexto_errores(testo) {
+    this.texto_salida += testo;
+  }
+  pushArray_Importaciiones(text){
+    this.array_importaciiones.push(text);
+  }
+}
+const file = new Intreprete();
+
+}
+const file = new Intreprete();
+
+%}
 %%
 /******************inicio de la sintactico********************/
 inicio
-    : documentacion EOF  {$$=new TREE("RAIZ","RAIZ",this.$first_line,@1.last_column);$$.agregarHijo($1);return $$}
+    : documentacion EOF  {$$ = file;$$.pushArray_Importaciiones($1); return $$;}
     ;
 documentacion 
-    :import instrucciones  {$$=new TREE("ENCABEZADO","ENCABEZADO",this.$first_line,@1.last_column);$$.agregarHijo($1);return $$}
+    :import instrucciones  {$$=$1;}
     ;
 /******************Encabezado , importacines********************/
 import  
-    :importar_incerteza import {$$=new TREE("ENCABEZADO","ENCABEZADO",this.$first_line,@1.last_column);$$.agregarHijo($1);return $$} 
+    :importar_incerteza import {$$=$1;}
     |
     ;
 importar_incerteza 
-    :IMPORTAR ID PUNTO CLR  {$$=new TREE("IMPORTACIONES","IMPORTACIONES",this.$first_line,@1.last_column);$$.agregarHijo($2);return $$} 
-    |INCERTEZA operacion_aritmetica    {$$=new TREE("INCERTEZA","INCERTEZA",this.$first_line,@1.last_column);$$.agregarHijo($2);return $$}  
+    :IMPORTAR ID PUNTO CLR {$$=$2;}
+    |INCERTEZA operacion_aritmetica    
     ;
 /******************************************************operacion_aritmetica*/
 operacion_aritmetica
-    :operacion_aritmetica POW operacion_aritmetica  /*POTENCIA*/        {$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@2.last_column);$$.addChilds($1,new TREE("POTENCIA",$2,this._$.first_line,@2.last_column),$3);}
-    |operacion_aritmetica POR operacion_aritmetica  /*MULTIPLICACION*/  {$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@2.last_column);$$.addChilds($1,new TREE("MULTIPLICACION",$2,this._$.first_line,@2.last_column),$3);}
-    |operacion_aritmetica DIV operacion_aritmetica  /*DIVISION*/        {$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@2.last_column);$$.addChilds($1,new TREE("DIVISION",$2,this._$.first_line,@2.last_column),$3);}
-    |operacion_aritmetica MOD operacion_aritmetica  /*MODULO*/          {$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@2.last_column);$$.addChilds($1,new TREE("MODULO",$2,this._$.first_line,@2.last_column),$3);}
-    |operacion_aritmetica MAS operacion_aritmetica  /*SUMA*/            {$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@2.last_column);$$.addChilds($1,new TREE("SUMA",$2,this._$.first_line,@2.last_column),$3);}
-    |operacion_aritmetica MEN operacion_aritmetica  /*RESTA*/           {$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@2.last_column);$$.addChilds($1,new TREE("RESTA",$2,this._$.first_line,@2.last_column),$3);}
-    |P_APERTURA operacion_aritmetica P_CIERRE {$$=$2}
-    |NUMERO     {$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@1.last_column);$$.addChilds(new TREE("NUMERO",$1,this._$.first_line,@1.last_column));}
-    |ID         {$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@1.last_column);$$.addChilds(new TREE("ID",$1,this._$.first_line,@1.last_column));}
+    :operacion_aritmetica POW operacion_aritmetica  /*POTENCIA*/       
+    |operacion_aritmetica POR operacion_aritmetica  /*MULTIPLICACION*/ 
+    |operacion_aritmetica DIV operacion_aritmetica  /*DIVISION*/       
+    |operacion_aritmetica MOD operacion_aritmetica  /*MODULO*/         
+    |operacion_aritmetica MAS operacion_aritmetica  /*SUMA*/            
+    |operacion_aritmetica MEN operacion_aritmetica  /*RESTA*/          
+    |P_APERTURA operacion_aritmetica P_CIERRE 
+    |NUMERO     
+    |ID         
     ;
 /****************************INICIO DE VARIABLES GLOBALES O METODO**************************************************INSTRUCCIONES********************/
 instrucciones
     :/*NADA*/
-    |variable_global_metodo_reasignacion instrucciones/**variable_global_metodo global */{$$= new AST_Node("variable_global_metodo_reasignacion","variable_global_metodo_reasignacion",this._$.first_line,@1.last_column);$$.addChilds($1);}
+    |variable_global_metodo_reasignacion instrucciones//variable_global_metodo global
     ;
 variable_global_metodo_reasignacion
-    :tipos_variables ID variable_metodo	/* aqui creo variables */ {$$= new AST_Node("variable_global_metodo_reasignacion","tipos_variables",this._$.first_line,@1.last_column);$$.addChilds($2);}
-    |VOID ID metodos_archivo	/* aqui creo metodos */ {$$= new AST_Node("metodos_archivo","tipos_variables",this._$.first_line,@1.last_column);$$.addChilds($2);}
-    |reasignacion_varable	/* aqui reutilizo una vriable */ {$$= new AST_Node("metodos_archivo","tipos_variables",this._$.first_line,@1.last_column);$$.addChilds($2);}
+    :tipos_variables ID variable_metodo	//aqui creo variables
+    |VOID ID metodos_archivo	//aqui creo metodos
+    |reasignacion_varable	//aqui reutilizo una vriable
     ;
 variable_metodo
-    :metodos_archivo /*  es un metodo */ {$$=$1}
-    |variable_global /* es variable global */ {$$=$1}
+    :metodos_archivo // es un metodo
+    |variable_global //es variable global
     ;
 ///////////////////////////////////////////////////////////TIPOS DE DATOS
-tipos_variables/* tipos de variables o metodos menos void */ 
-    :DOUBLE {$$=$1}
-    |BOOLEAN {$$=$1}
-    |STRING {$$=$1}
-    |INT {$$=$1}
-    |CHAR {$$=$1}
+tipos_variables//tipos de variables o metodos menos void 
+    :DOUBLE
+    |BOOLEAN
+    |STRING
+    |INT
+    |CHAR
     ;
 /****************************************METODOS********************/
 metodos_archivo
-    :P_APERTURA parametros_metodo P_CIERRE DOUBLE_PUNTO instrucciones_locales {$$=new TREE("METODO","METODO",this.$first_line,@1.last_column);$$.agregarHijo($1);return $$}
+    :P_APERTURA parametros_metodo P_CIERRE DOUBLE_PUNTO instrucciones_locales
     ;
-parametros_metodo	/*  si posee parametros de entra el metodo */
+parametros_metodo	// si posee parametros de entra el metodo
     :
     |parametros
     ;
@@ -194,17 +188,17 @@ secuencia_parametros
     ;
 /************instrucciones locales NOTA:SOLO UNA TABULACION ya que es un metodo*/
 instrucciones_locales
-    :tabulaciones habito_local instrucciones_locales /************tabulaciones*/{$$=new TREE("METODO","INSTRUCCIONES",this.$first_line,@1.last_column);$$.agregarHijo($1);return $$}
+    :tabulaciones habito_local instrucciones_locales
     |
     ;
 /************************************************************REALIZACION DE HABITOS LOCALES DE UN METODO*******************************/   
 habito_local
-    :variable_local		/* declaracion de una variable local */{$$=$1}
-    |usar_varaible_local  		/* uso de variables o metodos */{$$=$1}
-    |sentencias_control 	/* sentencias de control */{$$=$1}
-    |RETORNO datos		/* si el metodo require returnar algo */{$$=$1}
-    |BREACK             /* DETENER */ {$$=$1}
-    |CONTINUAR          /* CONTINUAR */{$$=$1}
+    :variable_local		//declaracion de una variable local
+    |usar_varaible_local  		//uso de variables o metodos
+    |sentencias_control 	//sentencias de control
+    |RETORNO datos		//si el metodo require returnar algo
+    |BREACK             //DETENER 
+    |CONTINUAR          //CONTINUAR
     ;
 /******************************************************usar variable o metodo*/
 usar_varaible_local
@@ -227,7 +221,7 @@ usar_varaible_factorizacion_literal
     ;
 /******************VARIABLE LOCAL********************/
 variable_local
-    :tipos_variables ID variable_global/*  aquie estara la declaracion de las variables */
+    :tipos_variables ID variable_global// aquie estara la declaracion de las variables
     ;
 /******************VARIABLE GLOBAL********************/
 secuencia_datos
@@ -252,46 +246,46 @@ asignaciones_variable
     :IGUAL datos
     ;
 datos
-    :STRING {$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@1.last_column);$$.addChilds(new TREE("STRING",$1,this._$.first_line,@1.last_column));}
+    :STRING
     /******************************************************operacion_aritmetica*/
-    |datos POW datos  /*POTENCIA*/{$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@2.last_column);$$.addChilds($1,new TREE("POW",$2,this._$.first_line,@2.last_column),$3);}
-    |datos POR datos  /*MULTIPLICACION*/{$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@2.last_column);$$.addChilds($1,new TREE("POR",$2,this._$.first_line,@2.last_column),$3);}
-    |datos DIV datos  /*DIVISION*/{$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@2.last_column);$$.addChilds($1,new TREE("POR",$2,this._$.first_line,@2.last_column),$3);}
-    |datos MOD datos  /*MODULO*/{$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@2.last_column);$$.addChilds($1,new TREE("MOD",$2,this._$.first_line,@2.last_column),$3);}
-    |datos MAS datos  /*SUMA*/{$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@2.last_column);$$.addChilds($1,new TREE("MAS",$2,this._$.first_line,@2.last_column),$3);}
-    |datos MEN datos  /*RESTA*/{$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@2.last_column);$$.addChilds($1,new TREE("MEN",$2,this._$.first_line,@2.last_column),$3);}
+    |datos POW datos  /*POTENCIA*/
+    |datos POR datos  /*MULTIPLICACION*/
+    |datos DIV datos  /*DIVISION*/
+    |datos MOD datos  /*MODULO*/
+    |datos MAS datos  /*SUMA*/
+    |datos MEN datos  /*RESTA*/
     /******************************************************operacion_logica*/
-    |datos AND datos      /*&&*/{$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@2.last_column);$$.addChilds($1,new TREE("AND",$2,this._$.first_line,@2.last_column),$3);}
-    |datos AD_AND datos   /*!&*/{$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@2.last_column);$$.addChilds($1,new TREE("AD_AND",$2,this._$.first_line,@2.last_column),$3);}
-    |datos OR datos       /*||*/{$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@2.last_column);$$.addChilds($1,new TREE("OR",$2,this._$.first_line,@2.last_column),$3);}
-    |datos AD datos       /*!*/{$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@2.last_column);$$.addChilds($1,new TREE("AD",$2,this._$.first_line,@2.last_column),$3);}
+    |datos AND datos      /*&&*/
+    |datos AD_AND datos   /*!&*/
+    |datos OR datos       /*||*/
+    |datos AD datos       /*!*/
     /******************************************************operacion_relacionales*/
-    |datos MAYOR_IGUAL datos     /*>=*/{$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@2.last_column);$$.addChilds($1,new TREE("MAYOR_IGUAL",$2,this._$.first_line,@2.last_column),$3);}
-    |datos MENOR_IGUAL datos     /*<=*/{$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@2.last_column);$$.addChilds($1,new TREE("MENOR_IGUAL",$2,this._$.first_line,@2.last_column),$3);}
-    |datos IGUAL_IGUAL datos     /*==*/{$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@2.last_column);$$.addChilds($1,new TREE("IGUAL_IGUAL",$2,this._$.first_line,@2.last_column),$3);}
-    |datos AD_IGUAL datos        /*!=*/{$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@2.last_column);$$.addChilds($1,new TREE("AD_IGUAL",$2,this._$.first_line,@2.last_column),$3);}
-    |datos MAYOR datos           /*>*/{$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@2.last_column);$$.addChilds($1,new TREE("MAYOR",$2,this._$.first_line,@2.last_column),$3);}
-    |datos MENOR datos           /*<*/{$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@2.last_column);$$.addChilds($1,new TREE("MENOR",$2,this._$.first_line,@2.last_column),$3);}
-    |datos EQUIVALENCIA datos    /*~*/ {$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@2.last_column);$$.addChilds($1,new TREE("EQUIVALENCIA",$2,this._$.first_line,@2.last_column),$3);}
-    |P_APERTURA  datos P_CIERRE {$$=$2}
-    |NUMERO  {$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@1.last_column);$$.addChilds(new TREE("NUMERO",$1,this._$.first_line,@1.last_column));}
-    |boolean     {$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@1.last_column);$$.addChilds(new TREE("boolean",$1,this._$.first_line,@1.last_column));}
-    |usar_varaible /* VARAIBLE */ {$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@1.last_column);$$.addChilds(new TREE("usar_varaible",$1,this._$.first_line,@1.last_column));}
-    |valores_chart {$$= new TREE("operacion_aritmetica","operacion_aritmetica",this._$.first_line,@1.last_column);$$.addChilds(new TREE("valores_chart",$1,this._$.first_line,@1.last_column));}
+    |datos MAYOR_IGUAL datos     /*>=*/
+    |datos MENOR_IGUAL datos     /*<=*/
+    |datos IGUAL_IGUAL datos     /*==*/
+    |datos AD_IGUAL datos        /*!=*/
+    |datos MAYOR datos           /*>*/
+    |datos MENOR datos           /*<*/
+    |datos EQUIVALENCIA datos    /*~*/ 
+    |P_APERTURA  datos P_CIERRE
+    |NUMERO
+    |boolean
+    |usar_varaible //VARAIBLE
+    |valores_chart
     ;
 valores_chart
-    :DATO_CHAR{$$=$1}
+    :DATO_CHAR
     ;
 boolean
-    :TRUE{$$=$1}
-    |FALSE{$$=$1}
+    :TRUE
+    |FALSE
     ;
 /******************SENTENCIAS DE CONTROL********************/
 sentencias_control
-    :SI P_APERTURA datos P_CIERRE DOUBLE_PUNTO  {$$=new TREE("SI","SI",this.$first_line,@1.last_column);$$.agregarHijo($1);return $$}
-    |PARA P_APERTURA condiciones_for P_CIERRE DOUBLE_PUNTO {$$=new TREE("PARA","PARA",this.$first_line,@1.last_column);$$.agregarHijo($1);return $$}
-    |MIENTRA P_APERTURA datos P_CIERRE DOUBLE_PUNTO {$$=new TREE("MIENTRAS","MIENTRAS",this.$first_line,@1.last_column);$$.agregarHijo($1);return $$}
-    |SINO DOUBLE_PUNTO  {$$=new TREE("SINO","SINO",this.$first_line,@1.last_column);$$.agregarHijo($1);return $$}
+    :SI P_APERTURA datos P_CIERRE DOUBLE_PUNTO  
+    |PARA P_APERTURA condiciones_for P_CIERRE DOUBLE_PUNTO 
+    |MIENTRA P_APERTURA datos P_CIERRE DOUBLE_PUNTO 
+    |SINO DOUBLE_PUNTO
     ;
 /****************************************sentencia para*/
 condiciones_for

@@ -7,99 +7,83 @@ AMPERSAND   [&]
 NID [|]
 %%
 /*********************token**********************/
-\f   					{/* console.log('<Form Feed>'+yytext); */}
-\n   					{/* console.log('<New Line>'+yytext); */}
-\r   					{/* console.log('<Carriage Return>'+yytext); */}
-\t|[\s][\s][\s][\s]   	{console.log('<Horizontal Tabulator>'+yytext);			return 'TABULADOR';}
-\v   					{/* console.log('<Vertical Tabulator>'+yytext); */}
-\s   					{console.log('<ESPACIO>'+yytext);}
+\f   					{/* file.appetTexto_salida(yytext); */}
+\n   					{/* file.appetTexto_salida(yytext); */}
+\r   					{/* file.appetTexto_salida(yytext); */}
+\t|[\s][\s][\s][\s]   	{file.appetTexto_salida(yytext);			return 'TABULADOR';}
+\v   					{/* yytext);file.appetTexto_salida(yytext); */}
+\s   					{file.appetTexto_salida(yytext);}
 //COMENTARIOS
-{AD}{AD}.*        		                            {/* console.log('<COMENTARIO>'+yytext); */}//comentario simple
-{TRIPLE_COMILLA}[^\'\'\']*{TRIPLE_COMILLA}          {/* console.log('<COMENTARIO_MULTILINEA>'+yytext); */}//comentario simple
+{AD}{AD}.*        		                            {/* );file.appetTexto_salida(yytext); */}//comentario simple
+{TRIPLE_COMILLA}[^\'\'\']*{TRIPLE_COMILLA}          {/* );file.appetTexto_salida(yytext); */}//comentario simple
 //PUNTUACIONES
-[.]            			{console.log('PUNTO'+yytext);							return 'PUNTO';}
-[,]  					{console.log('<COMA>'+yytext);			return 'COMA';}
-":"  					{console.log('<DOUBLE_PUNTO>'+yytext);	return 'DOUBLE_PUNTO';}
-";"  					{console.log('<PUNTO_COMA>'+yytext);	return 'PUNTO_COMA';}
+[.]            			{file.appetTexto_salida(yytext);							return 'PUNTO';}
+[,]  					{file.appetTexto_salida(yytext);			return 'COMA';}
+":"  					{file.appetTexto_salida(yytext);	return 'DOUBLE_PUNTO';}
+";"  					{file.appetTexto_salida(yytext);	return 'PUNTO_COMA';}
 //SIMBOLOS
 //simbolos de igual 
-"="  					{console.log('<"=">'+yytext);			return 'IGUAL';}//asignaciones
+"="  					{file.appetTexto_salida(yytext);			return 'IGUAL';}//asignaciones
 // relacionales return false o true
-">="    				{console.log('<>=>'+yytext);			return 'MAYOR_IGUAL';}
-"<="    				{console.log('<<=>'+yytext);			return 'MENOR_IGUAL';}
-"=="    				{console.log('<"==">'+yytext);			return 'IGUAL_IGUAL';}
-{AD}"=" 				{console.log('<{AD}"=">'+yytext);		return 'AD_IGUAL';}
-">"     				{console.log('<">">'+yytext);			return 'MAYOR';}
-"<"     				{console.log('<"<">'+yytext);			return 'MENOR';}
-"~"     				{console.log('<"~">'+yytext);			return 'EQUIVALENCIA';}
+">="    				{file.appetTexto_salida(yytext);			return 'MAYOR_IGUAL';}
+"<="    				{file.appetTexto_salida(yytext);			return 'MENOR_IGUAL';}
+"=="    				{file.appetTexto_salida(yytext);			return 'IGUAL_IGUAL';}
+{AD}"=" 				{file.appetTexto_salida(yytext);		return 'AD_IGUAL';}
+">"     				{file.appetTexto_salida(yytext);			return 'MAYOR';}
+"<"     				{file.appetTexto_salida(yytext);			return 'MENOR';}
+"~"     				{file.appetTexto_salida(yytext);			return 'EQUIVALENCIA';}
 //logicos	return false o true
-{AMPERSAND}{AMPERSAND}    				{console.log('<"&&">'+yytext);			    return 'AND';}
-{NID}{AMPERSAND}    				    {console.log('<"|&">'+yytext);             return 'AD_AND';}
-{NID}{NID}  				            {console.log('<[|][|]>'+yytext);           return 'OR';}
-{AD}    				                {console.log('<!>'+yytext);                return 'AD';}
-"true"    				                {console.log('<true>'+yytext);             return 'TRUE';}
-"false"    				                {console.log('<false>'+yytext);            return 'FALSE';}
-/* ""    {console.log('<>'+yytext);return '';} */
+{AMPERSAND}{AMPERSAND}    				{file.appetTexto_salida(yytext);			    return 'AND';}
+{NID}{AMPERSAND}    				    {file.appetTexto_salida(yytext);             return 'AD_AND';}
+{NID}{NID}  				            {file.appetTexto_salida(yytext);           return 'OR';}
+{AD}    				                {file.appetTexto_salida(yytext);                return 'AD';}
+"true"    				                {file.appetTexto_salida(yytext);             return 'TRUE';}
+"false"    				                {file.appetTexto_salida(yytext);            return 'FALSE';}
+/* ""    {.appetTexto_salida(yytext);return '';} */
 // PARA 
 "++" return 'PLUS_PLUS'
 "--" return 'LESS_LESS'
 //aritmetico
-"-" 					{console.log('<"-">'+yytext);return 'MEN';}
-"^" 					{console.log('<"^">'+yytext);return 'POW';}
-"*" 					{console.log('<"*">'+yytext);return 'POR';}
-"/" 					{console.log('<"/">'+yytext);return 'DIV';}
-"%" 					{console.log('<"%">'+yytext);return 'MOD';}
-"+" 					{console.log('<"+">'+yytext);return 'MAS';}
+"-" 					{file.appetTexto_salida(yytext);return 'MEN';}
+"^" 					{file.appetTexto_salida(yytext);return 'POW';}
+"*" 					{file.appetTexto_salida(yytext);return 'POR';}
+"/" 					{file.appetTexto_salida(yytext);return 'DIV';}
+"%" 					{file.appetTexto_salida(yytext);return 'MOD';}
+"+" 					{file.appetTexto_salida(yytext);return 'MAS';}
 //agrupacion
-[(]     				{console.log('<[(]>'+yytext);return 'P_APERTURA';}
-")"     				{console.log('<[)]>'+yytext);return 'P_CIERRE';}
+[(]     				{file.appetTexto_salida(yytext);return 'P_APERTURA';}
+")"     				{file.appetTexto_salida(yytext);return 'P_CIERRE';}
 //HEAD FROM PROYECT
-"Importar"        		{console.log('<"importar">'+yytext);    return 'IMPORTAR';}
-"Incerteza"        		{console.log('<"incerteza">'+yytext);   return 'INCERTEZA';}
-"clr"        			{console.log('<"clr">'+yytext);         return 'CLR';}
+"Importar"        		{   return 'IMPORTAR';}
+"Incerteza"        		{   return 'INCERTEZA';}
+"clr"        			{   return 'CLR';}
 //VARIABLE
-"Double"  				{console.log('<"Double">'+yytext);  return 'DOUBLE';}
-"Boolean" 				{console.log('<"Boolean">'+yytext); return 'BOOLEAN';}
-"String"  				{console.log('<"String">'+yytext);  return 'STRING';}
-"Int"     				{console.log('<"Int">'+yytext);     return 'INT';}
-"Char"    				{console.log('<"Char">'+yytext);    return 'CHAR';}
+"Double"  				{file.acctivar = true;file.appetTexto_salida(yytext);  return 'DOUBLE';}
+"Boolean" 				{file.acctivar = true;file.appetTexto_salida(yytext); return 'BOOLEAN';}
+"String"  				{file.acctivar = true;file.appetTexto_salida(yytext);  return 'STRING';}
+"Int"     				{file.acctivar = true;file.appetTexto_salida(yytext);     return 'INT';}
+"Char"    				{file.acctivar = true;file.appetTexto_salida(yytext);    return 'CHAR';}
 //solo para metodos
-"Void"    				{console.log('<"Void">'+yytext);    return 'VOID';}
+"Void"    				{file.acctivar = true;file.appetTexto_salida(yytext);    return 'VOID';}
 //SENTENCIA
-"Si"                    {console.log('<"SI">'+yytext);              return 'SI';}
-"Sino"                  {console.log('<"SINO">'+yytext);            return 'SINO';}
-"Para"                  {console.log('<"PARA">'+yytext);            return 'PARA';}
-"Mientras"              {console.log('<"MIENTRA">'+yytext);         return 'MIENTRA';}
-"Retorno"               {console.log('<"RETURN">'+yytext);          return 'RETORNO';}
-"Detener"               {console.log('<"BREACK">'+yytext);          return 'BREACK';}
-"Continuar"             {console.log('<"CONTINUAR">'+yytext);       return 'CONTINUAR';}
-{COMMILA}.{COMMILA}      {console.log('<"CHAR">'+yytext);       return 'DATO_CHAR';}
+"Si"                    {file.appetTexto_salida(yytext);              return 'SI';}
+"Sino"                  {file.appetTexto_salida(yytext);            return 'SINO';}
+"Para"                  {file.appetTexto_salida(yytext);            return 'PARA';}
+"Mientras"              {file.appetTexto_salida(yytext);         return 'MIENTRA';}
+"Retorno"               {file.appetTexto_salida(yytext);          return 'RETORNO';}
+"Detener"               {file.appetTexto_salida(yytext);          return 'BREACK';}
+"Continuar"             {file.appetTexto_salida(yytext);       return 'CONTINUAR';}
+{COMMILA}.{COMMILA}     {file.appetTexto_salida(yytext);       return 'DATO_CHAR';}
 //GENERICOS
-[0-9]+("."[0-9]+)?\b    {console.log('<NUMERO>'+yytext);return 'NUMERO';}//YA QUE EL ENUNCIADO PIEDE QUE NO SE DIFERENCIE ENTRE ENTERO Y DECIMAL
-[a-zA-Z0-9]([a-zA-Z0-9]+)? {console.log('<ID>'+yytext);return 'ID';}
+[0-9]+("."[0-9]+)?\b        {file.appetTexto_salida(yytext);return 'NUMERO';}//YA QUE EL ENUNCIADO PIEDE QUE NO SE DIFERENCIE ENTRE ENTERO Y DECIMAL
+[a-zA-Z0-9]([a-zA-Z0-9]+)?  {file.appetTexto_salida(yytext);return 'ID';}
 // DE ULTIMO SIEMPRE EL ID
-\"[^\"]*\"      { /* yytext = yytext.substr(1,yyleng-2); */console.log('<STRING>'+yytext); return 'STRING'; }
+\"[^\"]*\"      { file.appetTexto_salida(yytext); return 'STRING'; }
 //INORAR
-. {console.log('<"ERROR">'+yytext);}
+. {file.appetTexto_salida(yytext);}
 <<EOF>>	return 'EOF';
 /lex
-%{
-  class Intreprete {
-  constructor() {
-    this.texto_salida = "";
-    this.texto_errores = "";
-  }
-  setText_Salida(testo) {
-    this.texto_salida = testo;
-  }
-  appetText_salida(testo) {
-    this.texto_salida += testo;
-  }
-}
-const file = new Intreprete();
-file.appetText_salida("hola mundo");
 
-%}
 //precedencia
 %left 'MAS'
 %left 'MEN'
@@ -116,21 +100,52 @@ file.appetText_salida("hola mundo");
 %nonassoc 'P_APERTURA' 'P_CIERRE'
 
 %start inicio
+
+%{
+ class Intreprete {
+  constructor() {
+    this.texto_salida = "";
+    this.texto_errores = "";
+    this.array_importaciiones = new Array();
+    this.acctivar = false;
+  }
+  appetTexto_salida(testo) {
+    if (this.acctivar) {
+      this.texto_salida += testo;
+    }
+  }
+  appetTexto_errores(testo) {
+    this.texto_errores += testo;
+  }
+  pushArray_Importaciiones(text){
+    this.array_importaciiones.push(text);
+  }
+  getText_Salida(){
+    return this.texto_salida;
+  }
+}
+let file = new Intreprete();
+%}
 %%
 /******************inicio de la sintactico********************/
 inicio
-    : documentacion EOF  {$$ = new Intreprete();$$.setText_Salida($1); return $$;}
+    : documentacion EOF  {
+    $$ = new Intreprete();
+    Object.assign($$,file)
+    file = new Intreprete();//reiniciar esto
+    return $$;
+    }
     ;
 documentacion 
-    :import instrucciones  {$$=$1;}
+    :import instrucciones  
     ;
 /******************Encabezado , importacines********************/
 import  
-    :importar_incerteza import {$$=$1;}
+    :importar_incerteza import 
     |
     ;
 importar_incerteza 
-    :IMPORTAR ID PUNTO CLR {$$=$2;}
+    :IMPORTAR ID PUNTO CLR {file.pushArray_Importaciiones($2);}
     |INCERTEZA operacion_aritmetica    
     ;
 /******************************************************operacion_aritmetica*/
