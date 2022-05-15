@@ -118,6 +118,14 @@ export class ArchivosComponent implements OnInit {
     }
     this.textArea = elementoHTML.value;
   }
+  soloActuliza (){
+    for (let i = 0; i < this.listadoFiles.length; i++) {
+      if (i === this.possicion) {
+        this.listadoFiles[i].texto = this.textArea;
+      }
+    }
+  }
+  /* contdor de linea */
   contadorLineas() {
     this.textConador = '';
     if (this.textArea) {
@@ -126,6 +134,7 @@ export class ArchivosComponent implements OnInit {
         this.textConador += '' + (index + 1) + '\n';
       }
     }
+    this.soloActuliza ();
   }
   /*SINCRONIZAR SCROLL*/
   title = 'withivy';
@@ -145,10 +154,12 @@ export class ArchivosComponent implements OnInit {
 
   updateCurrentElement(element: 'scrollOne' | 'scrollTwo') {
     this.currentElement = element;
+    this.soloActuliza ();
   }
   /*SINCRONIZAR SCROLL*/
   //compilar
   compilar() {
+    this.textoFinalUsar= ' ';
     if (this.textArea) {
       let datos: any = importaciones.parse(String(this.textArea)); //analisara la parte de importaciones
       if (datos) {
@@ -159,11 +170,11 @@ export class ArchivosComponent implements OnInit {
           console.log(this.textoFinalUsar);
           let final: any = crl.parse(String(this.textoFinalUsar)); //analisara la parte de importaciones
           console.log(final)
-          if (final.texto_errores != undefined) {
+          /* if (final.texto_errores != undefined) {
             this.textoConsola = 'Resultado' + datos.texto_salida;
           } else {
             this.textoConsola = 'Errores' + String(datos.texto_errores);
-          }
+          } */
         }
         //console.log(this.textoFinalUsar)
       }

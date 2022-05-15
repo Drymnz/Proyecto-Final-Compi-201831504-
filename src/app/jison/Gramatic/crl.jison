@@ -102,7 +102,7 @@ NID [|]
 %start inicio
 
 %{
- class Reporte {
+class Reporte {
   constructor() {
     this.texto_salida = "";
     this.texto_errores = "";
@@ -116,13 +116,7 @@ NID [|]
     this.texto_errores += testo;
   }
 }
-const TIPOS_VARIALE = {
-  Double: "Double",
-  Boolean: "Boolean",
-  String: "String",
-  Int: "Int",
-  Char: "Char",
-};
+
 class Variable {
   constructor(id, valor, tipos) {
     this.id = id;
@@ -131,6 +125,11 @@ class Variable {
   }
   setValor(valor) {
     this.valor = valor;
+  }
+  print() {
+    console.log(
+      "id<" + this.id + ">valor<" + this.valor + ">tipos<" + this.tipos + ">"
+    );
   }
 }
 class TablaHabito {
@@ -143,14 +142,14 @@ class TablaHabito {
     this.listadoStatico.push(dato);
   }
   busquedaListado(array, dato) {
-    if (array!=undefined) {
+    if (array != undefined) {
       array.forEach((element) => {
         if (element === dato) {
           return false;
         }
       });
     }
-   
+
     return true;
   }
   busquedaDatoListadoStatico(dato) {
@@ -173,17 +172,41 @@ class TablaHabito {
     }
     return undefined;
   }
-  setInsertesa(dato){
+  setInsertesa(dato) {
     this.incerteza = dato;
   }
 }
+const TIPOS_VARIALE = {
+  Double:'Double',
+  Boolean:'Boolean',
+  String:'String',
+  Int:'Int',
+  Char:'Char'
+};
+const TIPOS_OPERACION = {
+  POW:'POW',
+  POR:'POR',
+  DIV:'DIV',
+  MOD:'MOD',
+  MAS:'MAS',
+  MEN:'MEN',
+  AND:'AND',
+  AD_AND:'AD_AND',
+  OR:'OR',
+  AD:'AD',
+  MAYOR_IGUAL:'MAYOR_IGUAL',
+  MENOR_IGUAL:'MENOR_IGUAL',
+  IGUAL_IGUAL:'IGUAL_IGUAL',
+  AD_IGUAL:'AD_IGUAL',
+  MAYOR:'MAYOR',
+  MENOR:'MENOR',
+  EQUIVALENCIA:'EQUIVALENCIA'
+};
+
 let reprotes = new Reporte();
 let tabla = new TablaHabito();
-let boolean_variable = false;
-let boolean_metodo = false;
-let tipo_actual = undefined;
-
-
+let tipos_variable_actual = undefined;
+let tipos_metodo_actual = undefined;
 %}
 %%
 /******************inicio de la sintactico********************/
@@ -230,7 +253,7 @@ instrucciones
     :variable_global_metodo_reasignacion /* variable_global_metodo global */
     ;
 variable_global_metodo_reasignacion
-    :tipos_variables ID variable_metodo	//aqui creo variables
+    :tipos_variables ID variable_metodo	/* aqui creo variables */ {console.log('------imprmir------'+tipos_variable_actual);}
     |VOID ID metodos_archivo	//aqui creo metodos
     |reasignacion_varable	//aqui reutilizo una vriable
     ;
@@ -240,11 +263,11 @@ variable_metodo
     ;
 ///////////////////////////////////////////////////////////TIPOS DE DATOS
 tipos_variables//tipos de variables o metodos menos void 
-    :DOUBLE
-    |BOOLEAN
-    |STRING
-    |INT
-    |CHAR
+    :DOUBLE   {tipos_variable_actual=TIPOS_VARIALE.Double;  tipos_metodo_actual=tipos_variable_actual; $$=yytext;}
+    |BOOLEAN  {tipos_variable_actual=TIPOS_VARIALE.boolean; tipos_metodo_actual=tipos_variable_actual; $$=yytext;}
+    |STRING   {tipos_variable_actual=TIPOS_VARIALE.String;  tipos_metodo_actual=tipos_variable_actual; $$=yytext;}
+    |INT      {tipos_variable_actual=TIPOS_VARIALE.Int;     tipos_metodo_actual=tipos_variable_actual; $$=yytext;}
+    |CHAR     {tipos_variable_actual=TIPOS_VARIALE.Char;    tipos_metodo_actual=tipos_variable_actual; $$=yytext;}
     ;
 /****************************************METODOS********************/
 metodos_archivo
