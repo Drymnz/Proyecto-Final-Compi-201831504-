@@ -158,6 +158,7 @@ export class ArchivosComponent implements OnInit {
           this.textoFinalUsar += datos.texto_salida;
           console.log(this.textoFinalUsar);
           let final: any = crl.parse(String(this.textoFinalUsar)); //analisara la parte de importaciones
+          console.log(final)
           if (final.texto_errores != undefined) {
             this.textoConsola = 'Resultado' + datos.texto_salida;
           } else {

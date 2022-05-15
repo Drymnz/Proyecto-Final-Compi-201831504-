@@ -102,57 +102,132 @@ NID [|]
 %start inicio
 
 %{
-  class Intreprete {
+ class Reporte {
   constructor() {
+    this.texto_salida = "";
     this.texto_errores = "";
-    this.array_importaciiones = new Array();;
+  }
+  appetTexto_salida(testo) {
+    if (this.acctivar) {
+      this.texto_salida += testo;
+    }
   }
   appetTexto_errores(testo) {
-    this.texto_salida += testo;
-  }
-  pushArray_Importaciiones(text){
-    this.array_importaciiones.push(text);
+    this.texto_errores += testo;
   }
 }
-const file = new Intreprete();
+const TIPOS_VARIALE = {
+  Double: "Double",
+  Boolean: "Boolean",
+  String: "String",
+  Int: "Int",
+  Char: "Char",
+};
+class Variable {
+  constructor(id, valor, tipos) {
+    this.id = id;
+    this.valor = valor;
+    this.tipos = tipos;
+  }
+  setValor(valor) {
+    this.valor = valor;
+  }
+}
+class TablaHabito {
+  constructor() {
+    this.incerteza = 0.5;
+    this.listadoStatico = new Array();
+    this.listadoLocal = new Array();
+  }
+  pushListadoStatico(dato) {
+    this.listadoStatico.push(dato);
+  }
+  busquedaListado(array, dato) {
+    if (array!=undefined) {
+      array.forEach((element) => {
+        if (element === dato) {
+          return false;
+        }
+      });
+    }
+   
+    return true;
+  }
+  busquedaDatoListadoStatico(dato) {
+    if (dato != undefined) {
+      dato.forEach((element) => {
+        if (element.id === dato) {
+          return element;
+        }
+      });
+    }
+    return undefined;
+  }
+  busquedaListadoDato(array, dato) {
+    if (array != undefined) {
+      array.forEach((element) => {
+        if (element === dato) {
+          return dato;
+        }
+      });
+    }
+    return undefined;
+  }
+  setInsertesa(dato){
+    this.incerteza = dato;
+  }
+}
+let reprotes = new Reporte();
+let tabla = new TablaHabito();
+let boolean_variable = false;
+let boolean_metodo = false;
+let tipo_actual = undefined;
 
-}
-const file = new Intreprete();
 
 %}
 %%
 /******************inicio de la sintactico********************/
 inicio
-    : documentacion EOF  {$$ = file;$$.pushArray_Importaciiones($1); return $$;}
+    : documentacion EOF  {
+    $$ = new TablaHabito();
+    Object.assign($$,tabla)
+    /* reiniciar esto */
+    reprotes = new Reporte();
+    tabla = new TablaHabito();
+    boolean_variable = false;
+    boolean_metodo = false;
+    tipo_actual = undefined;
+    return $$;
+    }
     ;
 documentacion 
-    :import instrucciones  {$$=$1;}
+    :import  documentacion 
+    |instrucciones documentacion 
+    |
     ;
 /******************Encabezado , importacines********************/
 import  
-    :importar_incerteza import {$$=$1;}
-    |
+    :importar_incerteza 
     ;
 importar_incerteza 
-    :IMPORTAR ID PUNTO CLR {$$=$2;}
-    |INCERTEZA operacion_aritmetica    
+    :IMPORTAR ID PUNTO CLR 
+    |INCERTEZA operacion_aritmetica  {tabla.setInsertesa($2);} 
     ;
 /******************************************************operacion_aritmetica*/
 operacion_aritmetica
-    :operacion_aritmetica POW operacion_aritmetica  /*POTENCIA*/       
-    |operacion_aritmetica POR operacion_aritmetica  /*MULTIPLICACION*/ 
-    |operacion_aritmetica DIV operacion_aritmetica  /*DIVISION*/       
-    |operacion_aritmetica MOD operacion_aritmetica  /*MODULO*/         
-    |operacion_aritmetica MAS operacion_aritmetica  /*SUMA*/            
-    |operacion_aritmetica MEN operacion_aritmetica  /*RESTA*/          
-    |P_APERTURA operacion_aritmetica P_CIERRE 
-    |NUMERO     
-    |ID         
+    :operacion_aritmetica POW operacion_aritmetica  /*POTENCIA*/       {$$ = Math.pow($1, $3);}
+    |operacion_aritmetica POR operacion_aritmetica  /*MULTIPLICACION*/ {$$ = $1*$3;}
+    |operacion_aritmetica DIV operacion_aritmetica  /*DIVISION*/       {$$ = $1/$3;}
+    |operacion_aritmetica MOD operacion_aritmetica  /*MODULO*/       {$$ = $1/100;}  
+    |operacion_aritmetica MAS operacion_aritmetica  /*SUMA*/        {$$ = $1+$3;}     
+    |operacion_aritmetica MEN operacion_aritmetica  /*RESTA*/       {$$ = $1-$3;}       
+    |P_APERTURA operacion_aritmetica P_CIERRE   {$$=$2;}
+    |NUMERO    {$$ = Number(yytext);} 
+    |ID        {$$ = yytext;} 
     ;
 /****************************INICIO DE VARIABLES GLOBALES O METODO**************************************************INSTRUCCIONES********************/
 instrucciones
-    :/*NADA*/
-    |variable_global_metodo_reasignacion instrucciones//variable_global_metodo global
+    :variable_global_metodo_reasignacion /* variable_global_metodo global */
     ;
 variable_global_metodo_reasignacion
     :tipos_variables ID variable_metodo	//aqui creo variables

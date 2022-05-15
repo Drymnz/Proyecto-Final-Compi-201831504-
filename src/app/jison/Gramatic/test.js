@@ -1,27 +1,81 @@
-function Arbol(tag,value,fila,columna){
-    this.tag = tag;
-    this.value = value;
-    this.fila = fila;
-    this.columna = columna;
-
-    //hijo
-    this.hijos=[];
-    this.addHijos = addHijos;
-    this.getHijo=getSon;
-
-    function addHijo() {
-        for (let i = 0; i < arguments.length; i++) {
-            this.hijos.push(arguments[i]);
-            if (arguments[i]===null) {
-                arguments[i].padre=this;
-            }
-        }
+class Reporte {
+  constructor() {
+    this.texto_salida = "";
+    this.texto_errores = "";
+  }
+  appetTexto_salida(testo) {
+    if (this.acctivar) {
+      this.texto_salida += testo;
     }
-
-    function getSon(pos) {
-        if (pos>this.hijos.length-1) {
-            return this.hijos[pos];
-        }
-    }
-    
+  }
+  appetTexto_errores(testo) {
+    this.texto_errores += testo;
+  }
 }
+const TIPOS_VARIALE = {
+  Double: "Double",
+  Boolean: "Boolean",
+  String: "String",
+  Int: "Int",
+  Char: "Char",
+};
+class Variable {
+  constructor(id, valor, tipos) {
+    this.id = id;
+    this.valor = valor;
+    this.tipos = tipos;
+  }
+  setValor(valor) {
+    this.valor = valor;
+  }
+}
+class TablaHabito {
+  constructor() {
+    this.incerteza = 0.5;
+    this.listadoStatico = new Array();
+    this.listadoLocal = new Array();
+  }
+  pushListadoStatico(dato) {
+    this.listadoStatico.push(dato);
+  }
+  busquedaListado(array, dato) {
+    if (array!=undefined) {
+      array.forEach((element) => {
+        if (element === dato) {
+          return false;
+        }
+      });
+    }
+   
+    return true;
+  }
+  busquedaDatoListadoStatico(dato) {
+    if (dato != undefined) {
+      dato.forEach((element) => {
+        if (element.id === dato) {
+          return element;
+        }
+      });
+    }
+    return undefined;
+  }
+  busquedaListadoDato(array, dato) {
+    if (array != undefined) {
+      array.forEach((element) => {
+        if (element === dato) {
+          return dato;
+        }
+      });
+    }
+    return undefined;
+  }
+  setInsertesa(dato){
+    this.incerteza = dato;
+  }
+}
+let reprotes = new Reporte();
+let tabla = new TablaHabito();
+let boolean_variable = false;
+let boolean_metodo = false;
+let tipo_actual = undefined;
+

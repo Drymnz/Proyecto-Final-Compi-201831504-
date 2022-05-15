@@ -125,12 +125,14 @@ NID [|]
   }
 }
 let file = new Intreprete();
+let insertesa = '';
 %}
 %%
 /******************inicio de la sintactico********************/
 inicio
     : documentacion EOF  {
     $$ = new Intreprete();
+    file.texto_salida = insertesa +'\n'+ file.texto_salida+'\n';
     Object.assign($$,file)
     file = new Intreprete();//reiniciar esto
     return $$;
@@ -146,19 +148,19 @@ import
     ;
 importar_incerteza 
     :IMPORTAR ID PUNTO CLR {file.pushArray_Importaciiones($2);}
-    |INCERTEZA operacion_aritmetica    
+    |INCERTEZA operacion_aritmetica {insertesa= 'Incerteza ' + $2;}   
     ;
 /******************************************************operacion_aritmetica*/
 operacion_aritmetica
-    :operacion_aritmetica POW operacion_aritmetica  /*POTENCIA*/       
-    |operacion_aritmetica POR operacion_aritmetica  /*MULTIPLICACION*/ 
-    |operacion_aritmetica DIV operacion_aritmetica  /*DIVISION*/       
-    |operacion_aritmetica MOD operacion_aritmetica  /*MODULO*/         
-    |operacion_aritmetica MAS operacion_aritmetica  /*SUMA*/            
-    |operacion_aritmetica MEN operacion_aritmetica  /*RESTA*/          
-    |P_APERTURA operacion_aritmetica P_CIERRE 
-    |NUMERO     
-    |ID         
+    :operacion_aritmetica POW operacion_aritmetica  /*POTENCIA*/      {$$=$1+'^'+$3;}   
+    |operacion_aritmetica POR operacion_aritmetica  /*MULTIPLICACION*/{$$=$1+'*'+$3;}   
+    |operacion_aritmetica DIV operacion_aritmetica  /*DIVISION*/ {$$=$1+'/'+$3;}        
+    |operacion_aritmetica MOD operacion_aritmetica  /*MODULO*/   {$$=$1+'%'+$3;}        
+    |operacion_aritmetica MAS operacion_aritmetica  /*SUMA*/     {$$=$1+'-'+$3;}        
+    |operacion_aritmetica MEN operacion_aritmetica  /*RESTA*/    {$$=$1+'+'+$3;}      
+    |P_APERTURA operacion_aritmetica P_CIERRE {$$='('+$2+')';}
+    |NUMERO  {$$=$1;}   
+    |ID      {$$=$1;}   
     ;
 /****************************INICIO DE VARIABLES GLOBALES O METODO**************************************************INSTRUCCIONES********************/
 instrucciones
