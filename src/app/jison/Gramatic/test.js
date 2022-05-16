@@ -77,16 +77,11 @@ class TablaHabito {
   verificacoinListadoEstatico(){
     for (let index = this.listadoStatico.length-1; index > -1; index--) {
       let num = index-1;
-      console.log('*****************************************************************');
-      this.listadoStatico[index].print();
       if(num>-1){
-        this.listadoStatico[num].print();
         if (this.listadoStatico[index].tipos == this.listadoStatico[num].tipos && this.listadoStatico[index].valor==undefined) {
-          this.listadoStatico[num].print();
           this.listadoStatico[index].setValor(this.listadoStatico[num].valor);
         }
       }
-      console.log('*****************************************************************');
     }
   }
 }
@@ -312,7 +307,7 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
       return false;
   }
 }
-
+let metodo = false;
 let reprotes = new Reporte();
 let tabla = new TablaHabito();
 let tipos_variable_actual = undefined;

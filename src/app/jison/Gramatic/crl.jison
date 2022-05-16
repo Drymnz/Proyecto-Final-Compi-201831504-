@@ -182,16 +182,11 @@ class TablaHabito {
   verificacoinListadoEstatico(){
     for (let index = this.listadoStatico.length-1; index > -1; index--) {
       let num = index-1;
-      console.log('*****************************************************************');
-      this.listadoStatico[index].print();
       if(num>-1){
-        this.listadoStatico[num].print();
         if (this.listadoStatico[index].tipos == this.listadoStatico[num].tipos && this.listadoStatico[index].valor==undefined) {
-          this.listadoStatico[num].print();
           this.listadoStatico[index].setValor(this.listadoStatico[num].valor);
         }
       }
-      console.log('*****************************************************************');
     }
   }
 }
@@ -417,11 +412,13 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
       return false;
   }
 }
-
+let metodo = false;
 let reprotes = new Reporte();
 let tabla = new TablaHabito();
 let tipos_variable_actual = undefined;
 let tipos_metodo_actual = undefined;
+
+
 
 
 %}
@@ -472,16 +469,52 @@ instrucciones
 variable_global_metodo_reasignacion
     :tipos_variables ID variable_metodo	/* aqui creo variables */ 
     {
+      console.log('------'+tipos_variable_actual+'------ '+$1 +'------'+$2+'------'+$3);
+      if(metodo){
+      console.log('esto fue un metodo');
+      /* 
+      let nodo = new node (tipos_variable_actual,id);
+      nodo.hijos($3);
+      let arbol = new arbol(nodo);
+      tabla.pushListdoMetodos(); 
+      */
+      metodo=false;
+      }else{
       tabla.pushListadoStatico((new Variable($2,$3,tipos_variable_actual)));
       ((new Variable($2,$3,tipos_variable_actual))).print();
-      console.log('------'+tipos_variable_actual+'------ '+$1 +'------'+$2+'------'+$3);
       tabla.verificacoinListadoEstatico();
+      }
     }
-    |VOID ID metodos_archivo	//aqui creo metodos
-    |reasignacion_varable	/* aqui reutilizo una vriable */
+    |VOID ID P_APERTURA parametros_metodo P_CIERRE DOUBLE_PUNTO instrucciones_locales	
+    /* aqui creo metodos */
+    {
+      console.log('fijo es metodo');
+      /* 
+        let nodo = new node (id);
+        let node_parametros = new Node(parametros_metodo,$4);
+        node_parametros.hijos($7);
+        nodo.hijos(node_parametros);
+        let arbol = new arbol(nodo);
+        tabla.pushListdoMetodos(nodo); 
+      */
+    }
+    |reasignacion_varable	
+    /* aqui reutilizo una vriable */
+    {/* ya esta el codigo realizado para la reasignacion */}
     ;
 variable_metodo
-    :metodos_archivo /* es un metodo */ {$$=0;}
+    :P_APERTURA parametros_metodo P_CIERRE DOUBLE_PUNTO instrucciones_locales 
+    /* es un metodo */ 
+    {
+      metodo=true;
+    /* 
+    console.log($2+'parametros');
+    console.log($5+'instrucciones');
+    let node_parametros = new Node(parametros_metodo,$2);
+    node_parametros.hijos($5);
+    $$= node_parametros;
+    */
+    }
     |variable_global /* es variable global */{$$=$1;}
     ;
 ///////////////////////////////////////////////////////////TIPOS DE DATOS
@@ -493,9 +526,7 @@ tipos_variables//tipos de variables o metodos menos void
     |CHAR     {tipos_variable_actual=TIPOS_VARIALE.Char;    tipos_metodo_actual=tipos_variable_actual; $$=yytext;}
     ;
 /****************************************METODOS********************/
-metodos_archivo
-    :P_APERTURA parametros_metodo P_CIERRE DOUBLE_PUNTO instrucciones_locales
-    ;
+
 parametros_metodo	// si posee parametros de entra el metodo
     :
     |parametros
@@ -530,7 +561,11 @@ factorizacion_usar_varaible_local
     |asignaciones_variable
     ;
 usar_varaible
-    :ID usar_varaible_factorizacion
+    :ID usar_varaible_factorizacion 
+    {
+      let dato_analisar = tabla.busquedaListadoStatico(new Variable($1,undefined,undefined));
+      if(dato_analisar!=undefined){$$=dato_analisar.valor;}else{$$=undefined;}
+    }
     ;
 usar_varaible_factorizacion
     :usar_varaible_factorizacion_literal
@@ -641,3 +676,4 @@ tabulaciones
     :tabulaciones TABULADOR
     |TABULADOR
     ;
+/******************************************************* LO INTERNO DE UN LOCAL PARA ARBOL ********************************************************/
