@@ -99,13 +99,6 @@ const TIPOS_OPERACION = {
   EQUIVALENCIA:'EQUIVALENCIA'
 };
 
-let reprotes = new Reporte();
-let tabla = new TablaHabito();
-let tipos_variable_actual = undefined;
-let tipos_metodo_actual = undefined;
-
-
-
 
 function convertidor(tipo_actual, dato) {
   switch (tipo_actual) {
@@ -171,7 +164,7 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
       switch (tipo_actual) {
         case TIPOS_VARIALE.Double:
         case TIPOS_VARIALE.Int:
-          return primer_dato +  segundo_dato;
+          return Number(primer_dato) +  Number(segundo_dato);
         default:
           console.log("ERROR");
           return false;
@@ -302,3 +295,9 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
       return false;
   }
 }
+
+
+let reprotes = new Reporte();
+let tabla = new TablaHabito();
+let tipos_variable_actual = undefined;
+let tipos_metodo_actual = undefined;

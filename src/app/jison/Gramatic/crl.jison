@@ -203,10 +203,209 @@ const TIPOS_OPERACION = {
   EQUIVALENCIA:'EQUIVALENCIA'
 };
 
+
+function convertidor(tipo_actual, dato) {
+  switch (tipo_actual) {
+    case TIPOS_VARIALE.Double:
+    case TIPOS_VARIALE.Int:
+      return Number(dato);
+    case TIPOS_VARIALE.Boolean:
+      return Boolean(dato);
+    case TIPOS_VARIALE.String:
+      return String(dato);
+    case TIPOS_VARIALE.Char:
+      return Char(dato);
+    default:
+      console.log("ERROR");
+      return false;
+  }
+}
+function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
+  switch (tipos_operacion) {
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.POW:
+      switch (tipo_actual) {
+        /* TIPO INT Y DOUBLE */
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Math.pow(primer_dato, segundo_dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.POR:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return primer_dato*segundo_dato;
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.DIV:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return primer_dato/segundo_dato;
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.MOD:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return primer_dato % segundo_dato;  
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.MAS:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(primer_dato) +  Number(segundo_dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.MEN:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return primer_dato - segundo_dato;
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.AND:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.AD_AND:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.OR:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.AD:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.MAYOR_IGUAL:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.MENOR:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.IGUAL_IGUAL:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.AD_IGUAL:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.MAYOR:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.MENOR:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.EQUIVALENCIA:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    default:
+      console.log("ERROR");
+      return false;
+  }
+}
+
+
 let reprotes = new Reporte();
 let tabla = new TablaHabito();
 let tipos_variable_actual = undefined;
 let tipos_metodo_actual = undefined;
+
 %}
 %%
 /******************inicio de la sintactico********************/
@@ -253,13 +452,18 @@ instrucciones
     :variable_global_metodo_reasignacion /* variable_global_metodo global */
     ;
 variable_global_metodo_reasignacion
-    :tipos_variables ID variable_metodo	/* aqui creo variables */ {console.log('------imprmir------'+tipos_variable_actual);}
+    :tipos_variables ID variable_metodo	/* aqui creo variables */ 
+    {
+      tabla.pushListadoStatico((new Variable($2,$3,tipos_variable_actual)));
+      ((new Variable($2,$3,tipos_variable_actual))).print();
+      console.log('------'+tipos_variable_actual+'------ '+$1 +'------'+$2+'------'+$3);
+    }
     |VOID ID metodos_archivo	//aqui creo metodos
     |reasignacion_varable	//aqui reutilizo una vriable
     ;
 variable_metodo
-    :metodos_archivo // es un metodo
-    |variable_global //es variable global
+    :metodos_archivo /* es un metodo */ {$$=0;}
+    |variable_global /* es variable global */{$$=$1;}
     ;
 ///////////////////////////////////////////////////////////TIPOS DE DATOS
 tipos_variables//tipos de variables o metodos menos void 
@@ -332,51 +536,64 @@ secuencia_datos_factorizado
     ;
 variable_global
     :varias_declaraciones asignaciones_variable
+    {
+    if($1!=undefined){
+      tabla.pushListadoStatico(new Variable($1,$2,tipos_variable_actual));
+      (new Variable($1,$2,tipos_variable_actual)).print();
+      console.log('1----------------'+$1+'----------------'+$2);
+      $$=undefined;
+    }else{
+      console.log('2----------------'+$1+'----------------'+$2);
+      $$=$2;
+    }
+    }
     ;
 varias_declaraciones
     :COMA ID varias_declaraciones
-    |/*termina ahi*/
+    {if($3!=undefined)console.log('------'+$2+'------'+tipos_variable_actual+'------'+$3);$$=$2;}
+    |{$$=undefined;}/*termina ahi*/
     ;
 reasignacion_varable
     :ID asignaciones_variable
     ;
 asignaciones_variable
-    :IGUAL datos
+    :IGUAL datos {$$=$2;}
+    |{$$=undefined;}
     ;
 datos
-    :STRING
+    :STRING {$$=convertidor(tipos_variable_actual,$1);}
     /******************************************************operacion_aritmetica*/
-    |datos POW datos  /*POTENCIA*/
-    |datos POR datos  /*MULTIPLICACION*/
-    |datos DIV datos  /*DIVISION*/
-    |datos MOD datos  /*MODULO*/
-    |datos MAS datos  /*SUMA*/
-    |datos MEN datos  /*RESTA*/
+    |datos POW datos  /*POTENCIA*/       {$$=operador($1,$3,TIPOS_OPERACION.POW,tipos_variable_actual);}
+    |datos POR datos  /*MULTIPLICACION*/ {$$=operador($1,$3,TIPOS_OPERACION.POR,tipos_variable_actual);}
+    |datos DIV datos  /*DIVISION*/       {$$=operador($1,$3,TIPOS_OPERACION.DIV,tipos_variable_actual);}
+    |datos MOD datos  /*MODULO*/         {$$=operador($1,$3,TIPOS_OPERACION.MOD,tipos_variable_actual);}
+    |datos MAS datos  /*SUMA*/           {$$=operador($1,$3,TIPOS_OPERACION.MAS,tipos_variable_actual);}
+    |datos MEN datos  /*RESTA*/          {$$=operador($1,$3,TIPOS_OPERACION.MEN,tipos_variable_actual);}
     /******************************************************operacion_logica*/
-    |datos AND datos      /*&&*/
-    |datos AD_AND datos   /*!&*/
-    |datos OR datos       /*||*/
-    |datos AD datos       /*!*/
+    |datos AND datos      /*&&*/ {$$=operador($1,$3,TIPOS_OPERACION.AND,tipos_variable_actual);}
+    |datos AD_AND datos   /*!&*/ {$$=operador($1,$3,TIPOS_OPERACION.AD_AND,tipos_variable_actual);}
+    |datos OR datos       /*||*/ {$$=operador($1,$3,TIPOS_OPERACION.OR,tipos_variable_actual);}
+    |datos AD datos       /*!*/  {$$=operador($1,$3,TIPOS_OPERACION.AD,tipos_variable_actual);}
     /******************************************************operacion_relacionales*/
-    |datos MAYOR_IGUAL datos     /*>=*/
-    |datos MENOR_IGUAL datos     /*<=*/
-    |datos IGUAL_IGUAL datos     /*==*/
-    |datos AD_IGUAL datos        /*!=*/
-    |datos MAYOR datos           /*>*/
-    |datos MENOR datos           /*<*/
-    |datos EQUIVALENCIA datos    /*~*/ 
-    |P_APERTURA  datos P_CIERRE
-    |NUMERO
-    |boolean
+    |datos MAYOR_IGUAL datos     /*>=*/  {$$=operador($1,$3,TIPOS_OPERACION.MAYOR_IGUAL,tipos_variable_actual);}
+    |datos MENOR_IGUAL datos     /*<=*/  {$$=operador($1,$3,TIPOS_OPERACION.MENOR_IGUAL,tipos_variable_actual);}
+    |datos IGUAL_IGUAL datos     /*==*/  {$$=operador($1,$3,TIPOS_OPERACION.IGUAL_IGUAL,tipos_variable_actual);}
+    |datos AD_IGUAL datos        /*!=*/  {$$=operador($1,$3,TIPOS_OPERACION.AD_IGUAL,tipos_variable_actual);}
+    |datos MAYOR datos           /*>*/   {$$=operador($1,$3,TIPOS_OPERACION.MAYOR,tipos_variable_actual);}
+    |datos MENOR datos           /*<*/   {$$=operador($1,$3,TIPOS_OPERACION.MENOR,tipos_variable_actual);}
+    |datos EQUIVALENCIA datos    /*~*/   {$$=operador($1,$3,TIPOS_OPERACION.EQUIVALENCIA,tipos_variable_actual);}
+    |P_APERTURA  datos P_CIERRE {$$=$2;}
+    |NUMERO {$$=convertidor(tipos_variable_actual,$1);}
+    |boolean {$$=convertidor(tipos_variable_actual,$1);}
     |usar_varaible //VARAIBLE
-    |valores_chart
+    |valores_chart {$$=convertidor(tipos_variable_actual,$1);}
     ;
 valores_chart
-    :DATO_CHAR
+    :DATO_CHAR{$$=yytext;}
     ;
 boolean
-    :TRUE
-    |FALSE
+    :TRUE{$$=yytext;}
+    |FALSE{$$=yytext;}
     ;
 /******************SENTENCIAS DE CONTROL********************/
 sentencias_control
