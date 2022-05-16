@@ -102,8 +102,7 @@ NID [|]
 %start inicio
 
 %{
-
-class Reporte {
+  class Reporte {
   constructor() {
     this.texto_salida = "";
     this.texto_errores = "";
@@ -417,10 +416,7 @@ let reprotes = new Reporte();
 let tabla = new TablaHabito();
 let tipos_variable_actual = undefined;
 let tipos_metodo_actual = undefined;
-
-
-
-
+let contador_tabulaciones = 0;
 %}
 %%
 /******************inicio de la sintactico********************/
@@ -541,7 +537,14 @@ secuencia_parametros
 /************instrucciones locales NOTA:SOLO UNA TABULACION ya que es un metodo*/
 instrucciones_locales
     :tabulaciones habito_local instrucciones_locales
-    |
+    { 
+      let tabulaciones = $1; 
+      if(tabulaciones != undefined){
+        tabulaciones = Number(tabulaciones);
+        
+      }
+    }
+    |{$$=undefined;}
     ;
 /************************************************************REALIZACION DE HABITOS LOCALES DE UN METODO*******************************/   
 habito_local
@@ -673,7 +676,7 @@ decremento_incremento
     ;
 /***************************************************************tabulaciones*/
 tabulaciones
-    :tabulaciones TABULADOR
-    |TABULADOR
+    :tabulaciones TABULADOR {$$= Number($1)+1;}
+    |TABULADOR {$$=1;}
     ;
 /******************************************************* LO INTERNO DE UN LOCAL PARA ARBOL ********************************************************/

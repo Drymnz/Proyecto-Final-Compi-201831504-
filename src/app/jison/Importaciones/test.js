@@ -20,6 +20,7 @@ class Intreprete {
     return this.texto_salida;
   }
 }
+let primera = true;
 let file = new Intreprete();
-
-
+let insertesa = '';
+let texto_agregar = '';

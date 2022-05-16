@@ -7,38 +7,38 @@ AMPERSAND   [&]
 NID [|]
 %%
 /*********************token**********************/
-\f   					{/* file.appetTexto_salida(yytext+' '); */}
-\n   					{/* file.appetTexto_salida(yytext+' '); */}
-\r   					{/* file.appetTexto_salida(yytext+' '); */}
+\f   					{/* file.appetTexto_salida(' '); */}
+\n   					{/* console.log(', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column); */file.appetTexto_salida('\n');}
+\r   					{/* file.appetTexto_salida(' ') */;}
 \t|[\s][\s][\s][\s]   	{file.appetTexto_salida('\t');			return 'TABULADOR';}
-\v   					{/* yytext);file.appetTexto_salida(yytext+' '); */}
-\s   					{file.appetTexto_salida(yytext);}
+\v   					{/* file.appetTexto_salida(' '); */}
+\s   					{file.appetTexto_salida(' ');}
 //COMENTARIOS
-{AD}{AD}.*        		                            {/* );file.appetTexto_salida(yytext+' '); */}//comentario simple
-{TRIPLE_COMILLA}[^\'\'\']*{TRIPLE_COMILLA}          {/* );file.appetTexto_salida(yytext+' '); */}//comentario simple
+{AD}{AD}.*        		                            {file.appetTexto_salida(yytext);}//comentario simple
+{TRIPLE_COMILLA}[^\'\'\']*{TRIPLE_COMILLA}          {file.appetTexto_salida(yytext);}//comentario simple
 //PUNTUACIONES
-[.]            			{file.appetTexto_salida(yytext+' ');							return 'PUNTO';}
-[,]  					{file.appetTexto_salida(yytext+' ');			return 'COMA';}
-":"  					{file.appetTexto_salida(yytext+' ');	return 'DOUBLE_PUNTO';}
-";"  					{file.appetTexto_salida(yytext+' ');	return 'PUNTO_COMA';}
+[.]            			{file.appetTexto_salida(yytext);	return 'PUNTO';}
+[,]  					{file.appetTexto_salida(yytext);	return 'COMA';}
+":"  					{file.appetTexto_salida(yytext);	return 'DOUBLE_PUNTO';}
+";"  					{file.appetTexto_salida(yytext);	return 'PUNTO_COMA';}
 //SIMBOLOS
 //simbolos de igual 
-"="  					{file.appetTexto_salida(yytext);			return 'IGUAL';}//asignaciones
+"="  					{file.appetTexto_salida(yytext);	return 'IGUAL';}//asignaciones
 // relacionales return false o true
-">="    				{file.appetTexto_salida(yytext);			return 'MAYOR_IGUAL';}
-"<="    				{file.appetTexto_salida(yytext);			return 'MENOR_IGUAL';}
-"=="    				{file.appetTexto_salida(yytext);			return 'IGUAL_IGUAL';}
-{AD}"=" 				{file.appetTexto_salida(yytext);		return 'AD_IGUAL';}
-">"     				{file.appetTexto_salida(yytext);			return 'MAYOR';}
-"<"     				{file.appetTexto_salida(yytext);			return 'MENOR';}
-"~"     				{file.appetTexto_salida(yytext+' ');			return 'EQUIVALENCIA';}
+">="    				{file.appetTexto_salida(yytext);	return 'MAYOR_IGUAL';}
+"<="    				{file.appetTexto_salida(yytext);	return 'MENOR_IGUAL';}
+"=="    				{file.appetTexto_salida(yytext);	return 'IGUAL_IGUAL';}
+{AD}"=" 				{file.appetTexto_salida(yytext);	return 'AD_IGUAL';}
+">"     				{file.appetTexto_salida(yytext);	return 'MAYOR';}
+"<"     				{file.appetTexto_salida(yytext);	return 'MENOR';}
+"~"     				{file.appetTexto_salida(yytext);    return 'EQUIVALENCIA';}
 //logicos	return false o true
-{AMPERSAND}{AMPERSAND}    				{file.appetTexto_salida(yytext+' ');			    return 'AND';}
-{NID}{AMPERSAND}    				    {file.appetTexto_salida(yytext+' ');             return 'AD_AND';}
-{NID}{NID}  				            {file.appetTexto_salida(yytext+' ');           return 'OR';}
-{AD}    				                {file.appetTexto_salida(yytext+' ');                return 'AD';}
-"true"    				                {file.appetTexto_salida(yytext+' ');             return 'TRUE';}
-"false"    				                {file.appetTexto_salida(yytext+' ');            return 'FALSE';}
+{AMPERSAND}{AMPERSAND}    				{file.appetTexto_salida(yytext);	return 'AND';}
+{NID}{AMPERSAND}    				    {file.appetTexto_salida(yytext);    return 'AD_AND';}
+{NID}{NID}  				            {file.appetTexto_salida(yytext);    return 'OR';}
+{AD}    				                {file.appetTexto_salida(yytext);    return 'AD';}
+"true"    				                {file.appetTexto_salida(yytext);    return 'TRUE';}
+"false"    				                {file.appetTexto_salida(yytext);    return 'FALSE';}
 /* ""    {.appetTexto_salida(yytext);return '';} */
 // PARA 
 "++" {file.appetTexto_salida(yytext);return 'PLUS_PLUS';}
@@ -54,33 +54,33 @@ NID [|]
 [(]     				{file.appetTexto_salida(yytext);return 'P_APERTURA';}
 ")"     				{file.appetTexto_salida(yytext);return 'P_CIERRE';}
 //HEAD FROM PROYECT
-"Importar"        		{   return 'IMPORTAR';}
-"Incerteza"        		{   return 'INCERTEZA';}
-"clr"        			{   return 'CLR';}
+"Importar"        		{return 'IMPORTAR';}
+"Incerteza"        		{return 'INCERTEZA';}
+"clr"        			{return 'CLR';}
 //VARIABLE
-"Double"  				{file.acctivar = true;file.appetTexto_salida(yytext);  return 'DOUBLE';}
-"Boolean" 				{file.acctivar = true;file.appetTexto_salida(yytext); return 'BOOLEAN';}
-"String"  				{file.acctivar = true;file.appetTexto_salida(yytext);  return 'STRING';}
-"Int"     				{file.acctivar = true;file.appetTexto_salida(yytext);     return 'INT';}
-"Char"    				{file.acctivar = true;file.appetTexto_salida(yytext);    return 'CHAR';}
+"Double"  				{file.acctivar = true;texto_agregar=''; if(primera){let numero = Number(yylloc.first_line)-2; for(let i =0; i < numero;i++){texto_agregar+='\n';}primera=false;}  file.appetTexto_salida(texto_agregar+yytext);      return 'DOUBLE';}
+"Boolean" 				{file.acctivar = true;texto_agregar=''; if(primera){let numero = Number(yylloc.first_line)-2; for(let i =0; i < numero;i++){texto_agregar+='\n';}primera=false;}  file.appetTexto_salida(texto_agregar+yytext);      return 'BOOLEAN';}
+"String"  				{file.acctivar = true;texto_agregar=''; if(primera){let numero = Number(yylloc.first_line)-2; for(let i =0; i < numero;i++){texto_agregar+='\n';}primera=false;}  file.appetTexto_salida(texto_agregar+yytext);      return 'STRING';}
+"Int"     				{file.acctivar = true;texto_agregar=''; if(primera){let numero = Number(yylloc.first_line)-2; for(let i =0; i < numero;i++){texto_agregar+='\n';}primera=false;}  file.appetTexto_salida(texto_agregar+yytext);      return 'INT';}
+"Char"    				{file.acctivar = true;texto_agregar=''; if(primera){let numero = Number(yylloc.first_line)-2; for(let i =0; i < numero;i++){texto_agregar+='\n';}primera=false;}  file.appetTexto_salida(texto_agregar+yytext);      return 'CHAR';}
 //solo para metodos
-"Void"    				{file.acctivar = true;file.appetTexto_salida(yytext);    return 'VOID';}
+"Void"    				{file.acctivar = true;file.appetTexto_salida(yytext);return 'VOID';}
 //SENTENCIA
-"Si"                    {file.appetTexto_salida(yytext);              return 'SI';}
-"Sino"                  {file.appetTexto_salida(yytext);            return 'SINO';}
-"Para"                  {file.appetTexto_salida(yytext);            return 'PARA';}
-"Mientras"              {file.appetTexto_salida(yytext);         return 'MIENTRA';}
-"Retorno"               {file.appetTexto_salida(yytext);          return 'RETORNO';}
-"Detener"               {file.appetTexto_salida(yytext);          return 'BREACK';}
-"Continuar"             {file.appetTexto_salida(yytext);       return 'CONTINUAR';}
-{COMMILA}.{COMMILA}     {file.appetTexto_salida(yytext);       return 'DATO_CHAR';}
+"Si"                    {file.appetTexto_salida(yytext);    return 'SI';}
+"Sino"                  {file.appetTexto_salida(yytext);    return 'SINO';}
+"Para"                  {file.appetTexto_salida(yytext);    return 'PARA';}
+"Mientras"              {file.appetTexto_salida(yytext);    return 'MIENTRA';}
+"Retorno"               {file.appetTexto_salida(yytext);    return 'RETORNO';}
+"Detener"               {file.appetTexto_salida(yytext);    return 'BREACK';}
+"Continuar"             {file.appetTexto_salida(yytext);    return 'CONTINUAR';}
+{COMMILA}.{COMMILA}     {file.appetTexto_salida(yytext);    return 'DATO_CHAR';}
 //GENERICOS
-[0-9]+("."[0-9]+)?\b        {file.appetTexto_salida(yytext+' ');return 'NUMERO';}//YA QUE EL ENUNCIADO PIEDE QUE NO SE DIFERENCIE ENTRE ENTERO Y DECIMAL
-[a-zA-Z0-9]([a-zA-Z0-9]+)?  {file.appetTexto_salida(yytext+' ');return 'ID';}
+[0-9]+("."[0-9]+)?\b        {file.appetTexto_salida(yytext);    return 'NUMERO';}//YA QUE EL ENUNCIADO PIEDE QUE NO SE DIFERENCIE ENTRE ENTERO Y DECIMAL
+[a-zA-Z0-9]([a-zA-Z0-9]+)?  {file.appetTexto_salida(yytext);    return 'ID';}
 // DE ULTIMO SIEMPRE EL ID
-\"[^\"]*\"      { file.appetTexto_salida(yytext+' '); return 'STRING'; }
+\"[^\"]*\"      { file.appetTexto_salida(yytext); return 'STRING'; }
 //INORAR
-. {file.appetTexto_salida(yytext+' ');}
+. {file.appetTexto_salida(yytext);}
 <<EOF>>	return 'EOF';
 /lex
 
@@ -124,8 +124,10 @@ NID [|]
     return this.texto_salida;
   }
 }
+let primera = true;
 let file = new Intreprete();
 let insertesa = '';
+let texto_agregar = '';
 %}
 %%
 /******************inicio de la sintactico********************/

@@ -307,6 +307,12 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
       return false;
   }
 }
+class Nodo{
+  constructor(nombre,dato_aguardar){
+    this.nombre = nombre;
+    this.dato_aguardar = dato_aguardar;
+  }
+}
 let metodo = false;
 let reprotes = new Reporte();
 let tabla = new TablaHabito();
