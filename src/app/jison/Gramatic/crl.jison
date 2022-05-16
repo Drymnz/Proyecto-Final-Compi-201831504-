@@ -102,6 +102,7 @@ NID [|]
 %start inicio
 
 %{
+
 class Reporte {
   constructor() {
     this.texto_salida = "";
@@ -138,71 +139,88 @@ class TablaHabito {
     this.listadoStatico = new Array();
     this.listadoLocal = new Array();
   }
+  /* 
+  @ dato espero un dato objeto tipo variable
+  */
   pushListadoStatico(dato) {
-    this.listadoStatico.push(dato);
-  }
-  busquedaListado(array, dato) {
-    if (array != undefined) {
-      array.forEach((element) => {
-        if (element === dato) {
-          return false;
-        }
-      });
+    if (this.listadoStatico == undefined || this.listadoStatico==[]) {
+      if (!verificacionIDiguales(dato)) {
+        this.listadoStatico.push(dato);
+      }
+    }else{
+      this.listadoStatico.push(dato);
     }
-
-    return true;
   }
-  busquedaDatoListadoStatico(dato) {
-    if (dato != undefined) {
-      dato.forEach((element) => {
-        if (element.id === dato) {
-          return element;
-        }
-      });
-    }
-    return undefined;
+  /* 
+  @ dato espero un dato objeto tipo variable
+  */
+  verificacionIDiguales(dato){
+    let datoreturnar = (busquedaListadoStatico(dato)!=undefined);
+    return datoreturnar;
   }
-  busquedaListadoDato(array, dato) {
-    if (array != undefined) {
-      array.forEach((element) => {
-        if (element === dato) {
-          return dato;
-        }
-      });
-    }
-    return undefined;
+  /* 
+  @ dato espero un dato objeto tipo variable
+  */
+  busquedaListadoStatico(dato) {
+    let datoreturnar = undefined;
+    this.listadoStatico.forEach((object) => {
+      if (String(object.id) === String(dato.id)) {
+        object.print();
+        datoreturnar = object;
+        return object;
+      }
+    });
+    return datoreturnar;
   }
+  /* 
+  @ dato espero un dato objeto tipo number
+  */
   setInsertesa(dato) {
     this.incerteza = dato;
   }
+  /* verificacion de todos lo ingresado */
+  verificacoinListadoEstatico(){
+    for (let index = this.listadoStatico.length-1; index > -1; index--) {
+      let num = index-1;
+      console.log('*****************************************************************');
+      this.listadoStatico[index].print();
+      if(num>-1){
+        this.listadoStatico[num].print();
+        if (this.listadoStatico[index].tipos == this.listadoStatico[num].tipos && this.listadoStatico[index].valor==undefined) {
+          this.listadoStatico[num].print();
+          this.listadoStatico[index].setValor(this.listadoStatico[num].valor);
+        }
+      }
+      console.log('*****************************************************************');
+    }
+  }
 }
 const TIPOS_VARIALE = {
-  Double:'Double',
-  Boolean:'Boolean',
-  String:'String',
-  Int:'Int',
-  Char:'Char'
+  Double: "Double",
+  Boolean: "Boolean",
+  String: "String",
+  Int: "Int",
+  Char: "Char",
 };
 const TIPOS_OPERACION = {
-  POW:'POW',
-  POR:'POR',
-  DIV:'DIV',
-  MOD:'MOD',
-  MAS:'MAS',
-  MEN:'MEN',
-  AND:'AND',
-  AD_AND:'AD_AND',
-  OR:'OR',
-  AD:'AD',
-  MAYOR_IGUAL:'MAYOR_IGUAL',
-  MENOR_IGUAL:'MENOR_IGUAL',
-  IGUAL_IGUAL:'IGUAL_IGUAL',
-  AD_IGUAL:'AD_IGUAL',
-  MAYOR:'MAYOR',
-  MENOR:'MENOR',
-  EQUIVALENCIA:'EQUIVALENCIA'
+  POW: "POW",
+  POR: "POR",
+  DIV: "DIV",
+  MOD: "MOD",
+  MAS: "MAS",
+  MEN: "MEN",
+  AND: "AND",
+  AD_AND: "AD_AND",
+  OR: "OR",
+  AD: "AD",
+  MAYOR_IGUAL: "MAYOR_IGUAL",
+  MENOR_IGUAL: "MENOR_IGUAL",
+  IGUAL_IGUAL: "IGUAL_IGUAL",
+  AD_IGUAL: "AD_IGUAL",
+  MAYOR: "MAYOR",
+  MENOR: "MENOR",
+  EQUIVALENCIA: "EQUIVALENCIA",
 };
-
 
 function convertidor(tipo_actual, dato) {
   switch (tipo_actual) {
@@ -238,7 +256,7 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
       switch (tipo_actual) {
         case TIPOS_VARIALE.Double:
         case TIPOS_VARIALE.Int:
-          return primer_dato*segundo_dato;
+          return primer_dato * segundo_dato;
         default:
           console.log("ERROR");
           return false;
@@ -248,7 +266,7 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
       switch (tipo_actual) {
         case TIPOS_VARIALE.Double:
         case TIPOS_VARIALE.Int:
-          return primer_dato/segundo_dato;
+          return primer_dato / segundo_dato;
         default:
           console.log("ERROR");
           return false;
@@ -258,7 +276,7 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
       switch (tipo_actual) {
         case TIPOS_VARIALE.Double:
         case TIPOS_VARIALE.Int:
-          return primer_dato % segundo_dato;  
+          return primer_dato % segundo_dato;
         default:
           console.log("ERROR");
           return false;
@@ -268,7 +286,7 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
       switch (tipo_actual) {
         case TIPOS_VARIALE.Double:
         case TIPOS_VARIALE.Int:
-          return Number(primer_dato) +  Number(segundo_dato);
+          return Number(primer_dato) + Number(segundo_dato);
         default:
           console.log("ERROR");
           return false;
@@ -400,11 +418,11 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
   }
 }
 
-
 let reprotes = new Reporte();
 let tabla = new TablaHabito();
 let tipos_variable_actual = undefined;
 let tipos_metodo_actual = undefined;
+
 
 %}
 %%
@@ -457,9 +475,10 @@ variable_global_metodo_reasignacion
       tabla.pushListadoStatico((new Variable($2,$3,tipos_variable_actual)));
       ((new Variable($2,$3,tipos_variable_actual))).print();
       console.log('------'+tipos_variable_actual+'------ '+$1 +'------'+$2+'------'+$3);
+      tabla.verificacoinListadoEstatico();
     }
     |VOID ID metodos_archivo	//aqui creo metodos
-    |reasignacion_varable	//aqui reutilizo una vriable
+    |reasignacion_varable	/* aqui reutilizo una vriable */
     ;
 variable_metodo
     :metodos_archivo /* es un metodo */ {$$=0;}
@@ -515,11 +534,11 @@ usar_varaible
     ;
 usar_varaible_factorizacion
     :usar_varaible_factorizacion_literal
-    |/*importante ya que tamien el datos usa esto de usar_variable*/
+    |/*importante ya que tamien el datos usa esto de usar_variable*/ {/* VARIABLE */}
     ;
 usar_varaible_factorizacion_literal
-    :P_APERTURA secuencia_datos P_CIERRE
-    |PUNTO usar_varaible
+    :P_APERTURA secuencia_datos P_CIERRE /* METODO PARAMETROS */{/* LISTADO */}
+    |PUNTO usar_varaible /* SE DEBERIA ID.ID REFERENCIA DE UN OBJETO */
     ;
 /******************VARIABLE LOCAL********************/
 variable_local
@@ -528,7 +547,7 @@ variable_local
 /******************VARIABLE GLOBAL********************/
 secuencia_datos
     :datos secuencia_datos_factorizado
-    |
+    |{$$=undefined;}
     ;
 secuencia_datos_factorizado
     :COMA datos secuencia_datos_factorizado
@@ -553,8 +572,15 @@ varias_declaraciones
     {if($3!=undefined)console.log('------'+$2+'------'+tipos_variable_actual+'------'+$3);$$=$2;}
     |{$$=undefined;}/*termina ahi*/
     ;
-reasignacion_varable
-    :ID asignaciones_variable
+reasignacion_varable /* REASIGNACION DE VARIABLE GLOBAL */
+    :ID asignaciones_variable 
+    {
+      let ver = tabla.busquedaListadoStatico(new Variable($1,undefined,undefined));
+      if(ver !=undefined){
+        ver.setValor($2);
+        ver.print();
+      }
+    }
     ;
 asignaciones_variable
     :IGUAL datos {$$=$2;}
@@ -585,7 +611,7 @@ datos
     |P_APERTURA  datos P_CIERRE {$$=$2;}
     |NUMERO {$$=convertidor(tipos_variable_actual,$1);}
     |boolean {$$=convertidor(tipos_variable_actual,$1);}
-    |usar_varaible //VARAIBLE
+    |usar_varaible /* VARAIBLE */{$$=$1;}
     |valores_chart {$$=convertidor(tipos_variable_actual,$1);}
     ;
 valores_chart
