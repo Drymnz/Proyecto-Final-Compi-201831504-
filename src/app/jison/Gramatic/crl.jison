@@ -8,11 +8,11 @@ NID [|]
 TABULACION_REALIZADA \t|[\s][\s][\s][\s]
 %%
 /*********************token**********************/
-\f   					{/* console.log('<Form Feed>'+yytext); */}
-\n   					{/* console.log('<New Line>'+yytext); */}
-\r   					{/* console.log('<Carriage Return>'+yytext); */}
-{TABULACION_REALIZADA}   	{console.log('<Horizontal Tabulator>'+yytext);			return 'TABULADOR_UNO';}
-{TABULACION_REALIZADA}{TABULACION_REALIZADA}  {console.log('<Horizontal Tabulator>'+yytext);			return 'TABULADOR_DOS';}
+\f   					                                {/* console.log('<Form Feed>'+yytext); */}
+\n   					                                {/* console.log('<New Line>'+yytext); */}
+\r   					                                {/* console.log('<Carriage Return>'+yytext); */}
+{TABULACION_REALIZADA}{TABULACION_REALIZADA}  {console.log('<TABULADOR_DOS>'+yytext);			return 'TABULADOR_DOS';}
+{TABULACION_REALIZADA}   	{console.log('<TABULADOR_UNO>'+yytext);			return 'TABULADOR_UNO';}
 \v   					{/* console.log('<Vertical Tabulator>'+yytext); */}
 \s   					{console.log('<ESPACIO>'+yytext);}
 //COMENTARIOS
@@ -636,14 +636,6 @@ boolean
     :TRUE{$$=yytext;}
     |FALSE{$$=yytext;}
     ;
-/****************************************sentencia para*/
-condiciones_for
-    :variable_local PUNTO_COMA  datos PUNTO_COMA decremento_incremento
-    ;
-decremento_incremento
-    :PLUS_PLUS
-    |LESS_LESS
-    ;
 /******************************************************* LO INTERNO DE UN LOCAL PARA ARBOL ********************************************************/
 /***************************************************************tabulaciones*/
 tabulaciones_nodo
@@ -672,31 +664,30 @@ habito_local_nodo
     ;
 /******************SENTENCIAS DE CONTROL********************/
 sentencias_control
-    :SI P_APERTURA datos_nodo P_CIERRE DOUBLE_PUNTO  sentencia_si_sino
-    |PARA P_APERTURA condiciones_for P_CIERRE DOUBLE_PUNTO sentencia_para_mientras
-    |MIENTRA P_APERTURA datos_nodo P_CIERRE DOUBLE_PUNTO sentencia_para_mientras
-    |SINO DOUBLE_PUNTO sentencia_si_sino
+    :SI P_APERTURA datos_nodo P_CIERRE DOUBLE_PUNTO  habito_sentencia
+    |PARA P_APERTURA condiciones_for P_CIERRE DOUBLE_PUNTO habito_sentencia
+    |MIENTRA P_APERTURA datos_nodo P_CIERRE DOUBLE_PUNTO habito_sentencia
+    |SINO DOUBLE_PUNTO habito_sentencia
     ;
-sentencia_para_mientras
-  :TABULADOR_DOS tabulaciones_nodo habito_sentencia_para_mientras
+habito_sentencia
+  :TABULADOR_DOS tabulaciones_nodo habito_sentencia_cuerpo
   |
   ;
-sentencia_si_sino
-  :TABULADOR_DOS tabulaciones_nodo habito_sentencia_si_no
-  |
-  ;
-habito_sentencia_para_mientras
-  :BREACK   sentencia_para_mientras          /* DETENER */ 
-  |CONTINUAR sentencia_para_mientras         /* CONTINUAR */
-  |RETORNO datos_nodo sentencia_para_mientras
-  |usar_varaible_local_nodo sentencia_para_mientras
+habito_sentencia_cuerpo
+  :BREACK   habito_sentencia          /* DETENER */ 
+  |CONTINUAR habito_sentencia         /* CONTINUAR */
+  |RETORNO datos_nodo habito_sentencia
+  |usar_varaible_local_nodo habito_sentencia
   |sentencias_control
   ;
-habito_sentencia_si_no
-  :RETORNO datos_nodo sentencia_si_sino
-  |usar_varaible_local_nodo sentencia_si_sino
-  |sentencias_control
-  ;
+/****************************************sentencia para*/
+condiciones_for
+    :variable_local_nodo PUNTO_COMA  datos_nodo PUNTO_COMA decremento_incremento
+    ;
+decremento_incremento
+    :PLUS_PLUS
+    |LESS_LESS
+    ;
 /******************VARIABLE LOCAL********************/
 usar_varaible_local_nodo
     :ID factorizacion_usar_varaible_local_nodo
