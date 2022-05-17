@@ -12,7 +12,14 @@ class Reporte {
     this.texto_errores += testo;
   }
 }
-
+class Metodo{
+  constructor(tipo,id,parametros,nodo){
+    this.tipo = tipo;
+    this.id = id;
+    this.parametros = parametros;
+    this.nodo = nodo;
+  }
+}
 class Variable {
   constructor(id, valor, tipos) {
     this.id = id;

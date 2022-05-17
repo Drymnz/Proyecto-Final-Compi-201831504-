@@ -104,21 +104,28 @@ TABULACION_REALIZADA \t|[\s][\s][\s][\s]
 %start inicio
 
 %{
-
-  class Reporte {
+ class Reporte {
   constructor() {
     this.texto_salida = "";
     this.texto_errores = "";
   }
   appetTexto_salida(testo) {
-    if (this.acctivar) {this.texto_salida += testo;
+    if (this.acctivar) {
+      this.texto_salida += testo;
     }
   }
   appetTexto_errores(testo) {
     this.texto_errores += testo;
   }
 }
-
+class Metodo{
+  constructor(tipo,id,parametros,nodo){
+    this.tipo = tipo;
+    this.id = id;
+    this.parametros = parametros;
+    this.nodo = nodo;
+  }
+}
 class Variable {
   constructor(id, valor, tipos) {
     this.id = id;
@@ -129,7 +136,8 @@ class Variable {
     this.valor = valor;
   }
   print() {
-    console.log("id<" + this.id + ">valor<" + this.valor + ">tipos<" + this.tipos + ">"
+    console.log(
+      "id<" + this.id + ">valor<" + this.valor + ">tipos<" + this.tipos + ">"
     );
   }
 }
@@ -150,8 +158,12 @@ class TablaHabito {
   @ dato espero un dato objeto tipo variable
   */
   pushListadoStatico(dato) {
-    if (this.listadoStatico == undefined || this.listadoStatico == []) {if (!verificacionIDiguales(dato)) {  this.listadoStatico.push(dato);}
-    } else {this.listadoStatico.push(dato);
+    if (this.listadoStatico == undefined || this.listadoStatico == []) {
+      if (!verificacionIDiguales(dato)) {
+        this.listadoStatico.push(dato);
+      }
+    } else {
+      this.listadoStatico.push(dato);
     }
   }
   /* 
@@ -166,7 +178,12 @@ class TablaHabito {
   */
   busquedaListadoStatico(dato) {
     let datoreturnar = undefined;
-    this.listadoStatico.forEach((object) => {if (String(object.id) === String(dato.id)) {  object.print();  datoreturnar = object;  return object;}
+    this.listadoStatico.forEach((object) => {
+      if (String(object.id) === String(dato.id)) {
+        object.print();
+        datoreturnar = object;
+        return object;
+      }
     });
     return datoreturnar;
   }
@@ -178,7 +195,16 @@ class TablaHabito {
   }
   /* verificacion de todos lo ingresado */
   verificacoinListadoEstatico() {
-    for (let index = this.listadoStatico.length - 1; index > -1; index--) {let num = index - 1;if (num > -1) {  if (    this.listadoStatico[index].tipos == this.listadoStatico[num].tipos &&    this.listadoStatico[index].valor == undefined  ) {    this.listadoStatico[index].setValor(this.listadoStatico[num].valor);  }}
+    for (let index = this.listadoStatico.length - 1; index > -1; index--) {
+      let num = index - 1;
+      if (num > -1) {
+        if (
+          this.listadoStatico[index].tipos == this.listadoStatico[num].tipos &&
+          this.listadoStatico[index].valor == undefined
+        ) {
+          this.listadoStatico[index].setValor(this.listadoStatico[num].valor);
+        }
+      }
     }
   }
 }
@@ -192,7 +218,11 @@ class ArbolNodo {
     this.childs = [];
   }
   agregarHijo() {
-    for (var i = 0; i < arguments.length; i++) {this.childs.push(arguments[i]);if (arguments[i] !== undefined) {  arguments[i].padre = this;}
+    for (var i = 0; i < arguments.length; i++) {
+      this.childs.push(arguments[i]);
+      if (arguments[i] !== undefined) {
+        arguments[i].padre = this;
+      }
     }
   }
   obtenerHijo(pos) {
@@ -230,33 +260,196 @@ const TIPOS_OPERACION = {
 function convertidor(tipo_actual, dato) {
   switch (tipo_actual) {
     case TIPOS_VARIALE.Double:
-    case TIPOS_VARIALE.Int:return Number(dato);
-    case TIPOS_VARIALE.Boolean:return Boolean(dato);
-    case TIPOS_VARIALE.String:return String(dato);
-    case TIPOS_VARIALE.Char:return Char(dato);
-    default:console.log("ERROR");return false;
+    case TIPOS_VARIALE.Int:
+      return Number(dato);
+    case TIPOS_VARIALE.Boolean:
+      return Boolean(dato);
+    case TIPOS_VARIALE.String:
+      return String(dato);
+    case TIPOS_VARIALE.Char:
+      return Char(dato);
+    default:
+      console.log("ERROR");
+      return false;
   }
 }
 function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
   switch (tipos_operacion) {
-    /* segun el tipo de operacion realizar la forma */case TIPOS_OPERACION.POW:switch (tipo_actual) {  /* TIPO INT Y DOUBLE */  case TIPOS_VARIALE.Double:  case TIPOS_VARIALE.Int:    return Math.pow(primer_dato, segundo_dato);  default:    console.log("ERROR");    return false;}
-    /* segun el tipo de operacion realizar la forma */case TIPOS_OPERACION.POR:switch (tipo_actual) {  case TIPOS_VARIALE.Double:  case TIPOS_VARIALE.Int:    return primer_dato * segundo_dato;  default:    console.log("ERROR");    return false;}
-    /* segun el tipo de operacion realizar la forma */case TIPOS_OPERACION.DIV:switch (tipo_actual) {  case TIPOS_VARIALE.Double:  case TIPOS_VARIALE.Int:    return primer_dato / segundo_dato;  default:    console.log("ERROR");    return false;}
-    /* segun el tipo de operacion realizar la forma */case TIPOS_OPERACION.MOD:switch (tipo_actual) {  case TIPOS_VARIALE.Double:  case TIPOS_VARIALE.Int:    return primer_dato % segundo_dato;  default:    console.log("ERROR");    return false;}
-    /* segun el tipo de operacion realizar la forma */case TIPOS_OPERACION.MAS:switch (tipo_actual) {  case TIPOS_VARIALE.Double:  case TIPOS_VARIALE.Int:    return Number(primer_dato) + Number(segundo_dato);  default:    console.log("ERROR");    return false;}
-    /* segun el tipo de operacion realizar la forma */case TIPOS_OPERACION.MEN:switch (tipo_actual) {  case TIPOS_VARIALE.Double:  case TIPOS_VARIALE.Int:    return primer_dato - segundo_dato;  default:    console.log("ERROR");    return false;}
-    /* segun el tipo de operacion realizar la forma */case TIPOS_OPERACION.AND:switch (tipo_actual) {  case TIPOS_VARIALE.Double:  case TIPOS_VARIALE.Int:    return Number(dato);  default:    console.log("ERROR");    return false;}
-    /* segun el tipo de operacion realizar la forma */case TIPOS_OPERACION.AD_AND:switch (tipo_actual) {  case TIPOS_VARIALE.Double:  case TIPOS_VARIALE.Int:    return Number(dato);  default:    console.log("ERROR");    return false;}
-    /* segun el tipo de operacion realizar la forma */case TIPOS_OPERACION.OR:switch (tipo_actual) {  case TIPOS_VARIALE.Double:  case TIPOS_VARIALE.Int:    return Number(dato);  default:    console.log("ERROR");    return false;}
-    /* segun el tipo de operacion realizar la forma */case TIPOS_OPERACION.AD:switch (tipo_actual) {  case TIPOS_VARIALE.Double:  case TIPOS_VARIALE.Int:    return Number(dato);  default:    console.log("ERROR");    return false;}
-    /* segun el tipo de operacion realizar la forma */case TIPOS_OPERACION.MAYOR_IGUAL:switch (tipo_actual) {  case TIPOS_VARIALE.Double:  case TIPOS_VARIALE.Int:    return Number(dato);  default:    console.log("ERROR");    return false;}
-    /* segun el tipo de operacion realizar la forma */case TIPOS_OPERACION.MENOR:switch (tipo_actual) {  case TIPOS_VARIALE.Double:  case TIPOS_VARIALE.Int:    return Number(dato);  default:    console.log("ERROR");    return false;}
-    /* segun el tipo de operacion realizar la forma */case TIPOS_OPERACION.IGUAL_IGUAL:switch (tipo_actual) {  case TIPOS_VARIALE.Double:  case TIPOS_VARIALE.Int:    return Number(dato);  default:    console.log("ERROR");    return false;}
-    /* segun el tipo de operacion realizar la forma */case TIPOS_OPERACION.AD_IGUAL:switch (tipo_actual) {  case TIPOS_VARIALE.Double:  case TIPOS_VARIALE.Int:    return Number(dato);  default:    console.log("ERROR");    return false;}
-    /* segun el tipo de operacion realizar la forma */case TIPOS_OPERACION.MAYOR:switch (tipo_actual) {  case TIPOS_VARIALE.Double:  case TIPOS_VARIALE.Int:    return Number(dato);  default:    console.log("ERROR");    return false;}
-    /* segun el tipo de operacion realizar la forma */case TIPOS_OPERACION.MENOR:switch (tipo_actual) {  case TIPOS_VARIALE.Double:  case TIPOS_VARIALE.Int:    return Number(dato);  default:    console.log("ERROR");    return false;}
-    /* segun el tipo de operacion realizar la forma */case TIPOS_OPERACION.EQUIVALENCIA:switch (tipo_actual) {  case TIPOS_VARIALE.Double:  case TIPOS_VARIALE.Int:    return Number(dato);  default:    console.log("ERROR");    return false;}
-    /* segun el tipo de operacion realizar la forma */default:console.log("ERROR");return false;
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.POW:
+      switch (tipo_actual) {
+        /* TIPO INT Y DOUBLE */
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Math.pow(primer_dato, segundo_dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.POR:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return primer_dato * segundo_dato;
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.DIV:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return primer_dato / segundo_dato;
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.MOD:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return primer_dato % segundo_dato;
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.MAS:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(primer_dato) + Number(segundo_dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.MEN:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return primer_dato - segundo_dato;
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.AND:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.AD_AND:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.OR:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.AD:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.MAYOR_IGUAL:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.MENOR:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.IGUAL_IGUAL:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.AD_IGUAL:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.MAYOR:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.MENOR:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    case TIPOS_OPERACION.EQUIVALENCIA:
+      switch (tipo_actual) {
+        case TIPOS_VARIALE.Double:
+        case TIPOS_VARIALE.Int:
+          return Number(dato);
+        default:
+          console.log("ERROR");
+          return false;
+      }
+    /* segun el tipo de operacion realizar la forma */
+    default:
+      console.log("ERROR");
+      return false;
   }
 }
 class Nodo {
@@ -271,14 +464,13 @@ let tabla = new TablaHabito();
 let tipos_variable_actual = undefined;
 let tipos_metodo_actual = undefined;
 
-
 %}
 %%
 /******************inicio de la sintactico********************/
 inicio
     : documentacion EOF  {
     $$ = new TablaHabito();
-    Object.assign($$,tabla)
+    Object.assign($$,tabla);
     /* reiniciar esto */reprotes = new Reporte();
     tabla = new TablaHabito();
     boolean_variable = false;
@@ -317,13 +509,22 @@ instrucciones
     :variable_global_metodo_reasignacion /* variable_global_metodo global */;
 variable_global_metodo_reasignacion
     :tipos_variables ID variable_metodo	/* aqui creo variables */ 
-    {console.log('------'+tipos_variable_actual+'------ '+$1 +'------'+$2+'------'+$3);if(metodo){console.log('esto fue un metodo');let usar_metodo = new ArbolNodo("Metodo",$2,this._$.first_line,@1.last_column);usar_metodo.agregarHijo($3);tabla.pushListadoMedos(usar_metodo);metodo=false;}else{tabla.pushListadoStatico((new Variable($2,$3,tipos_variable_actual)));((new Variable($2,$3,tipos_variable_actual))).print();tabla.verificacoinListadoEstatico();}
+    {
+      if(metodo){
+        console.log($3);
+        let usar_metodo =new Metodo($1,$2,$3.parametros_insertar,$3.nodos_para_metodo);
+        tabla.pushListadoMedos(usar_metodo);
+        metodo=false;
+        }else{
+        tabla.pushListadoStatico((new Variable($2,$3,tipos_variable_actual)));
+        tabla.verificacoinListadoEstatico();
+        }
     }
     |VOID ID P_APERTURA parametros_metodo P_CIERRE DOUBLE_PUNTO instrucciones_locales_nodo	
-    /* aqui creo metodos */{console.log('***********************************fijo es metodo***********************************');
-    $$= new ArbolNodo("parametros_metodo","parametros_metodo",this._$.first_line,@1.last_column);
-    $$.agregarHijo($7);
-    let usar_metodo_incrustar = new ArbolNodo("Metodo",$2,this._$.first_line,@1.last_column);usar_metodo_incrustar.agregarHijo($$);tabla.pushListadoMedos(usar_metodo_incrustar);
+    /* aqui creo metodos */
+    {
+    let usar_metodo_incrustar = new Metodo($1,$2,$4,$7);
+    tabla.pushListadoMedos(usar_metodo_incrustar);
     }
     |reasignacion_varable	
     /* aqui reutilizo una vriable */{/* ya esta el codigo realizado para la reasignacion */}
@@ -331,9 +532,7 @@ variable_global_metodo_reasignacion
 variable_metodo
     :P_APERTURA parametros_metodo P_CIERRE DOUBLE_PUNTO instrucciones_locales_nodo 
     /* es un metodo */ 
-    {metodo=true;console.log('***********************************fijo es metodo***********************************');
-    $$= new ArbolNodo("parametros_metodo","parametros_metodo",this._$.first_line,@1.last_column);$$.agregarHijo($5);
-    }
+    {metodo=true;$$={parametros_insertar : $2,nodos_para_metodo : $5}}
     |variable_global /* es variable global */{$$=$1;}
     ;
 ///////////////////////////////////////////////////////////TIPOS DE DATOS
@@ -345,20 +544,26 @@ tipos_variables//tipos de variables o metodos menos void
     |CHAR     {tipos_variable_actual=TIPOS_VARIALE.Char;    tipos_metodo_actual=tipos_variable_actual; $$=yytext;}
     ;
 /****************************************METODOS********************/
-
 parametros_metodo	// si posee parametros de entra el metodo
-    :
-    |parametros
+    :{$$=undefined;}
+    |parametros{$$=$1;}
     ;
 parametros
     :tipos_variables ID secuencia_parametros
+    {
+      if($3===undefined){
+        $$=new Array();
+        $$.push((new Variable($2,undefined,$1)));
+      }else{
+        $3.push((new Variable($2,undefined,$1)));
+        $$= $3;
+      }
+    }
     ;
 secuencia_parametros
-    :
-    |COMA parametros
+    :{$$=new Array();}
+    |COMA parametros{$$=$2;}
     ;
-
-
 /******************************************************usar variable o metodo*/
 usar_varaible_local
     :ID factorizacion_usar_varaible_local
@@ -391,7 +596,9 @@ secuencia_datos_factorizado
 variable_global
     :varias_declaraciones asignaciones_variable
     {
-    if($1!=undefined){tabla.pushListadoStatico(new Variable($1,$2,tipos_variable_actual));(new Variable($1,$2,tipos_variable_actual)).print();console.log('1----------------'+$1+'----------------'+$2);$$=undefined;
+    if($1!=undefined){tabla.pushListadoStatico(new Variable($1,$2,tipos_variable_actual));(new Variable($1,$2,tipos_variable_actual)).print();
+    console.log('1----------------'+$1+'----------------'+$2);
+    $$=undefined;
     }else{console.log('2----------------'+$1+'----------------'+$2);$$=$2;
     }
     }
@@ -504,13 +711,11 @@ habito_sentencia_cuerpo
   {
       $$= new ArbolNodo("habito_sentencia_cuerpo","habito_sentencia_cuerpo",this._$.first_line,@1.last_column);
       $$.agregarHijo(new ArbolNodo("Detener","Detener",this._$.first_line,@1.last_column));
-
   }
   |CONTINUAR habito_sentencia
   {
       $$= new ArbolNodo("habito_sentencia_cuerpo","habito_sentencia_cuerpo",this._$.first_line,@1.last_column);
       $$.agregarHijo(new ArbolNodo("Continuar","Continuar",this._$.first_line,@1.last_column));
-
   }         
   |RETORNO datos_nodo habito_sentencia
   {
@@ -518,7 +723,6 @@ habito_sentencia_cuerpo
       let retunar_nodo = new ArbolNodo("RETORNO","RETORNO",this._$.first_line,@1.last_column)
       retunar_nodo.agregarHijo($2);
       $$.agregarHijo(retunar_nodo);
-
   }
   |usar_varaible_local_nodo habito_sentencia
   {

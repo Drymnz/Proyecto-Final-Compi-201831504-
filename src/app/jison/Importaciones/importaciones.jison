@@ -58,11 +58,11 @@ NID [|]
 "Incerteza"        		{return 'INCERTEZA';}
 "clr"        			{return 'CLR';}
 //VARIABLE
-"Double"  				{file.acctivar = true;texto_agregar=''; if(primera){console.log(yylloc.first_line);let numero = Number(yylloc.first_line)-2; for(let i =0; i < numero;i++){texto_agregar+='\n';}primera=false;}  file.appetTexto_salida(texto_agregar+yytext);      return 'DOUBLE';}
-"Boolean" 				{file.acctivar = true;texto_agregar=''; if(primera){console.log(yylloc.first_line);let numero = Number(yylloc.first_line)-2; for(let i =0; i < numero;i++){texto_agregar+='\n';}primera=false;}  file.appetTexto_salida(texto_agregar+yytext);      return 'BOOLEAN';}
-"String"  				{file.acctivar = true;texto_agregar=''; if(primera){console.log(yylloc.first_line);let numero = Number(yylloc.first_line)-2; for(let i =0; i < numero;i++){texto_agregar+='\n';}primera=false;}  file.appetTexto_salida(texto_agregar+yytext);      return 'STRING';}
-"Int"     				{file.acctivar = true;texto_agregar=''; if(primera){console.log(yylloc.first_line);let numero = Number(yylloc.first_line)-2; for(let i =0; i < numero;i++){texto_agregar+='\n';}primera=false;}  file.appetTexto_salida(texto_agregar+yytext);      return 'INT';}
-"Char"    				{file.acctivar = true;texto_agregar=''; if(primera){console.log(yylloc.first_line);let numero = Number(yylloc.first_line)-2; for(let i =0; i < numero;i++){texto_agregar+='\n';}primera=false;}  file.appetTexto_salida(texto_agregar+yytext);      return 'CHAR';}
+"Double"  				{file.acctivar = true;texto_agregar=''; if(primera){console.log(yylloc.first_line+''+yylloc.first_column);let numero = Number(yylloc.first_line)-1; for(let i =0; i < numero;i++){texto_agregar+='\n';}primera=false;}  file.appetTexto_salida(texto_agregar+yytext);      return 'DOUBLE';}
+"Boolean" 				{file.acctivar = true;texto_agregar=''; if(primera){console.log(yylloc.first_line+''+yylloc.first_column);let numero = Number(yylloc.first_line)-1; for(let i =0; i < numero;i++){texto_agregar+='\n';}primera=false;}  file.appetTexto_salida(texto_agregar+yytext);      return 'BOOLEAN';}
+"String"  				{file.acctivar = true;texto_agregar=''; if(primera){console.log(yylloc.first_line+''+yylloc.first_column);let numero = Number(yylloc.first_line)-1; for(let i =0; i < numero;i++){texto_agregar+='\n';}primera=false;}  file.appetTexto_salida(texto_agregar+yytext);      return 'STRING';}
+"Int"     				{file.acctivar = true;texto_agregar=''; if(primera){console.log(yylloc.first_line+''+yylloc.first_column);let numero = Number(yylloc.first_line)-1; for(let i =0; i < numero;i++){texto_agregar+='\n';}primera=false;}  file.appetTexto_salida(texto_agregar+yytext);      return 'INT';}
+"Char"    				{file.acctivar = true;texto_agregar=''; if(primera){console.log(yylloc.first_line+''+yylloc.first_column);let numero = Number(yylloc.first_line)-1; for(let i =0; i < numero;i++){texto_agregar+='\n';}primera=false;}  file.appetTexto_salida(texto_agregar+yytext);      return 'CHAR';}
 //solo para metodos
 "Void"    				{file.acctivar = true;file.appetTexto_salida(yytext);return 'VOID';}
 //SENTENCIA
