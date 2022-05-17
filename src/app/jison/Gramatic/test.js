@@ -85,6 +85,28 @@ class TablaHabito {
     }
   }
 }
+
+class ArbolNodo{
+  constructor(nombre,value,fila,columna) {
+    this.nombre=nombre;
+    this.value=value;
+    this.fila=fila;
+    this.columna=columna;
+    this.childs=[];
+  }  
+  agregarHijo(){
+      for(var i =0; i< arguments.length;i++){
+          this.childs.push(arguments[i]);
+          if(arguments[i]!==undefined){
+              arguments[i].padre=this;
+          }
+      }
+  }
+  obtenerHijo(pos){
+      if(pos >this.hijos.length - 1)return undefined;
+      return this.hijos[pos];
+  }
+}
 const TIPOS_VARIALE = {
   Double: "Double",
   Boolean: "Boolean",
@@ -318,26 +340,3 @@ let reprotes = new Reporte();
 let tabla = new TablaHabito();
 let tipos_variable_actual = undefined;
 let tipos_metodo_actual = undefined;
-
-function AST_Node(tag,value,fila,columna){
-  this.tag=tag;
-  this.value=value;
-  this.fila=fila;
-  this.columna=columna;
-  //Vamos a definir que tenga hijos
-  this.childs=[]
-  this.addChilds=addChilds;
-  this.getSon=getSon;
-  function addChilds(){
-      for(var i =0; i< arguments.length;i++){
-          this.childs.push(arguments[i]);
-          if(arguments[i]!==null){
-              arguments[i].padre=this;
-          }
-      }
-  }
-  function getSon(pos){
-      if(pos >this.hijos.length - 1)return null;
-      return this.hijos[pos];
-  }
-}
