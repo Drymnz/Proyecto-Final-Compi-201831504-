@@ -33,24 +33,31 @@ class TablaHabito {
     this.incerteza = 0.5;
     this.listadoStatico = new Array();
     this.listadoLocal = new Array();
+    this.listadoMetodos = new Array();
+  }
+  /* 
+  @ dato espero un dato objeto tipo nodo
+  */
+  pushListadoMedos(dato) {
+    this.listadoMetodos.push(dato);
   }
   /* 
   @ dato espero un dato objeto tipo variable
   */
   pushListadoStatico(dato) {
-    if (this.listadoStatico == undefined || this.listadoStatico==[]) {
+    if (this.listadoStatico == undefined || this.listadoStatico == []) {
       if (!verificacionIDiguales(dato)) {
         this.listadoStatico.push(dato);
       }
-    }else{
+    } else {
       this.listadoStatico.push(dato);
     }
   }
   /* 
   @ dato espero un dato objeto tipo variable
   */
-  verificacionIDiguales(dato){
-    let datoreturnar = (busquedaListadoStatico(dato)!=undefined);
+  verificacionIDiguales(dato) {
+    let datoreturnar = busquedaListadoStatico(dato) != undefined;
     return datoreturnar;
   }
   /* 
@@ -74,11 +81,14 @@ class TablaHabito {
     this.incerteza = dato;
   }
   /* verificacion de todos lo ingresado */
-  verificacoinListadoEstatico(){
-    for (let index = this.listadoStatico.length-1; index > -1; index--) {
-      let num = index-1;
-      if(num>-1){
-        if (this.listadoStatico[index].tipos == this.listadoStatico[num].tipos && this.listadoStatico[index].valor==undefined) {
+  verificacoinListadoEstatico() {
+    for (let index = this.listadoStatico.length - 1; index > -1; index--) {
+      let num = index - 1;
+      if (num > -1) {
+        if (
+          this.listadoStatico[index].tipos == this.listadoStatico[num].tipos &&
+          this.listadoStatico[index].valor == undefined
+        ) {
           this.listadoStatico[index].setValor(this.listadoStatico[num].valor);
         }
       }
@@ -86,25 +96,25 @@ class TablaHabito {
   }
 }
 
-class ArbolNodo{
-  constructor(nombre,value,fila,columna) {
-    this.nombre=nombre;
-    this.value=value;
-    this.fila=fila;
-    this.columna=columna;
-    this.childs=[];
-  }  
-  agregarHijo(){
-      for(var i =0; i< arguments.length;i++){
-          this.childs.push(arguments[i]);
-          if(arguments[i]!==undefined){
-              arguments[i].padre=this;
-          }
-      }
+class ArbolNodo {
+  constructor(nombre, value, fila, columna) {
+    this.nombre = nombre;
+    this.value = value;
+    this.fila = fila;
+    this.columna = columna;
+    this.childs = [];
   }
-  obtenerHijo(pos){
-      if(pos >this.hijos.length - 1)return undefined;
-      return this.hijos[pos];
+  agregarHijo() {
+    for (var i = 0; i < arguments.length; i++) {
+      this.childs.push(arguments[i]);
+      if (arguments[i] !== undefined) {
+        arguments[i].padre = this;
+      }
+    }
+  }
+  obtenerHijo(pos) {
+    if (pos > this.hijos.length - 1) return undefined;
+    return this.hijos[pos];
   }
 }
 const TIPOS_VARIALE = {
@@ -329,8 +339,8 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
       return false;
   }
 }
-class Nodo{
-  constructor(nombre,dato_aguardar){
+class Nodo {
+  constructor(nombre, dato_aguardar) {
     this.nombre = nombre;
     this.dato_aguardar = dato_aguardar;
   }
