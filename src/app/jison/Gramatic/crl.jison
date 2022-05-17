@@ -647,16 +647,20 @@ decremento_incremento
 /******************************************************* LO INTERNO DE UN LOCAL PARA ARBOL ********************************************************/
 /***************************************************************tabulaciones*/
 tabulaciones_nodo
-    :tabulaciones tipos_tabulacion {$$= Number($1)+1;}
-    |tipos_tabulacion {$$=1;}
+    :secuencia_tabulaciones
+    |
     ;
+secuencia_tabulaciones
+  :secuencia_tabulaciones tipos_tabulacion {$$= Number($1)+1;}
+  |tipos_tabulacion {$$=1;}
+  ;
 tipos_tabulacion
   :TABULADOR_UNO
   |TABULADOR_DOS
   ;
 /************instrucciones locales NOTA:SOLO UNA TABULACION ya que es un metodo*/
 instrucciones_locales_nodo
-    :tabulaciones_nodo habito_local_nodo 
+    :TABULADOR_UNO habito_local_nodo 
     |{$$=undefined;}
     ;
 /************************************************************REALIZACION DE HABITOS LOCALES DE UN METODO*******************************/   
@@ -664,18 +668,35 @@ habito_local_nodo
     :variable_local_nodo	instrucciones_locales_nodo	/* declaracion de una variable local */
     |usar_varaible_local_nodo instrucciones_locales_nodo 		//uso de variables o metodos
     |sentencias_control instrucciones_locales_nodo 	/* sentencias de control */
-    |RETORNO datos	instrucciones_locales_nodo	/* si el metodo require returnar algo */
-    |BREACK   instrucciones_locales_nodo          //DETENER 
-    |CONTINUAR instrucciones_locales_nodo         //CONTINUAR
+    |RETORNO datos_nodo	instrucciones_locales_nodo	/* si el metodo require returnar algo */
     ;
 /******************SENTENCIAS DE CONTROL********************/
 sentencias_control
-    :SI P_APERTURA datos P_CIERRE DOUBLE_PUNTO  
-    |PARA P_APERTURA condiciones_for P_CIERRE DOUBLE_PUNTO  
-    |MIENTRA P_APERTURA datos P_CIERRE DOUBLE_PUNTO 
-    |SINO DOUBLE_PUNTO
+    :SI P_APERTURA datos_nodo P_CIERRE DOUBLE_PUNTO  sentencia_si_sino
+    |PARA P_APERTURA condiciones_for P_CIERRE DOUBLE_PUNTO sentencia_para_mientras
+    |MIENTRA P_APERTURA datos_nodo P_CIERRE DOUBLE_PUNTO sentencia_para_mientras
+    |SINO DOUBLE_PUNTO sentencia_si_sino
     ;
-
+sentencia_para_mientras
+  :TABULADOR_DOS tabulaciones_nodo habito_sentencia_para_mientras
+  |
+  ;
+sentencia_si_sino
+  :TABULADOR_DOS tabulaciones_nodo habito_sentencia_si_no
+  |
+  ;
+habito_sentencia_para_mientras
+  :BREACK   sentencia_para_mientras          /* DETENER */ 
+  |CONTINUAR sentencia_para_mientras         /* CONTINUAR */
+  |RETORNO datos_nodo sentencia_para_mientras
+  |usar_varaible_local_nodo sentencia_para_mientras
+  |sentencias_control
+  ;
+habito_sentencia_si_no
+  :RETORNO datos_nodo sentencia_si_sino
+  |usar_varaible_local_nodo sentencia_si_sino
+  |sentencias_control
+  ;
 /******************VARIABLE LOCAL********************/
 usar_varaible_local_nodo
     :ID factorizacion_usar_varaible_local_nodo
