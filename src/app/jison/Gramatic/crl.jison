@@ -5,12 +5,14 @@ COMMILA  \'
 TRIPLE_COMILLA {COMMILA}{COMMILA}{COMMILA}
 AMPERSAND   [&]
 NID [|]
+TABULACION_REALIZADA \t|[\s][\s][\s][\s]
 %%
 /*********************token**********************/
 \f   					{/* console.log('<Form Feed>'+yytext); */}
 \n   					{/* console.log('<New Line>'+yytext); */}
 \r   					{/* console.log('<Carriage Return>'+yytext); */}
-\t|[\s][\s][\s][\s]   	{console.log('<Horizontal Tabulator>'+yytext);			return 'TABULADOR';}
+{TABULACION_REALIZADA}   	{console.log('<Horizontal Tabulator>'+yytext);			return 'TABULADOR_UNO';}
+{TABULACION_REALIZADA}{TABULACION_REALIZADA}  {console.log('<Horizontal Tabulator>'+yytext);			return 'TABULADOR_DOS';}
 \v   					{/* console.log('<Vertical Tabulator>'+yytext); */}
 \s   					{console.log('<ESPACIO>'+yytext);}
 //COMENTARIOS
@@ -116,7 +118,6 @@ NID [|]
     this.texto_errores += testo;
   }
 }
-
 class Variable {
   constructor(id, valor, tipos) {
     this.id = id;
@@ -215,7 +216,6 @@ const TIPOS_OPERACION = {
   MENOR: "MENOR",
   EQUIVALENCIA: "EQUIVALENCIA",
 };
-
 function convertidor(tipo_actual, dato) {
   switch (tipo_actual) {
     case TIPOS_VARIALE.Double:
@@ -481,7 +481,7 @@ variable_global_metodo_reasignacion
       tabla.verificacoinListadoEstatico();
       }
     }
-    |VOID ID P_APERTURA parametros_metodo P_CIERRE DOUBLE_PUNTO instrucciones_locales	
+    |VOID ID P_APERTURA parametros_metodo P_CIERRE DOUBLE_PUNTO instrucciones_locales_nodo	
     /* aqui creo metodos */
     {
       console.log('fijo es metodo');
@@ -499,7 +499,7 @@ variable_global_metodo_reasignacion
     {/* ya esta el codigo realizado para la reasignacion */}
     ;
 variable_metodo
-    :P_APERTURA parametros_metodo P_CIERRE DOUBLE_PUNTO instrucciones_locales 
+    :P_APERTURA parametros_metodo P_CIERRE DOUBLE_PUNTO instrucciones_locales_nodo 
     /* es un metodo */ 
     {
       metodo=true;
@@ -534,27 +534,8 @@ secuencia_parametros
     :
     |COMA parametros
     ;
-/************instrucciones locales NOTA:SOLO UNA TABULACION ya que es un metodo*/
-instrucciones_locales
-    :tabulaciones habito_local instrucciones_locales
-    { 
-      let tabulaciones = $1; 
-      if(tabulaciones != undefined){
-        tabulaciones = Number(tabulaciones);
-        
-      }
-    }
-    |{$$=undefined;}
-    ;
-/************************************************************REALIZACION DE HABITOS LOCALES DE UN METODO*******************************/   
-habito_local
-    :variable_local		//declaracion de una variable local
-    |usar_varaible_local  		//uso de variables o metodos
-    |sentencias_control 	//sentencias de control
-    |RETORNO datos		//si el metodo require returnar algo
-    |BREACK             //DETENER 
-    |CONTINUAR          //CONTINUAR
-    ;
+
+
 /******************************************************usar variable o metodo*/
 usar_varaible_local
     :ID factorizacion_usar_varaible_local
@@ -562,6 +543,10 @@ usar_varaible_local
 factorizacion_usar_varaible_local
     :usar_varaible_factorizacion_literal
     |asignaciones_variable
+    ;
+usar_varaible_factorizacion_literal
+    :P_APERTURA secuencia_datos P_CIERRE /* METODO PARAMETROS */{/* LISTADO */}
+    |PUNTO usar_varaible /* SE DEBERIA ID.ID REFERENCIA DE UN OBJETO */
     ;
 usar_varaible
     :ID usar_varaible_factorizacion 
@@ -573,14 +558,6 @@ usar_varaible
 usar_varaible_factorizacion
     :usar_varaible_factorizacion_literal
     |/*importante ya que tamien el datos usa esto de usar_variable*/ {/* VARIABLE */}
-    ;
-usar_varaible_factorizacion_literal
-    :P_APERTURA secuencia_datos P_CIERRE /* METODO PARAMETROS */{/* LISTADO */}
-    |PUNTO usar_varaible /* SE DEBERIA ID.ID REFERENCIA DE UN OBJETO */
-    ;
-/******************VARIABLE LOCAL********************/
-variable_local
-    :tipos_variables ID variable_global// aquie estara la declaracion de las variables
     ;
 /******************VARIABLE GLOBAL********************/
 secuencia_datos
@@ -659,13 +636,6 @@ boolean
     :TRUE{$$=yytext;}
     |FALSE{$$=yytext;}
     ;
-/******************SENTENCIAS DE CONTROL********************/
-sentencias_control
-    :SI P_APERTURA datos P_CIERRE DOUBLE_PUNTO  
-    |PARA P_APERTURA condiciones_for P_CIERRE DOUBLE_PUNTO 
-    |MIENTRA P_APERTURA datos P_CIERRE DOUBLE_PUNTO 
-    |SINO DOUBLE_PUNTO
-    ;
 /****************************************sentencia para*/
 condiciones_for
     :variable_local PUNTO_COMA  datos PUNTO_COMA decremento_incremento
@@ -674,9 +644,119 @@ decremento_incremento
     :PLUS_PLUS
     |LESS_LESS
     ;
-/***************************************************************tabulaciones*/
-tabulaciones
-    :tabulaciones TABULADOR {$$= Number($1)+1;}
-    |TABULADOR {$$=1;}
-    ;
 /******************************************************* LO INTERNO DE UN LOCAL PARA ARBOL ********************************************************/
+/***************************************************************tabulaciones*/
+tabulaciones_nodo
+    :tabulaciones tipos_tabulacion {$$= Number($1)+1;}
+    |tipos_tabulacion {$$=1;}
+    ;
+tipos_tabulacion
+  :TABULADOR_UNO
+  |TABULADOR_DOS
+  ;
+/************instrucciones locales NOTA:SOLO UNA TABULACION ya que es un metodo*/
+instrucciones_locales_nodo
+    :tabulaciones_nodo habito_local_nodo 
+    |{$$=undefined;}
+    ;
+/************************************************************REALIZACION DE HABITOS LOCALES DE UN METODO*******************************/   
+habito_local_nodo
+    :variable_local_nodo	instrucciones_locales_nodo	/* declaracion de una variable local */
+    |usar_varaible_local_nodo instrucciones_locales_nodo 		//uso de variables o metodos
+    |sentencias_control instrucciones_locales_nodo 	/* sentencias de control */
+    |RETORNO datos	instrucciones_locales_nodo	/* si el metodo require returnar algo */
+    |BREACK   instrucciones_locales_nodo          //DETENER 
+    |CONTINUAR instrucciones_locales_nodo         //CONTINUAR
+    ;
+/******************SENTENCIAS DE CONTROL********************/
+sentencias_control
+    :SI P_APERTURA datos P_CIERRE DOUBLE_PUNTO  
+    |PARA P_APERTURA condiciones_for P_CIERRE DOUBLE_PUNTO  
+    |MIENTRA P_APERTURA datos P_CIERRE DOUBLE_PUNTO 
+    |SINO DOUBLE_PUNTO
+    ;
+
+/******************VARIABLE LOCAL********************/
+usar_varaible_local_nodo
+    :ID factorizacion_usar_varaible_local_nodo
+    ;
+factorizacion_usar_varaible_local_nodo
+    :usar_varaible_factorizacion_literal_nodo
+    |asignaciones_variable_nodo
+    ;
+variable_local_nodo
+    :tipos_variables_nodo ID variable_global_nodo /*** aquie estara la declaracion de las variables */
+    ;
+tipos_variables_nodo//tipos de variables o metodos menos void 
+    :DOUBLE   
+    |BOOLEAN  
+    |STRING   
+    |INT      
+    |CHAR     
+    ;
+variable_global_nodo/* * */
+    :varias_declaraciones_nodo asignaciones_variable_nodo
+    ;
+varias_declaraciones_nodo
+    :COMA ID varias_declaraciones_nodo
+    |{$$=undefined;}/*termina ahi*/
+    ;
+asignaciones_variable_nodo
+    :IGUAL datos_nodo 
+    |{$$=undefined;}
+    ;
+/* OPEREACIONES NODOS */
+datos_nodo
+    :STRING 
+    /******************************************************operacion_aritmetica*/
+    |datos_nodo POW datos_nodo  /*POTENCIA*/       
+    |datos_nodo POR datos_nodo  /*MULTIPLICACION*/ 
+    |datos_nodo DIV datos_nodo  /*DIVISION*/       
+    |datos_nodo MOD datos_nodo  /*MODULO*/         
+    |datos_nodo MAS datos_nodo  /*SUMA*/           
+    |datos_nodo MEN datos_nodo  /*RESTA*/          
+    /******************************************************operacion_logica*/
+    |datos_nodo AND datos_nodo      /*&&*/ 
+    |datos_nodo AD_AND datos_nodo   /*!&*/ 
+    |datos_nodo OR datos_nodo       /*||*/ 
+    |datos_nodo AD datos_nodo       /*!*/  
+    /******************************************************operacion_relacionales*/
+    |datos_nodo MAYOR_IGUAL datos_nodo     /*>=*/  
+    |datos_nodo MENOR_IGUAL datos_nodo     /*<=*/  
+    |datos_nodo IGUAL_IGUAL datos_nodo     /*==*/  
+    |datos_nodo AD_IGUAL datos_nodo        /*!=*/  
+    |datos_nodo MAYOR datos_nodo           /*>*/   
+    |datos_nodo MENOR datos_nodo           /*<*/   
+    |datos_nodo EQUIVALENCIA datos_nodo    /*~*/   
+    |P_APERTURA  datos_nodo P_CIERRE 
+    |NUMERO 
+    |boolean_nodo 
+    |usar_varaible_nodo /* VARAIBLE */
+    |valores_chart_nodo 
+    ;
+valores_chart_nodo
+    :DATO_CHAR
+    ;
+boolean_nodo
+    :TRUE
+    |FALSE
+    ;
+usar_varaible_nodo
+    :ID usar_varaible_factorizacion_nodo 
+    ;
+usar_varaible_factorizacion_nodo
+    :usar_varaible_factorizacion_literal_nodo
+    |/*importante ya que tamien el datos usa esto de usar_variable*/ {/* VARIABLE */}
+    ;
+usar_varaible_factorizacion_literal_nodo
+    :P_APERTURA secuencia_datos_nodo P_CIERRE /* METODO PARAMETROS */{/* LISTADO */}
+    |PUNTO usar_varaible_nodo /* SE DEBERIA ID.ID REFERENCIA DE UN OBJETO */
+    ;
+secuencia_datos_nodo
+    :datos_nodo secuencia_datos_factorizado_nodo
+    |{$$=undefined;}
+    ;
+secuencia_datos_factorizado_nodo
+    :COMA datos_nodo secuencia_datos_factorizado_nodo
+    |
+    ;
