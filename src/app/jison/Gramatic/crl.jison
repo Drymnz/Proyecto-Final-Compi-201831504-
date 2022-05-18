@@ -519,7 +519,22 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
         switch (tipo_actual) {
           case TIPOS_VARIALE.Double:
           case TIPOS_VARIALE.Int:
-            return Number(dato);
+          case TIPOS_VARIALE.Char:
+            return Number(primer_dato) - Number(segundo_dato) < tabla.incerteza;
+          case TIPOS_VARIALE.Boolean:
+            if (primer_dato === "true") {
+              primer_dato = 1;
+            } else if (primer_dato === "false") {
+              primer_dato = 0;
+            }
+            if (segundo_dato === "true") {
+              segundo_dato = 1;
+            } else if (segundo_dato === "false") {
+              segundo_dato = 0;
+            }
+            return Number(primer_dato) - Number(segundo_dato) < tabla.incerteza;
+          case TIPOS_VARIALE.String:
+            return String(primer_dato)===String(segundo_dato);
           default:
             reprotes.texto_errores("El castin esta incorecto");
             return false;
