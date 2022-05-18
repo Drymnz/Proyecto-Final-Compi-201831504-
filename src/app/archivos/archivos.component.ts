@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { RegistroDocumentoes } from '../registro-documentoes';
 declare var importaciones: any;
 declare var crl: any;
+declare var Viz:any;
 
 @Component({
   selector: 'app-archivos',
@@ -194,7 +195,12 @@ export class ArchivosComponent implements OnInit {
   }
   d3(texto:any) {
     console.log(texto);
+    var dar = texto;
     /* this.grafica = this.ruta+texto; */
+    var svg_div = jQuery('#graphviz_svg_div');
+    var svg = Viz(dar, "svg");
+    const descarga = document.createElement(svg);
+    document.body.appendChild(descarga);
   }
   //compilar
   compilar() {
@@ -218,3 +224,7 @@ export class ArchivosComponent implements OnInit {
     }
   }
 }
+function jQuery(arg0: string) {
+  throw new Error('Function not implemented.');
+}
+
