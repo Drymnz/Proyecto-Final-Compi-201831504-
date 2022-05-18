@@ -8,39 +8,39 @@ NID [|]
 TABULACION_REALIZADA \t|[\s][\s][\s][\s]
 %%
 /*********************token**********************/
-\f   					            {/* console.log('<Form Feed>'+yytext); */}
-\n   					            {/* console.log('<New Line>'+yytext); */}
-\r   					            {/* console.log('<Carriage Return>'+yytext); */}
-{TABULACION_REALIZADA}{TABULACION_REALIZADA}  {console.log('<TABULADOR_DOS>'+yytext);			return 'TABULADOR_DOS';}
-{TABULACION_REALIZADA}   	           {console.log('<TABULADOR_UNO>'+yytext);			return 'TABULADOR_UNO';}
-\v   					            {/* console.log('<Vertical Tabulator>'+yytext); */}
-\s   					            {console.log('<ESPACIO>'+yytext);}
+\f   					                        {/* console.log('<Form Feed>'+yytext); */}
+\n   					                        {/* console.log('<New Line>'+yytext); */}
+\r   					                        {/* console.log('<Carriage Return>'+yytext); */}
+{TABULACION_REALIZADA}{TABULACION_REALIZADA}    {console.log('<TABULADOR_DOS>'+yytext);			return 'TABULADOR_DOS';}
+{TABULACION_REALIZADA}   	                    {console.log('<TABULADOR_UNO>'+yytext);			return 'TABULADOR_UNO';}
+\v   					                        {/* console.log('<Vertical Tabulator>'+yytext); */}
+\s   					                        {/* console.log('<ESPACIO>'+yytext); */}
 //COMENTARIOS
-{AD}{AD}.*        		    {/* console.log('<COMENTARIO>'+yytext); */}//comentario simple
-{TRIPLE_COMILLA}[^\'\'\']*{TRIPLE_COMILLA}    {/* console.log('<COMENTARIO_MULTILINEA>'+yytext); */}//comentario simple
+{AD}{AD}.*        		                        {/* console.log('<COMENTARIO>'+yytext); */}//comentario simple
+{TRIPLE_COMILLA}[^\'\'\']*{TRIPLE_COMILLA}      {/* console.log('<COMENTARIO_MULTILINEA>'+yytext); */}//comentario simple
 //PUNTUACIONES
-[.]   {console.log('PUNTO'+yytext);						return 'PUNTO';}
-[,]  					  {console.log('<COMA>'+yytext);			    return 'COMA';}
-":"  					  {console.log('<DOUBLE_PUNTO>'+yytext);	return 'DOUBLE_PUNTO';}
-";"  					  {console.log('<PUNTO_COMA>'+yytext);	  return 'PUNTO_COMA';}
+[.]                       {console.log('PUNTO'+yytext);			    return 'PUNTO';}
+[,]  					  {console.log('<COMA>'+yytext);		    return 'COMA';}
+":"  					  {console.log('<DOUBLE_PUNTO>'+yytext);    return 'DOUBLE_PUNTO';}
+";"  					  {console.log('<PUNTO_COMA>'+yytext);	    return 'PUNTO_COMA';}
 //SIMBOLOS
 //simbolos de igual 
-"="  					  {console.log('<"=">'+yytext);			return 'IGUAL';}//asignaciones
+"="  					{console.log('<"=">'+yytext);		return 'IGUAL';}//asignaciones
 // relacionales return false o true
-">="    				{console.log('<>=>'+yytext);			return 'MAYOR_IGUAL';}
-"<="    				{console.log('<<=>'+yytext);			return 'MENOR_IGUAL';}
+">="    				{console.log('<>=>'+yytext);		return 'MAYOR_IGUAL';}
+"<="    				{console.log('<<=>'+yytext);		return 'MENOR_IGUAL';}
 "=="    				{console.log('<"==">'+yytext);		return 'IGUAL_IGUAL';}
 {AD}"=" 				{console.log('<{AD}"=">'+yytext);	return 'AD_IGUAL';}
-">"     				{console.log('<">">'+yytext);			return 'MAYOR';}
-"<"     				{console.log('<"<">'+yytext);			return 'MENOR';}
-"~"     				{console.log('<"~">'+yytext);			return 'EQUIVALENCIA';}
+">"     				{console.log('<">">'+yytext);		return 'MAYOR';}
+"<"     				{console.log('<"<">'+yytext);		return 'MENOR';}
+"~"     				{console.log('<"~">'+yytext);		return 'EQUIVALENCIA';}
 //logicos	return false o true
 {AMPERSAND}{AMPERSAND}  {console.log('<"&&">'+yytext);    return 'AND';}
-{NID}{AMPERSAND}    	  {console.log('<"|&">'+yytext);    return 'AD_AND';}
-{NID}{NID}  				    {console.log('<[|][|]>'+yytext);  return 'OR';}
-{AD}    				        {console.log('<!>'+yytext);       return 'AD';}
-"true"    				      {console.log('<true>'+yytext);    return 'TRUE';}
-"false"    				      {console.log('<false>'+yytext);   return 'FALSE';}
+{NID}{AMPERSAND}    	{console.log('<"|&">'+yytext);    return 'AD_AND';}
+{NID}{NID}  			{console.log('<[|][|]>'+yytext);  return 'OR';}
+{AD}    				{console.log('<!>'+yytext);       return 'AD';}
+"true"    				{console.log('<true>'+yytext);    return 'TRUE';}
+"false"    				{console.log('<false>'+yytext);   return 'FALSE';}
 /* ""    {console.log('<>'+yytext);return '';} */
 // PARA 
 "++"  {console.log('<PLUS_PLUS>'+yytext); return 'PLUS_PLUS';}
@@ -68,10 +68,10 @@ TABULACION_REALIZADA \t|[\s][\s][\s][\s]
 //solo para metodos
 "Void"    				{console.log('<"Void">'+yytext);    return 'VOID';}
 //SENTENCIA
-"Si"           {console.log('<"SI">'+yytext);         return 'SI';}
-"Sino"         {console.log('<"SINO">'+yytext);       return 'SINO';}
-"Para"         {console.log('<"PARA">'+yytext);       return 'PARA';}
-"Mientras"     {console.log('<"MIENTRA">'+yytext);    return 'MIENTRA';}
+"Si"          {console.log('<"SI">'+yytext);         return 'SI';}
+"Sino"        {console.log('<"SINO">'+yytext);       return 'SINO';}
+"Para"        {console.log('<"PARA">'+yytext);       return 'PARA';}
+"Mientras"    {console.log('<"MIENTRA">'+yytext);    return 'MIENTRA';}
 "Retorno"     {console.log('<"RETURN">'+yytext);     return 'RETORNO';}
 "Detener"     {console.log('<"BREACK">'+yytext);     return 'BREACK';}
 "Continuar"   {console.log('<"CONTINUAR">'+yytext);  return 'CONTINUAR';}
@@ -153,8 +153,6 @@ variable_global_metodo_reasignacion
     :tipos_variables ID variable_metodo	/* aqui creo variables */ 
     {
       if(metodo){
-        console.log($3);
-        
         let usar_metodo =new Metodo($1,$2,$3.parametros_insertar,$3.nodos_para_metodo);
         tabla.pushListadoMedos(usar_metodo);
         metodo=false;
@@ -240,16 +238,17 @@ secuencia_datos_factorizado
 variable_global
     :varias_declaraciones asignaciones_variable
     {
-    if($1!=undefined){tabla.pushListadoStatico(new Variable($1,$2,tipos_variable_actual));(new Variable($1,$2,tipos_variable_actual)).print();
-    console.log('1----------------'+$1+'----------------'+$2);
+    if(
+    $1!=undefined){tabla.pushListadoStatico(new Variable($1,$2,tipos_variable_actual));(new Variable($1,$2,tipos_variable_actual)).print();
     $$=undefined;
-    }else{console.log('2----------------'+$1+'----------------'+$2);$$=$2;
+    }else{
+        $$=$2;
     }
     }
     ;
 varias_declaraciones
     :COMA ID varias_declaraciones
-    {if($3!=undefined)console.log('------'+$2+'------'+tipos_variable_actual+'------'+$3);$$=$2;}
+    {if($3!=undefined)$$=$2;}
     |{$$=undefined;}/*termina ahi*/
     ;
 reasignacion_varable /* REASIGNACION DE VARIABLE GLOBAL */:ID asignaciones_variable 
