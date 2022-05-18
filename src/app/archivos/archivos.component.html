@@ -64,3 +64,12 @@
 <div class="row">
   <app-console [texto]="textoConsola" > </app-console>
 </div>
+<div class="row">
+  <ng-container *ngFor="let item of listadoText; index as i">
+    <div style="text-align: center;" class="col">
+      <h1 style="text-align: center;">{{i}}</h1>
+      <button (click)="d3(item)"></button>
+    </div>
+  </ng-container>
+  <app-grafica [texto]="grafica"></app-grafica>
+</div>

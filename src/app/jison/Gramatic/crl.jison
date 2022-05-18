@@ -104,366 +104,8 @@ TABULACION_REALIZADA \t|[\s][\s][\s][\s]
 %start inicio
 
 %{
- class Reporte {
-  constructor() {
-    this.texto_salida = "";
-    this.texto_errores = "";
-  }
-  appetTexto_salida(testo) {
-    if (this.acctivar) {
-      this.texto_salida += testo;
-    }
-  }
-  appetTexto_errores(testo) {
-    this.texto_errores += testo;
-  }
-}
-class Metodo{
-  constructor(tipo,id,parametros,nodo){
-    this.tipo = tipo;
-    this.id = id;
-    this.parametros = parametros;
-    this.nodo = nodo;
-  }
-}
-class Variable {
-  constructor(id, valor, tipos) {
-    this.id = id;
-    this.valor = valor;
-    this.tipos = tipos;
-  }
-  setValor(valor) {
-    this.valor = valor;
-  }
-  print() {
-    console.log(
-      "id<" + this.id + ">valor<" + this.valor + ">tipos<" + this.tipos + ">"
-    );
-  }
-}
-class TablaHabito {
-  constructor() {
-    this.incerteza = 0.5;
-    this.listadoStatico = new Array();
-    this.listadoLocal = new Array();
-    this.listadoMetodos = new Array();
-  }
-  /* 
-  @ dato espero un dato objeto tipo nodo
-  */
-  pushListadoMedos(dato) {
-    this.listadoMetodos.push(dato);
-  }
-  /* 
-  @ dato espero un dato objeto tipo variable
-  */
-  pushListadoStatico(dato) {
-    if (this.listadoStatico == undefined || this.listadoStatico == []) {
-      if (!verificacionIDiguales(dato)) {
-        this.listadoStatico.push(dato);
-      }
-    } else {
-      this.listadoStatico.push(dato);
-    }
-  }
-  /* 
-  @ dato espero un dato objeto tipo variable
-  */
-  verificacionIDiguales(dato) {
-    let datoreturnar = busquedaListadoStatico(dato) != undefined;
-    return datoreturnar;
-  }
-  /* 
-  @ dato espero un dato objeto tipo variable
-  */
-  busquedaListadoStatico(dato) {
-    let datoreturnar = undefined;
-    this.listadoStatico.forEach((object) => {
-      if (String(object.id) === String(dato.id)) {
-        object.print();
-        datoreturnar = object;
-        return object;
-      }
-    });
-    return datoreturnar;
-  }
-  /* 
-  @ dato espero un dato objeto tipo number
-  */
-  setInsertesa(dato) {
-    this.incerteza = dato;
-  }
-  /* verificacion de todos lo ingresado */
-  verificacoinListadoEstatico() {
-    for (let index = this.listadoStatico.length - 1; index > -1; index--) {
-      let num = index - 1;
-      if (num > -1) {
-        if (
-          this.listadoStatico[index].tipos == this.listadoStatico[num].tipos &&
-          this.listadoStatico[index].valor == undefined
-        ) {
-          this.listadoStatico[index].setValor(this.listadoStatico[num].valor);
-        }
-      }
-    }
-  }
-}
-
-class ArbolNodo {
-  constructor(nombre, value, fila, columna) {
-    this.nombre = nombre;
-    this.value = value;
-    this.fila = fila;
-    this.columna = columna;
-    this.childs = [];
-  }
-  agregarHijo() {
-    for (var i = 0; i < arguments.length; i++) {
-      this.childs.push(arguments[i]);
-      if (arguments[i] !== undefined) {
-        arguments[i].padre = this;
-      }
-    }
-  }
-  obtenerHijo(pos) {
-    if (pos > this.hijos.length - 1) return undefined;
-    return this.hijos[pos];
-  }
-}
-const TIPOS_VARIALE = {
-  Double: "Double",
-  Boolean: "Boolean",
-  String: "String",
-  Int: "Int",
-  Char: "Char",
-};
-const TIPOS_OPERACION = {
-  POW: "POW",
-  POR: "POR",
-  DIV: "DIV",
-  MOD: "MOD",
-  MAS: "MAS",
-  MEN: "MEN",
-  AND: "AND",
-  AD_AND: "AD_AND",
-  OR: "OR",
-  AD: "AD",
-  MAYOR_IGUAL: "MAYOR_IGUAL",
-  MENOR_IGUAL: "MENOR_IGUAL",
-  IGUAL_IGUAL: "IGUAL_IGUAL",
-  AD_IGUAL: "AD_IGUAL",
-  MAYOR: "MAYOR",
-  MENOR: "MENOR",
-  EQUIVALENCIA: "EQUIVALENCIA",
-};
-
-function convertidor(tipo_actual, dato) {
-  switch (tipo_actual) {
-    case TIPOS_VARIALE.Double:
-    case TIPOS_VARIALE.Int:
-      return Number(dato);
-    case TIPOS_VARIALE.Boolean:
-      return Boolean(dato);
-    case TIPOS_VARIALE.String:
-      return String(dato);
-    case TIPOS_VARIALE.Char:
-      return Char(dato);
-    default:
-      console.log("ERROR");
-      return false;
-  }
-}
-function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
-  switch (tipos_operacion) {
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.POW:
-      switch (tipo_actual) {
-        /* TIPO INT Y DOUBLE */
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Math.pow(primer_dato, segundo_dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.POR:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return primer_dato * segundo_dato;
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.DIV:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return primer_dato / segundo_dato;
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.MOD:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return primer_dato % segundo_dato;
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.MAS:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(primer_dato) + Number(segundo_dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.MEN:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return primer_dato - segundo_dato;
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.AND:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.AD_AND:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.OR:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.AD:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.MAYOR_IGUAL:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.MENOR:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.IGUAL_IGUAL:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.AD_IGUAL:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.MAYOR:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.MENOR:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.EQUIVALENCIA:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    default:
-      console.log("ERROR");
-      return false;
-  }
-}
-class Nodo {
-  constructor(nombre, dato_aguardar) {
-    this.nombre = nombre;
-    this.dato_aguardar = dato_aguardar;
-  }
-}
-let metodo = false;
-let reprotes = new Reporte();
-let tabla = new TablaHabito();
-let tipos_variable_actual = undefined;
-let tipos_metodo_actual = undefined;
-
+    
+ 
 %}
 %%
 /******************inicio de la sintactico********************/
@@ -512,6 +154,7 @@ variable_global_metodo_reasignacion
     {
       if(metodo){
         console.log($3);
+        
         let usar_metodo =new Metodo($1,$2,$3.parametros_insertar,$3.nodos_para_metodo);
         tabla.pushListadoMedos(usar_metodo);
         metodo=false;
@@ -523,6 +166,7 @@ variable_global_metodo_reasignacion
     |VOID ID P_APERTURA parametros_metodo P_CIERRE DOUBLE_PUNTO instrucciones_locales_nodo	
     /* aqui creo metodos */
     {
+        tabla.pushIMAGENES(imprimir($7,$2)); 
     let usar_metodo_incrustar = new Metodo($1,$2,$4,$7);
     tabla.pushListadoMedos(usar_metodo_incrustar);
     }
@@ -670,9 +314,9 @@ instrucciones_locales_nodo
     :TABULADOR_UNO habito_local_nodo instrucciones_locales_nodo
     {
       if($3==undefined){
-        $$= new ArbolNodo("Cuerpo","Cuerpo",this._$.first_line,@1.last_column);$$.agregarHijo($2);
+        $$= new ArbolNodo("Cuerpo","Cuerpo",this._$.first_line,@1.last_column);$$.agregarHijoPrimero($2);
       }else{
-        $3.agregarHijo($2);
+        $3.agregarHijoPrimero($2);
         $$= $3;
       }
     }
@@ -680,9 +324,12 @@ instrucciones_locales_nodo
     ;
 /************************************************************REALIZACION DE HABITOS LOCALES DE UN METODO*******************************/   
 habito_local_nodo
-    :variable_local_nodo/* declaracion de una variable local */{$$= new ArbolNodo("Declaracion","Declaracion",this._$.first_line,@1.last_column);$$.agregarHijo($1);}
-    |usar_varaible_local_nodo/* uso de variables o metodos */{$$= new ArbolNodo("datos_nodorecion","datos_nodorecion",this._$.first_line,@1.last_column);$$.agregarHijo($1);}
-    |sentencias_control/* sentencias de control */{$$= new ArbolNodo("Sentencia","Sentencia",this._$.first_line,@1.last_column);$$.agregarHijo($1);}
+    :variable_local_nodo/* declaracion de una variable local */
+    {$$= new ArbolNodo("Declaracion","Declaracion",this._$.first_line,@1.last_column);$$.agregarHijo($1);}
+    |usar_varaible_local_nodo/* uso de variables o metodos */
+    {$$= new ArbolNodo("Usar","ID",this._$.first_line,@1.last_column);$$.agregarHijo($1);}
+    |sentencias_control/* sentencias de control */
+    {$$=$1;}
     |RETORNO datos_nodo/* si el metodo require returnar algo */{$$= new ArbolNodo("Returnar","Returnar",this._$.first_line,@1.last_column);$$.agregarHijo($2);}
     |BREACK   /* DETENER */ {$$= new ArbolNodo("Detener","Detener",this._$.first_line,@1.last_column);}
     |CONTINUAR          /* CONTINUAR */{$$= new ArbolNodo("Continuar","Continuar",this._$.first_line,@1.last_column);}
@@ -701,41 +348,61 @@ sentencias_control
 habito_sentencia
   :TABULADOR_DOS tabulaciones_nodo habito_sentencia_cuerpo
   {
-$$= new ArbolNodo("habito_sentencia_cuerpo","habito_sentencia_cuerpo",this._$.first_line,@1.last_column);
-$$.agregarHijo($3);
+      if($3!=undefined){
+$$= new ArbolNodo("Cuerpo","Cuerpo",this._$.first_line,@1.last_column);
+    $$.agregarHijo($3);
+      }{
+          $$=$3;
+      }
   }
   |{$$=undefined;}
   ;
 habito_sentencia_cuerpo
   :BREACK   habito_sentencia          
   {
-      $$= new ArbolNodo("habito_sentencia_cuerpo","habito_sentencia_cuerpo",this._$.first_line,@1.last_column);
-      $$.agregarHijo(new ArbolNodo("Detener","Detener",this._$.first_line,@1.last_column));
+       if($2==undefined){
+      $$= new ArbolNodo("Detener","Detener",this._$.first_line,@1.last_column);
+      $$.agregarHijo($1);
+    }else{
+       $2.agregarHijo(new ArbolNodo("Detener","Detener",this._$.first_line,@1.last_column));
+       $$=$2;
+    }
   }
   |CONTINUAR habito_sentencia
   {
-      $$= new ArbolNodo("habito_sentencia_cuerpo","habito_sentencia_cuerpo",this._$.first_line,@1.last_column);
-      $$.agregarHijo(new ArbolNodo("Continuar","Continuar",this._$.first_line,@1.last_column));
+      if($2==undefined){
+      $$= new ArbolNodo("Continuar","Continuar",this._$.first_line,@1.last_column);
+      $$.agregarHijo($1);
+    }else{
+       $2.agregarHijo(new ArbolNodo("Continuar","Continuar",this._$.first_line,@1.last_column));
+       $$=$2;
+    }
   }         
   |RETORNO datos_nodo habito_sentencia
   {
-      $$= new ArbolNodo("habito_sentencia_cuerpo","habito_sentencia_cuerpo",this._$.first_line,@1.last_column);
-      let retunar_nodo = new ArbolNodo("RETORNO","RETORNO",this._$.first_line,@1.last_column)
-      retunar_nodo.agregarHijo($2);
-      $$.agregarHijo(retunar_nodo);
+      if($3==undefined){
+      $$= new ArbolNodo("RETORNO","RETORNO",this._$.first_line,@1.last_column);
+      $$.agregarHijo($2);
+    }else{
+        let agreagar = new ArbolNodo("RETORNO","RETORNO",this._$.first_line,@1.last_column);
+      agreagar.agregarHijo($2);
+       $3.agregarHijo(agreagar);
+       $$=$3;
+    }
   }
   |usar_varaible_local_nodo habito_sentencia
   {
-    if($2===undefined){
-      $$= new ArbolNodo("habito_sentencia_cuerpo","habito_sentencia_cuerpo",this._$.first_line,@1.last_column);
+    if($2==undefined){
+      $$= new ArbolNodo("Usar","ID",this._$.first_line,@1.last_column);
       $$.agregarHijo($1);
     }else{
-       $$.agregarHijo($1);
+       $2.agregarHijo($1);
+       $$=$2;
     }
   }
   |sentencias_control
   {
-  $$= new ArbolNodo("sentencias_control","sentencias_control",this._$.first_line,@1.last_column);
+  $$= $1;
   }
   ;
 /****************************************sentencia para*/
@@ -771,8 +438,9 @@ tipos_variables_nodo//tipos de variables o metodos menos void
 variable_global_nodo/* * */
   :varias_declaraciones_nodo asignaciones_variable_nodo
   {
-    $$= new ArbolNodo("Declarar","Declarar",this._$.first_line,@1.last_column);
-    $$.agregarHijo($1);$$.agregarHijo($2);
+    if($1!=undefined && $2!=undefined)$$= new ArbolNodo("Declarar","Declarar",this._$.first_line,@1.last_column);
+    if($1!=undefined)$$=$1;
+    if($2!=undefined)$$=$2;
   }
   ;
 varias_declaraciones_nodo
@@ -783,38 +451,40 @@ varias_declaraciones_nodo
     ;
 asignaciones_variable_nodo
     :IGUAL datos_nodo 
-    {$$= new ArbolNodo("Asignar","Asignar",this._$.first_line,@1.last_column);$$.agregarHijo($2);
+    {
+        $$= new ArbolNodo("Asignar","Asignar",this._$.first_line,@1.last_column);
+        $$.agregarHijo($2);
     }
     |{$$=undefined;}
     ;
 /* OPEREACIONES NODOS */
 datos_nodo
-    :STRING {$$= new ArbolNodo("datos_nodorecion","datos_nodorecion",this._$.first_line,@1.last_column);$$.agregarHijo(new ArbolNodo("String",$1,this._$.first_line,@1.last_column));}
+    :STRING                                         {$$= new ArbolNodo("Expresion","Expresion",this._$.first_line,@1.last_column);$$.agregarHijo(new ArbolNodo("String",$1,this._$.first_line,@1.last_column));}
     /******************************************************operacion_aritmetica*/
-    |datos_nodo POW datos_nodo  /*POTENCIA*/{$$= new ArbolNodo("datos_nodorecion","datos_nodorecion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Aritm",$2,this._$.first_line,@2.last_column),$3);}       
-    |datos_nodo POR datos_nodo  /*MULTIPLICACION*/{$$= new ArbolNodo("datos_nodorecion","datos_nodorecion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Aritm",$2,this._$.first_line,@2.last_column),$3);}   
-    |datos_nodo DIV datos_nodo  /*DIVISION*/{$$= new ArbolNodo("datos_nodorecion","datos_nodorecion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Aritm",$2,this._$.first_line,@2.last_column),$3);}         
-    |datos_nodo MOD datos_nodo  /*MODULO*/{$$= new ArbolNodo("datos_nodorecion","datos_nodorecion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Aritm",$2,this._$.first_line,@2.last_column),$3);}  
-    |datos_nodo MAS datos_nodo  /*SUMA*/{$$= new ArbolNodo("datos_nodorecion","datos_nodorecion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Aritm",$2,this._$.first_line,@2.last_column),$3);}  
-    |datos_nodo MEN datos_nodo  /*RESTA*/{$$= new ArbolNodo("datos_nodorecion","datos_nodorecion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Aritm",$2,this._$.first_line,@2.last_column),$3);}  
+    |datos_nodo POW datos_nodo  /*POTENCIA*/        {$$= new ArbolNodo("Expresion","Expresion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Aritm",$2,this._$.first_line,@2.last_column),$3);}       
+    |datos_nodo POR datos_nodo  /*MULTIPLICACION*/  {$$= new ArbolNodo("Expresion","Expresion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Aritm",$2,this._$.first_line,@2.last_column),$3);}   
+    |datos_nodo DIV datos_nodo  /*DIVISION*/        {$$= new ArbolNodo("Expresion","Expresion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Aritm",$2,this._$.first_line,@2.last_column),$3);}         
+    |datos_nodo MOD datos_nodo  /*MODULO*/          {$$= new ArbolNodo("Expresion","Expresion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Aritm",$2,this._$.first_line,@2.last_column),$3);}  
+    |datos_nodo MAS datos_nodo  /*SUMA*/            {$$= new ArbolNodo("Expresion","Expresion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Aritm",$2,this._$.first_line,@2.last_column),$3);}  
+    |datos_nodo MEN datos_nodo  /*RESTA*/           {$$= new ArbolNodo("Expresion","Expresion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Aritm",$2,this._$.first_line,@2.last_column),$3);}  
     /******************************************************operacion_logica*/
-    |datos_nodo AND datos_nodo      /*&&*/{$$= new ArbolNodo("datos_nodorecion","datos_nodorecion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Logica",$2,this._$.first_line,@2.last_column),$3);}  
-    |datos_nodo AD_AND datos_nodo   /*!&*/{$$= new ArbolNodo("datos_nodorecion","datos_nodorecion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Logica",$2,this._$.first_line,@2.last_column),$3);}  
-    |datos_nodo OR datos_nodo       /*||*/{$$= new ArbolNodo("datos_nodorecion","datos_nodorecion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Logica",$2,this._$.first_line,@2.last_column),$3);}  
-    |datos_nodo AD datos_nodo       /*!*/{$$= new ArbolNodo("datos_nodorecion","datos_nodorecion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Logica",$2,this._$.first_line,@2.last_column),$3);}  
+    |datos_nodo AND datos_nodo      /*&&*/          {$$= new ArbolNodo("Expresion","Expresion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Logica",$2,this._$.first_line,@2.last_column),$3);}  
+    |datos_nodo AD_AND datos_nodo   /*!&*/          {$$= new ArbolNodo("Expresion","Expresion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Logica",$2,this._$.first_line,@2.last_column),$3);}  
+    |datos_nodo OR datos_nodo       /*||*/          {$$= new ArbolNodo("Expresion","Expresion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Logica",$2,this._$.first_line,@2.last_column),$3);}  
+    |datos_nodo AD datos_nodo       /*!*/           {$$= new ArbolNodo("Expresion","Expresion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Logica",$2,this._$.first_line,@2.last_column),$3);}  
     /******************************************************operacion_relacionales*/
-    |datos_nodo MAYOR_IGUAL datos_nodo     /*>=*/{$$= new ArbolNodo("datos_nodorecion","datos_nodorecion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Relacional",$2,this._$.first_line,@2.last_column),$3);}  
-    |datos_nodo MENOR_IGUAL datos_nodo     /*<=*/{$$= new ArbolNodo("datos_nodorecion","datos_nodorecion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Relacional",$2,this._$.first_line,@2.last_column),$3);}  
-    |datos_nodo IGUAL_IGUAL datos_nodo     /*==*/{$$= new ArbolNodo("datos_nodorecion","datos_nodorecion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Relacional",$2,this._$.first_line,@2.last_column),$3);}  
-    |datos_nodo AD_IGUAL datos_nodo        /*!=*/{$$= new ArbolNodo("datos_nodorecion","datos_nodorecion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Relacional",$2,this._$.first_line,@2.last_column),$3);}  
-    |datos_nodo MAYOR datos_nodo  /*>*/{$$= new ArbolNodo("datos_nodorecion","datos_nodorecion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Relacional",$2,this._$.first_line,@2.last_column),$3);}  
-    |datos_nodo MENOR datos_nodo  /*<*/{$$= new ArbolNodo("datos_nodorecion","datos_nodorecion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Relacional",$2,this._$.first_line,@2.last_column),$3);}  
-    |datos_nodo EQUIVALENCIA datos_nodo    /*~*/{$$= new ArbolNodo("datos_nodorecion","datos_nodorecion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Relacional",$2,this._$.first_line,@2.last_column),$3);}  
-    |P_APERTURA  datos_nodo P_CIERRE {$$=$2;}
-    |NUMERO  {$$= new ArbolNodo("datos_nodorecion","datos_nodorecion",this._$.first_line,@1.last_column);$$.agregarHijo(new ArbolNodo("Number",$1,this._$.first_line,@1.last_column));}
-    |boolean_nodo {$$= new ArbolNodo("datos_nodorecion","datos_nodorecion",this._$.first_line,@1.last_column);$$.agregarHijo(new ArbolNodo("Boolean",$1,this._$.first_line,@1.last_column));}
-    |usar_varaible_nodo /* VARAIBLE */{$$= new ArbolNodo("datos_nodorecion","datos_nodorecion",this._$.first_line,@1.last_column);$$.agregarHijo(new ArbolNodo("User",$1,this._$.first_line,@1.last_column));}
-    |valores_chart_nodo {$$= new ArbolNodo("datos_nodorecion","datos_nodorecion",this._$.first_line,@1.last_column);$$.agregarHijo(new ArbolNodo("Char",$1,this._$.first_line,@1.last_column));}
+    |datos_nodo MAYOR_IGUAL datos_nodo     /*>=*/   {$$= new ArbolNodo("Expresion","Expresion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Relacional",$2,this._$.first_line,@2.last_column),$3);}  
+    |datos_nodo MENOR_IGUAL datos_nodo     /*<=*/   {$$= new ArbolNodo("Expresion","Expresion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Relacional",$2,this._$.first_line,@2.last_column),$3);}  
+    |datos_nodo IGUAL_IGUAL datos_nodo     /*==*/   {$$= new ArbolNodo("Expresion","Expresion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Relacional",$2,this._$.first_line,@2.last_column),$3);}  
+    |datos_nodo AD_IGUAL datos_nodo        /*!=*/   {$$= new ArbolNodo("Expresion","Expresion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Relacional",$2,this._$.first_line,@2.last_column),$3);}  
+    |datos_nodo MAYOR datos_nodo  /*>*/             {$$= new ArbolNodo("Expresion","Expresion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Relacional",$2,this._$.first_line,@2.last_column),$3);}  
+    |datos_nodo MENOR datos_nodo  /*<*/             {$$= new ArbolNodo("Expresion","Expresion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Relacional",$2,this._$.first_line,@2.last_column),$3);}  
+    |datos_nodo EQUIVALENCIA datos_nodo    /*~*/    {$$= new ArbolNodo("Expresion","Expresion",this._$.first_line,@2.last_column);$$.agregarHijo($1,new ArbolNodo("Relacional",$2,this._$.first_line,@2.last_column),$3);}  
+    |P_APERTURA  datos_nodo P_CIERRE                {$$=$2;}
+    |NUMERO                                         {$$= new ArbolNodo("Expresion","Expresion",this._$.first_line,@1.last_column);$$.agregarHijo(new ArbolNodo("Number",$1,this._$.first_line,@1.last_column));}
+    |boolean_nodo                                   {$$= new ArbolNodo("Expresion","Expresion",this._$.first_line,@1.last_column);$$.agregarHijo(new ArbolNodo("Boolean",$1,this._$.first_line,@1.last_column));}
+    |usar_varaible_nodo /* VARAIBLE */              {$$= new ArbolNodo("Expresion","Expresion",this._$.first_line,@1.last_column);$$.agregarHijo($1);}
+    |valores_chart_nodo                             {$$= new ArbolNodo("Expresion","Expresion",this._$.first_line,@1.last_column);$$.agregarHijo(new ArbolNodo("Char",$1,this._$.first_line,@1.last_column));}
     ;
 valores_chart_nodo
     :DATO_CHAR {$$=yytext;}
@@ -825,27 +495,51 @@ boolean_nodo
     ;
 usar_varaible_nodo
     :ID usar_varaible_factorizacion_nodo 
-    {if($2!=undefined){  $$= new ArbolNodo("Metodo",$1,this._$.first_line,@1.last_column);  $$.agregarHijo($2);}else{  $$=new ArbolNodo("Variable",$1,this._$.first_line,@1.last_column);}
+    {   if($2!=undefined){  
+        $$= new ArbolNodo("Metodo",$1,this._$.first_line,@1.last_column);  
+        $$.agregarHijo($2);
+        }else{
+        $$=new ArbolNodo("Variable",$1,this._$.first_line,@1.last_column);
+        }
     }
     ;
 usar_varaible_factorizacion_nodo
     :usar_varaible_factorizacion_literal_nodo{$$=$1;}
-    |/*importante ya que tamien el datos usa esto de usar_variable*/ {/* VARIABLE */}
+    |/*importante ya que tamien el datos usa esto de usar_variable*/ {$$=undefined;}
     ;
 usar_varaible_factorizacion_literal_nodo
-    :P_APERTURA secuencia_datos_nodo P_CIERRE /* METODO PARAMETROS */{$$= new ArbolNodo("Secuencia","Secuencia",this._$.first_line,@1.last_column);$$.agregarHijo($2);
+    :P_APERTURA secuencia_datos_nodo P_CIERRE /* METODO PARAMETROS */
+    {
+        $$=new ArbolNodo("Ingresar","Ingresar",this._$.first_line,@1.last_column);
+        if($2!=undefined){
+        $$.agregarHijo($2);
+        }
     }
-    |PUNTO usar_varaible_nodo /* SE DEBERIA ID.ID REFERENCIA DE UN OBJETO */;
+    /* |PUNTO usar_varaible_nodo /* SE DEBERIA ID.ID REFERENCIA DE UN OBJETO */ */
+    ;
 secuencia_datos_nodo
     :datos_nodo secuencia_datos_factorizado_nodo
     {
-      $$= new ArbolNodo("Secuencia",$1,this._$.first_line,@1.last_column);$$.agregarHijo($2);
+        if($2===undefined){
+            $$= new ArbolNodo("Parametro","Parametro",this._$.first_line,@1.last_column);
+            $$.agregarHijo($1);
+        }else{
+            $2.agregarHijo($1);
+            $$=$2;
+        }
     }
     |{$$=undefined;}
     ;
 secuencia_datos_factorizado_nodo
     :COMA datos_nodo secuencia_datos_factorizado_nodo
-    {$$= new ArbolNodo("Secuencia",$2,this._$.first_line,@1.last_column);$$.agregarHijo($3);
+    {
+        if($3===undefined){
+            $$= new ArbolNodo("Secuencia",$2,this._$.first_line,@1.last_column);
+            $$.agregarHijo($2);
+        }else{
+            $3.agregarHijo($2);
+            $$=$3;
+        }
     }
-    |
+    |{$$=undefined;}
     ;

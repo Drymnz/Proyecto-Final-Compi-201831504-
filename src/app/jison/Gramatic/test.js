@@ -12,8 +12,8 @@ class Reporte {
     this.texto_errores += testo;
   }
 }
-class Metodo{
-  constructor(tipo,id,parametros,nodo){
+class Metodo {
+  constructor(tipo, id, parametros, nodo) {
     this.tipo = tipo;
     this.id = id;
     this.parametros = parametros;
@@ -41,6 +41,13 @@ class TablaHabito {
     this.listadoStatico = new Array();
     this.listadoLocal = new Array();
     this.listadoMetodos = new Array();
+    this.IMAGENES = new Array();
+  }
+  /* 
+  @ dato espero un dato objeto tipo nodo
+  */
+  pushIMAGENES(dato) {
+    this.IMAGENES.push(dato);
   }
   /* 
   @ dato espero un dato objeto tipo nodo
@@ -119,11 +126,20 @@ class ArbolNodo {
       }
     }
   }
+  agregarHijoPrimero() {
+    for (var i = 0; i < arguments.length; i++) {
+      this.childs.unshift(arguments[i]);
+      if (arguments[i] !== undefined) {
+        arguments[i].padre = this;
+      }
+    }
+  }
   obtenerHijo(pos) {
     if (pos > this.hijos.length - 1) return undefined;
     return this.hijos[pos];
   }
 }
+
 const TIPOS_VARIALE = {
   Double: "Double",
   Boolean: "Boolean",
@@ -346,14 +362,45 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
       return false;
   }
 }
-class Nodo {
-  constructor(nombre, dato_aguardar) {
-    this.nombre = nombre;
-    this.dato_aguardar = dato_aguardar;
-  }
-}
 let metodo = false;
 let reprotes = new Reporte();
 let tabla = new TablaHabito();
 let tipos_variable_actual = undefined;
 let tipos_metodo_actual = undefined;
+function imprimir(raiz, name_metodo) {
+  var texto = "";
+  var contador = 1;
+  texto += "digraph {";
+  texto += '\nNode0[label="' + escapar("Metodo" + " | " + String(name_metodo)) + '"];\n';
+
+  recorrido("Node0", raiz);
+
+  texto += "}";
+  return texto;
+
+  function recorrido(padre,hijos){
+    if(hijos === undefined || hijos === null) return;
+    if(typeof hijos=="string")return;
+    hijos.childs.forEach(nodito=> {
+      if(typeof nodito.nombre=="undefined")return;
+      let nombrehijo="Node"+contador;
+      texto+=nombrehijo+"[label=\"" + escapar(String(nodito.nombre) +" | "+String(nodito.value)) + "\"];\n";
+      texto+=padre+"->"+nombrehijo+";\n";
+      contador++;
+      recorrido(nombrehijo,nodito);
+    })
+  }
+
+  function escapar(cadena) {
+    cadena = cadena.replace("{", " ");
+    cadena = cadena.replace('}', ' ');
+    cadena = cadena.replace('\"', ' ');
+    cadena = cadena.replace('\"', ' ');
+    cadena = cadena.replace('\"', ' ');
+    cadena = cadena.replace('\"', ' ');
+    cadena = cadena.replace('\"', ' ');
+    cadena = cadena.replace('\"', ' ');
+    cadena = cadena.replace('\"', ' ');
+    return cadena;
+  }
+}

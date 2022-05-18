@@ -33,7 +33,8 @@
             ],
             "scripts": [
               "src/app/jison/Importaciones/importaciones.js",
-              "src/app/jison/Gramatic/crl.js"
+              "src/app/jison/Gramatic/crl.js",
+              "src/app/jison/viz.js"
             ]
           },
           "configurations": {

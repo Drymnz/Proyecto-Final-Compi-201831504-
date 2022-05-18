@@ -10,7 +10,8 @@ import { IdeComponent } from './ide/ide.component';
 import { ReportComponent } from './report/report.component';
 import { ImageCollectionComponent } from './image-collection/image-collection.component';
 import { ConsoleComponent } from './console/console.component';
-import { FormsModule,ReactiveFormsModule } from '@angular/forms';//investigar para usar formularios
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { GraficaComponent } from './grafica/grafica.component';//investigar para usar formularios
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';//investigar pa
     ReportComponent,
     ImageCollectionComponent,
     ConsoleComponent,
+    GraficaComponent,
   ],
   imports: [
     BrowserModule,

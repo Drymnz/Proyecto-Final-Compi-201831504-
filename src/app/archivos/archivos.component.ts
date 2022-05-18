@@ -13,12 +13,15 @@ export class ArchivosComponent implements OnInit {
   private TEXTO_ERROR_IMPORTACION: string = 'Verifique que exista este archivo -->> ';
   textConador: string = '1';
   listadoFiles: Array<RegistroDocumentoes> = [];
+  listadoText: Array<RegistroDocumentoes> = [];
   private contador: number = 1;
   private possicion: number = 0;
   private nombre_archivo_defoul: string = 'file';
   private extencion: string = '.crl';
+  private ruta:string = 'https://dreampuf.github.io/GraphvizOnline/#digraph%20G%20%7B%0A%0A%20%20subgraph%20cluster_0%20%7B%0A%20%20%20%20style%3Dfilled%3B%0A%20%20%20%20color%3Dlightgrey%3B%0A%20%20%20%20node%20%5Bstyle%3Dfilled%2Ccolor%3Dwhite%5D%3B%0A%20%20%20%20a0%20-%3E%20a1%20-%3E%20a2%20-%3E%20a3%3B%0A%20%20%20%20label%20%3D%20%22process%20%231%22%3B%0A%20%20%7D%0A%0A%20%20subgraph%20cluster_1%20%7B%0A%20%20%20%20node%20%5Bstyle%3Dfilled%5D%3B%0A%20%20%20%20b0%20-%3E%20b1%20-%3E%20b2%20-%3E%20b3%3B%0A%20%20%20%20label%20%3D%20%22process%20%232%22%3B%0A%20%20%20%20color%3Dblue%0A%20%20%7D%0A%20%20start%20-%3E%20a0%3B%0A%20%20start%20-%3E%20b0%3B%0A%20%20a1%20-%3E%20b3%3B%0A%20%20b2%20-%3E%20a3%3B%0A%20%20a3%20-%3E%20a0%3B%0A%20%20a3%20-%3E%20end%3B%0A%20%20b3%20-%3E%20end%3B%0A%0A%20%20start%20%5Bshape%3DMdiamond%5D%3B%0A%20%20end%20%5Bshape%3DMsquare%5D%3B%0A%7D';
   textArea!: any;
   textoConsola!: any;
+  grafica!:any;
   private textoFinalUsar: String = '';
 
   //constructor
@@ -157,29 +160,8 @@ export class ArchivosComponent implements OnInit {
     this.soloActuliza ();
   }
   /*SINCRONIZAR SCROLL*/
-  //compilar
-  compilar() {
-    this.textoFinalUsar= ' ';
-    if (this.textArea) {
-      let datos: any = importaciones.parse(String(this.textArea)); //analisara la parte de importaciones
-      if (datos) {
-        /* console.log(datos.array_importaciiones); */
-        if (this.importaciones(datos.array_importaciiones)) {
-          // verifica que existe el archivo a importar
-          this.textoFinalUsar += datos.texto_salida;
-          console.log(this.textoFinalUsar);
-          let final: any = crl.parse(String(this.textoFinalUsar)); //analisara la parte de importaciones
-          console.log(final)
-          /* if (final.texto_errores != undefined) {
-            this.textoConsola = 'Resultado' + datos.texto_salida;
-          } else {
-            this.textoConsola = 'Errores' + String(datos.texto_errores);
-          } */
-        }
-        //console.log(this.textoFinalUsar)
-      }
-    }
-  }
+  
+  
   /* 
   @array pide un array
   @return un verdadero si existe el archivo en listado de archivos
@@ -210,5 +192,34 @@ export class ArchivosComponent implements OnInit {
       return true;
     }
     return true;
+  }
+  d3(texto:any) {
+    console.log(texto);
+    this.grafica = this.ruta+texto;
+  }
+  //compilar
+  compilar() {
+    this.textoFinalUsar= ' ';
+    if (this.textArea) {
+      let datos: any = importaciones.parse(String(this.textArea)); //analisara la parte de importaciones
+      if (datos) {
+        
+        /* console.log(datos.array_importaciiones); */
+        if (this.importaciones(datos.array_importaciiones)) {
+          // verifica que existe el archivo a importar
+          this.textoFinalUsar += datos.texto_salida;
+          console.log(this.textoFinalUsar);
+          let final: any = crl.parse(String(this.textoFinalUsar)); //analisara la parte de importaciones
+          console.log(final)
+          this.listadoText = final.IMAGENES;
+          /* if (final.texto_errores != undefined) {
+            this.textoConsola = 'Resultado' + datos.texto_salida;
+          } else {
+            this.textoConsola = 'Errores' + String(datos.texto_errores);
+          } */
+        }
+        //console.log(this.textoFinalUsar)
+      }
+    }
   }
 }
