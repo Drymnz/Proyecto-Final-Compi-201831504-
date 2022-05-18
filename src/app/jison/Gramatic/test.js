@@ -257,7 +257,7 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
             if (segundo_dato === "true") {
               segundo_dato = 1;
             } else if (segundo_dato === "false") {
-              segundo_dato -= 0;
+              segundo_dato = 0;
             }
             return Math.pow(Number(primer_dato), Number(segundo_dato));
           default:
@@ -271,6 +271,18 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
           case TIPOS_VARIALE.Int:
           case TIPOS_VARIALE.Char:
             return primer_dato * segundo_dato;
+          case TIPOS_VARIALE.Boolean:
+            if (primer_dato === "true") {
+              primer_dato = 1;
+            } else if (primer_dato === "false") {
+              primer_dato = 0;
+            }
+            if (segundo_dato === "true") {
+              segundo_dato = 1;
+            } else if (segundo_dato === "false") {
+              segundo_dato = 0;
+            }
+            return primer_dato * segundo_dato;
           default:
             reprotes.texto_errores("El castin esta incorecto");
             return false;
@@ -281,6 +293,18 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
           case TIPOS_VARIALE.Double:
           case TIPOS_VARIALE.Int:
           case TIPOS_VARIALE.Char:
+            return primer_dato / segundo_dato;
+          case TIPOS_VARIALE.Boolean:
+            if (primer_dato === "true") {
+              primer_dato = 1;
+            } else if (primer_dato === "false") {
+              primer_dato = 0;
+            }
+            if (segundo_dato === "true") {
+              segundo_dato = 1;
+            } else if (segundo_dato === "false") {
+              segundo_dato = 0;
+            }
             return primer_dato / segundo_dato;
           default:
             reprotes.texto_errores("El castin esta incorecto");
@@ -293,6 +317,18 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
           case TIPOS_VARIALE.Int:
           case TIPOS_VARIALE.Char:
             return primer_dato % segundo_dato;
+          case TIPOS_VARIALE.Boolean:
+            if (primer_dato === "true") {
+              primer_dato = 1;
+            } else if (primer_dato === "false") {
+              primer_dato = 0;
+            }
+            if (segundo_dato === "true") {
+              segundo_dato = 1;
+            } else if (segundo_dato === "false") {
+              segundo_dato = 0;
+            }
+            return primer_dato % segundo_dato;
           default:
             reprotes.texto_errores("El castin esta incorecto");
             return false;
@@ -303,6 +339,18 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
           case TIPOS_VARIALE.Double:
           case TIPOS_VARIALE.Int:
           case TIPOS_VARIALE.Char:
+            return Number(primer_dato) + Number(segundo_dato);
+          case TIPOS_VARIALE.Boolean:
+            if (primer_dato === "true") {
+              primer_dato = 1;
+            } else if (primer_dato === "false") {
+              primer_dato = 0;
+            }
+            if (segundo_dato === "true") {
+              segundo_dato = 1;
+            } else if (segundo_dato === "false") {
+              segundo_dato = 0;
+            }
             return Number(primer_dato) + Number(segundo_dato);
           default:
             reprotes.texto_errores("El castin esta incorecto");
@@ -315,6 +363,18 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
           case TIPOS_VARIALE.Int:
           case TIPOS_VARIALE.Char:
             return Number(primer_dato) - Number(segundo_dato);
+          case TIPOS_VARIALE.Boolean:
+            if (primer_dato === "true") {
+              primer_dato = 1;
+            } else if (primer_dato === "false") {
+              primer_dato = 0;
+            }
+            if (segundo_dato === "true") {
+              segundo_dato = 1;
+            } else if (segundo_dato === "false") {
+              segundo_dato = 0;
+            }
+            return Number(primer_dato) - Number(segundo_dato);
           default:
             reprotes.texto_errores("El castin esta incorecto");
             return false;
@@ -322,6 +382,7 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
       /* segun el tipo de operacion realizar la forma */
       case TIPOS_OPERACION.AND:
         return primer_dato && segundo_dato;
+      /* segun el tipo de operacion realizar la forma */
       case TIPOS_OPERACION.AD_AND:
         return primer_dato || segundo_dato;
       /* segun el tipo de operacion realizar la forma */
@@ -329,13 +390,13 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
         return primer_dato || segundo_dato;
       /* segun el tipo de operacion realizar la forma */
       case TIPOS_OPERACION.AD:
-        return  ! segundo_dato;
+        return !segundo_dato;
       /* segun el tipo de operacion realizar la forma */
       case TIPOS_OPERACION.MAYOR_IGUAL:
         return primer_dato >= segundo_dato;
       /* segun el tipo de operacion realizar la forma */
-      case TIPOS_OPERACION.MENOR:
-        return primer_dato < segundo_dato;
+      case TIPOS_OPERACION.MENOR_IGUAL:
+        return primer_dato <= segundo_dato;
       /* segun el tipo de operacion realizar la forma */
       case TIPOS_OPERACION.IGUAL_IGUAL:
         return primer_dato === segundo_dato;

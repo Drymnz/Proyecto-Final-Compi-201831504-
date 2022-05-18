@@ -3300,7 +3300,7 @@ var crl = (function () {
               if (segundo_dato === "true") {
                 segundo_dato = 1;
               } else if (segundo_dato === "false") {
-                segundo_dato -= 0;
+                segundo_dato = 0;
               }
               return Math.pow(Number(primer_dato), Number(segundo_dato));
             default:
@@ -3314,6 +3314,18 @@ var crl = (function () {
             case TIPOS_VARIALE.Int:
             case TIPOS_VARIALE.Char:
               return primer_dato * segundo_dato;
+            case TIPOS_VARIALE.Boolean:
+              if (primer_dato === "true") {
+                primer_dato = 1;
+              } else if (primer_dato === "false") {
+                primer_dato = 0;
+              }
+              if (segundo_dato === "true") {
+                segundo_dato = 1;
+              } else if (segundo_dato === "false") {
+                segundo_dato = 0;
+              }
+              return primer_dato * segundo_dato;
             default:
               reprotes.texto_errores("El castin esta incorecto");
               return false;
@@ -3324,6 +3336,18 @@ var crl = (function () {
             case TIPOS_VARIALE.Double:
             case TIPOS_VARIALE.Int:
             case TIPOS_VARIALE.Char:
+              return primer_dato / segundo_dato;
+            case TIPOS_VARIALE.Boolean:
+              if (primer_dato === "true") {
+                primer_dato = 1;
+              } else if (primer_dato === "false") {
+                primer_dato = 0;
+              }
+              if (segundo_dato === "true") {
+                segundo_dato = 1;
+              } else if (segundo_dato === "false") {
+                segundo_dato = 0;
+              }
               return primer_dato / segundo_dato;
             default:
               reprotes.texto_errores("El castin esta incorecto");
@@ -3336,6 +3360,18 @@ var crl = (function () {
             case TIPOS_VARIALE.Int:
             case TIPOS_VARIALE.Char:
               return primer_dato % segundo_dato;
+            case TIPOS_VARIALE.Boolean:
+              if (primer_dato === "true") {
+                primer_dato = 1;
+              } else if (primer_dato === "false") {
+                primer_dato = 0;
+              }
+              if (segundo_dato === "true") {
+                segundo_dato = 1;
+              } else if (segundo_dato === "false") {
+                segundo_dato = 0;
+              }
+              return primer_dato % segundo_dato;
             default:
               reprotes.texto_errores("El castin esta incorecto");
               return false;
@@ -3346,6 +3382,18 @@ var crl = (function () {
             case TIPOS_VARIALE.Double:
             case TIPOS_VARIALE.Int:
             case TIPOS_VARIALE.Char:
+              return Number(primer_dato) + Number(segundo_dato);
+            case TIPOS_VARIALE.Boolean:
+              if (primer_dato === "true") {
+                primer_dato = 1;
+              } else if (primer_dato === "false") {
+                primer_dato = 0;
+              }
+              if (segundo_dato === "true") {
+                segundo_dato = 1;
+              } else if (segundo_dato === "false") {
+                segundo_dato = 0;
+              }
               return Number(primer_dato) + Number(segundo_dato);
             default:
               reprotes.texto_errores("El castin esta incorecto");
@@ -3358,6 +3406,18 @@ var crl = (function () {
             case TIPOS_VARIALE.Int:
             case TIPOS_VARIALE.Char:
               return Number(primer_dato) - Number(segundo_dato);
+            case TIPOS_VARIALE.Boolean:
+              if (primer_dato === "true") {
+                primer_dato = 1;
+              } else if (primer_dato === "false") {
+                primer_dato = 0;
+              }
+              if (segundo_dato === "true") {
+                segundo_dato = 1;
+              } else if (segundo_dato === "false") {
+                segundo_dato = 0;
+              }
+              return Number(primer_dato) - Number(segundo_dato);
             default:
               reprotes.texto_errores("El castin esta incorecto");
               return false;
@@ -3365,6 +3425,7 @@ var crl = (function () {
         /* segun el tipo de operacion realizar la forma */
         case TIPOS_OPERACION.AND:
           return primer_dato && segundo_dato;
+        /* segun el tipo de operacion realizar la forma */
         case TIPOS_OPERACION.AD_AND:
           return primer_dato || segundo_dato;
         /* segun el tipo de operacion realizar la forma */
@@ -3377,8 +3438,8 @@ var crl = (function () {
         case TIPOS_OPERACION.MAYOR_IGUAL:
           return primer_dato >= segundo_dato;
         /* segun el tipo de operacion realizar la forma */
-        case TIPOS_OPERACION.MENOR:
-          return primer_dato < segundo_dato;
+        case TIPOS_OPERACION.MENOR_IGUAL:
+          return primer_dato <= segundo_dato;
         /* segun el tipo de operacion realizar la forma */
         case TIPOS_OPERACION.IGUAL_IGUAL:
           return primer_dato === segundo_dato;
@@ -3886,27 +3947,27 @@ var crl = (function () {
             break;
           case 14:
             console.log("<>=>" + yy_.yytext);
-            return 56;
+            return 56; /*  */
             break;
           case 15:
             console.log("<<=>" + yy_.yytext);
-            return 57;
+            return 57; /*  */
             break;
           case 16:
             console.log('<"==">' + yy_.yytext);
-            return 58;
+            return 58; /*  */
             break;
           case 17:
             console.log('<{AD}"=">' + yy_.yytext);
-            return 59;
+            return 59; /*  */
             break;
           case 18:
             console.log('<">">' + yy_.yytext);
-            return 60;
+            return 60; /*  */
             break;
           case 19:
             console.log('<"<">' + yy_.yytext);
-            return 61;
+            return 61; /*  */
             break;
           case 20:
             console.log('<"~">' + yy_.yytext);
@@ -3914,19 +3975,19 @@ var crl = (function () {
             break;
           case 21:
             console.log('<"&&">' + yy_.yytext);
-            return 52;
+            return 52; /*  */
             break;
           case 22:
             console.log('<"|&">' + yy_.yytext);
-            return 53;
+            return 53; /*  */
             break;
           case 23:
             console.log("<[|][|]>" + yy_.yytext);
-            return 54;
+            return 54; /*  */
             break;
           case 24:
             console.log("<!>" + yy_.yytext);
-            return 55;
+            return 55; /*  */
             break;
           case 25:
             console.log("<true>" + yy_.yytext);
@@ -3946,27 +4007,27 @@ var crl = (function () {
             break;
           case 29:
             console.log('<"-">' + yy_.yytext);
-            return 20;
+            return 20; /*  */
             break;
           case 30:
             console.log('<"^">' + yy_.yytext);
-            return 15;
+            return 15; /*  */
             break;
           case 31:
             console.log('<"*">' + yy_.yytext);
-            return 16;
+            return 16; /*  */
             break;
           case 32:
             console.log('<"/">' + yy_.yytext);
-            return 17;
+            return 17; /*  */
             break;
           case 33:
             console.log('<"%">' + yy_.yytext);
-            return 18;
+            return 18; /*  */
             break;
           case 34:
             console.log('<"+">' + yy_.yytext);
-            return 19;
+            return 19; /* *** */
             break;
           case 35:
             console.log("<[(]>" + yy_.yytext);

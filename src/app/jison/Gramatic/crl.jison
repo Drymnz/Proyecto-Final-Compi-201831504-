@@ -27,30 +27,30 @@ TABULACION_REALIZADA \t|[\s][\s][\s][\s]
 //simbolos de igual 
 "="  					{console.log('<"=">'+yytext);		return 'IGUAL';}//asignaciones
 // relacionales return false o true
-">="    				{console.log('<>=>'+yytext);		return 'MAYOR_IGUAL';}
-"<="    				{console.log('<<=>'+yytext);		return 'MENOR_IGUAL';}
-"=="    				{console.log('<"==">'+yytext);		return 'IGUAL_IGUAL';}
-{AD}"=" 				{console.log('<{AD}"=">'+yytext);	return 'AD_IGUAL';}
-">"     				{console.log('<">">'+yytext);		return 'MAYOR';}
-"<"     				{console.log('<"<">'+yytext);		return 'MENOR';}
+">="    				{console.log('<>=>'+yytext);		return 'MAYOR_IGUAL';/*  */}
+"<="    				{console.log('<<=>'+yytext);		return 'MENOR_IGUAL';/*  */}
+"=="    				{console.log('<"==">'+yytext);		return 'IGUAL_IGUAL';/*  */}
+{AD}"=" 				{console.log('<{AD}"=">'+yytext);	return 'AD_IGUAL';/*  */}
+">"     				{console.log('<">">'+yytext);		return 'MAYOR';/*  */}
+"<"     				{console.log('<"<">'+yytext);		return 'MENOR';/*  */}
 "~"     				{console.log('<"~">'+yytext);		return 'EQUIVALENCIA';}
 //logicos	return false o true
-{AMPERSAND}{AMPERSAND}  {console.log('<"&&">'+yytext);    return 'AND';}
-{NID}{AMPERSAND}    	{console.log('<"|&">'+yytext);    return 'AD_AND';}
-{NID}{NID}  			{console.log('<[|][|]>'+yytext);  return 'OR';}
-{AD}    				{console.log('<!>'+yytext);       return 'AD';}
+{AMPERSAND}{AMPERSAND}  {console.log('<"&&">'+yytext);    return 'AND';/*  */}
+{NID}{AMPERSAND}    	{console.log('<"|&">'+yytext);    return 'AD_AND';/*  */}
+{NID}{NID}  			{console.log('<[|][|]>'+yytext);  return 'OR';/*  */}
+{AD}    				{console.log('<!>'+yytext);       return 'AD';/*  */}
 "true"    				{console.log('<true>'+yytext);    return 'TRUE';}
 "false"    				{console.log('<false>'+yytext);   return 'FALSE';}
 // PARA 
 "++"  {console.log('<PLUS_PLUS>'+yytext); return 'PLUS_PLUS';}
 "--"  {console.log('<LESS_LESS>'+yytext); return 'LESS_LESS';}
 //aritmetico
-"-" 					{console.log('<"-">'+yytext);return 'MEN';}
-"^" 					{console.log('<"^">'+yytext);return 'POW';}
-"*" 					{console.log('<"*">'+yytext);return 'POR';}
-"/" 					{console.log('<"/">'+yytext);return 'DIV';}
-"%" 					{console.log('<"%">'+yytext);return 'MOD';}
-"+" 					{console.log('<"+">'+yytext);return 'MAS';}
+"-" 					{console.log('<"-">'+yytext);return 'MEN';/*  */}
+"^" 					{console.log('<"^">'+yytext);return 'POW';/*  */}
+"*" 					{console.log('<"*">'+yytext);return 'POR';/*  */}
+"/" 					{console.log('<"/">'+yytext);return 'DIV';/*  */}
+"%" 					{console.log('<"%">'+yytext);return 'MOD';/*  */}
+"+" 					{console.log('<"+">'+yytext);return 'MAS';/* *** */}
 //agrupacion
 [(]     				{console.log('<[(]>'+yytext);return 'P_APERTURA';}
 ")"     				{console.log('<[)]>'+yytext);return 'P_CIERRE';}
@@ -362,7 +362,7 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
             if (segundo_dato === "true") {
               segundo_dato = 1;
             } else if (segundo_dato === "false") {
-              segundo_dato -= 0;
+              segundo_dato = 0;
             }
             return Math.pow(Number(primer_dato), Number(segundo_dato));
           default:
@@ -376,6 +376,18 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
           case TIPOS_VARIALE.Int:
           case TIPOS_VARIALE.Char:
             return primer_dato * segundo_dato;
+          case TIPOS_VARIALE.Boolean:
+            if (primer_dato === "true") {
+              primer_dato = 1;
+            } else if (primer_dato === "false") {
+              primer_dato = 0;
+            }
+            if (segundo_dato === "true") {
+              segundo_dato = 1;
+            } else if (segundo_dato === "false") {
+              segundo_dato = 0;
+            }
+            return primer_dato * segundo_dato;
           default:
             reprotes.texto_errores("El castin esta incorecto");
             return false;
@@ -386,6 +398,18 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
           case TIPOS_VARIALE.Double:
           case TIPOS_VARIALE.Int:
           case TIPOS_VARIALE.Char:
+            return primer_dato / segundo_dato;
+          case TIPOS_VARIALE.Boolean:
+            if (primer_dato === "true") {
+              primer_dato = 1;
+            } else if (primer_dato === "false") {
+              primer_dato = 0;
+            }
+            if (segundo_dato === "true") {
+              segundo_dato = 1;
+            } else if (segundo_dato === "false") {
+              segundo_dato = 0;
+            }
             return primer_dato / segundo_dato;
           default:
             reprotes.texto_errores("El castin esta incorecto");
@@ -398,6 +422,18 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
           case TIPOS_VARIALE.Int:
           case TIPOS_VARIALE.Char:
             return primer_dato % segundo_dato;
+          case TIPOS_VARIALE.Boolean:
+            if (primer_dato === "true") {
+              primer_dato = 1;
+            } else if (primer_dato === "false") {
+              primer_dato = 0;
+            }
+            if (segundo_dato === "true") {
+              segundo_dato = 1;
+            } else if (segundo_dato === "false") {
+              segundo_dato = 0;
+            }
+            return primer_dato % segundo_dato;
           default:
             reprotes.texto_errores("El castin esta incorecto");
             return false;
@@ -408,6 +444,18 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
           case TIPOS_VARIALE.Double:
           case TIPOS_VARIALE.Int:
           case TIPOS_VARIALE.Char:
+            return Number(primer_dato) + Number(segundo_dato);
+          case TIPOS_VARIALE.Boolean:
+            if (primer_dato === "true") {
+              primer_dato = 1;
+            } else if (primer_dato === "false") {
+              primer_dato = 0;
+            }
+            if (segundo_dato === "true") {
+              segundo_dato = 1;
+            } else if (segundo_dato === "false") {
+              segundo_dato = 0;
+            }
             return Number(primer_dato) + Number(segundo_dato);
           default:
             reprotes.texto_errores("El castin esta incorecto");
@@ -420,6 +468,18 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
           case TIPOS_VARIALE.Int:
           case TIPOS_VARIALE.Char:
             return Number(primer_dato) - Number(segundo_dato);
+          case TIPOS_VARIALE.Boolean:
+            if (primer_dato === "true") {
+              primer_dato = 1;
+            } else if (primer_dato === "false") {
+              primer_dato = 0;
+            }
+            if (segundo_dato === "true") {
+              segundo_dato = 1;
+            } else if (segundo_dato === "false") {
+              segundo_dato = 0;
+            }
+            return Number(primer_dato) - Number(segundo_dato);
           default:
             reprotes.texto_errores("El castin esta incorecto");
             return false;
@@ -427,6 +487,7 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
       /* segun el tipo de operacion realizar la forma */
       case TIPOS_OPERACION.AND:
         return primer_dato && segundo_dato;
+      /* segun el tipo de operacion realizar la forma */
       case TIPOS_OPERACION.AD_AND:
         return primer_dato || segundo_dato;
       /* segun el tipo de operacion realizar la forma */
@@ -434,13 +495,13 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
         return primer_dato || segundo_dato;
       /* segun el tipo de operacion realizar la forma */
       case TIPOS_OPERACION.AD:
-        return  ! segundo_dato;
+        return !segundo_dato;
       /* segun el tipo de operacion realizar la forma */
       case TIPOS_OPERACION.MAYOR_IGUAL:
         return primer_dato >= segundo_dato;
       /* segun el tipo de operacion realizar la forma */
-      case TIPOS_OPERACION.MENOR:
-        return primer_dato < segundo_dato;
+      case TIPOS_OPERACION.MENOR_IGUAL:
+        return primer_dato <= segundo_dato;
       /* segun el tipo de operacion realizar la forma */
       case TIPOS_OPERACION.IGUAL_IGUAL:
         return primer_dato === segundo_dato;
