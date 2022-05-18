@@ -195,7 +195,7 @@ export class ArchivosComponent implements OnInit {
   }
   d3(texto:any) {
     console.log(texto);
-    this.grafica = this.ruta+texto;
+    /* this.grafica = this.ruta+texto; */
   }
   //compilar
   compilar() {

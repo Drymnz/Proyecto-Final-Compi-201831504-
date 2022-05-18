@@ -12,6 +12,7 @@ class Reporte {
     this.texto_errores += testo;
   }
 }
+/* Classe para los metodos */
 class Metodo {
   constructor(tipo, id, parametros, nodo) {
     this.tipo = tipo;
@@ -20,6 +21,7 @@ class Metodo {
     this.nodo = nodo;
   }
 }
+/* Classe para los las variables */
 class Variable {
   constructor(id, valor, tipos) {
     this.id = id;
@@ -35,6 +37,7 @@ class Variable {
     );
   }
 }
+/* Classe para los la tabla de habito */
 class TablaHabito {
   constructor() {
     this.incerteza = 0.5;
@@ -109,7 +112,7 @@ class TablaHabito {
     }
   }
 }
-
+/* el nodo que use */
 class ArbolNodo {
   constructor(nombre, value, fila, columna) {
     this.nombre = nombre;
@@ -139,7 +142,45 @@ class ArbolNodo {
     return this.hijos[pos];
   }
 }
+/* como recorre un nodo */
+function imprimir(raiz, name_metodo) {
+  var texto = "";
+  var contador = 1;
+  texto += "digraph {";
+  texto += '\nNode0[label="' + escapar("Metodo" + " | " + String(name_metodo)) + '"];\n';
 
+  recorrido("Node0", raiz);
+
+  texto += "}";
+  return texto;
+
+  function recorrido(padre,hijos){
+    if(hijos === undefined || hijos === null) return;
+    if(typeof hijos=="string")return;
+    hijos.childs.forEach(nodito=> {
+      if(typeof nodito.nombre=="undefined")return;
+      let nombrehijo="Node"+contador;
+      texto+=nombrehijo+"[label=\"" + escapar(String(nodito.nombre) +" | "+String(nodito.value)) + "\"];\n";
+      texto+=padre+"->"+nombrehijo+";\n";
+      contador++;
+      recorrido(nombrehijo,nodito);
+    })
+  }
+
+  function escapar(cadena) {
+    cadena = cadena.replace("{", " ");
+    cadena = cadena.replace('}', ' ');
+    cadena = cadena.replace('\"', ' ');
+    cadena = cadena.replace('\"', ' ');
+    cadena = cadena.replace('\"', ' ');
+    cadena = cadena.replace('\"', ' ');
+    cadena = cadena.replace('\"', ' ');
+    cadena = cadena.replace('\"', ' ');
+    cadena = cadena.replace('\"', ' ');
+    return cadena;
+  }
+}
+/* las constantes de tipo de variable */
 const TIPOS_VARIALE = {
   Double: "Double",
   Boolean: "Boolean",
@@ -147,6 +188,7 @@ const TIPOS_VARIALE = {
   Int: "Int",
   Char: "Char",
 };
+/* tipos de operaciones a realizar */
 const TIPOS_OPERACION = {
   POW: "POW",
   POR: "POR",
@@ -166,7 +208,7 @@ const TIPOS_OPERACION = {
   MENOR: "MENOR",
   EQUIVALENCIA: "EQUIVALENCIA",
 };
-
+/* convertir un a un tipo */
 function convertidor(tipo_actual, dato) {
   switch (tipo_actual) {
     case TIPOS_VARIALE.Double:
@@ -183,6 +225,7 @@ function convertidor(tipo_actual, dato) {
       return false;
   }
 }
+/* ejeccion de los operador */
 function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
   switch (tipos_operacion) {
     /* segun el tipo de operacion realizar la forma */
@@ -362,45 +405,9 @@ function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
       return false;
   }
 }
+
 let metodo = false;
 let reprotes = new Reporte();
 let tabla = new TablaHabito();
 let tipos_variable_actual = undefined;
-let tipos_metodo_actual = undefined;
-function imprimir(raiz, name_metodo) {
-  var texto = "";
-  var contador = 1;
-  texto += "digraph {";
-  texto += '\nNode0[label="' + escapar("Metodo" + " | " + String(name_metodo)) + '"];\n';
 
-  recorrido("Node0", raiz);
-
-  texto += "}";
-  return texto;
-
-  function recorrido(padre,hijos){
-    if(hijos === undefined || hijos === null) return;
-    if(typeof hijos=="string")return;
-    hijos.childs.forEach(nodito=> {
-      if(typeof nodito.nombre=="undefined")return;
-      let nombrehijo="Node"+contador;
-      texto+=nombrehijo+"[label=\"" + escapar(String(nodito.nombre) +" | "+String(nodito.value)) + "\"];\n";
-      texto+=padre+"->"+nombrehijo+";\n";
-      contador++;
-      recorrido(nombrehijo,nodito);
-    })
-  }
-
-  function escapar(cadena) {
-    cadena = cadena.replace("{", " ");
-    cadena = cadena.replace('}', ' ');
-    cadena = cadena.replace('\"', ' ');
-    cadena = cadena.replace('\"', ' ');
-    cadena = cadena.replace('\"', ' ');
-    cadena = cadena.replace('\"', ' ');
-    cadena = cadena.replace('\"', ' ');
-    cadena = cadena.replace('\"', ' ');
-    cadena = cadena.replace('\"', ' ');
-    return cadena;
-  }
-}

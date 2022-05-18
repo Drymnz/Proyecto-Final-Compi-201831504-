@@ -104,8 +104,7 @@ TABULACION_REALIZADA \t|[\s][\s][\s][\s]
 %start inicio
 
 %{
-    
- 
+
 %}
 %%
 /******************inicio de la sintactico********************/
@@ -179,11 +178,11 @@ variable_metodo
     ;
 ///////////////////////////////////////////////////////////TIPOS DE DATOS
 tipos_variables//tipos de variables o metodos menos void 
-    :DOUBLE   {tipos_variable_actual=TIPOS_VARIALE.Double;  tipos_metodo_actual=tipos_variable_actual; $$=yytext;}
-    |BOOLEAN  {tipos_variable_actual=TIPOS_VARIALE.boolean; tipos_metodo_actual=tipos_variable_actual; $$=yytext;}
-    |STRING   {tipos_variable_actual=TIPOS_VARIALE.String;  tipos_metodo_actual=tipos_variable_actual; $$=yytext;}
-    |INT      {tipos_variable_actual=TIPOS_VARIALE.Int;     tipos_metodo_actual=tipos_variable_actual; $$=yytext;}
-    |CHAR     {tipos_variable_actual=TIPOS_VARIALE.Char;    tipos_metodo_actual=tipos_variable_actual; $$=yytext;}
+    :DOUBLE   {tipos_variable_actual=TIPOS_VARIALE.Double;   $$=yytext;}
+    |BOOLEAN  {tipos_variable_actual=TIPOS_VARIALE.boolean;  $$=yytext;}
+    |STRING   {tipos_variable_actual=TIPOS_VARIALE.String;   $$=yytext;}
+    |INT      {tipos_variable_actual=TIPOS_VARIALE.Int;      $$=yytext;}
+    |CHAR     {tipos_variable_actual=TIPOS_VARIALE.Char;     $$=yytext;}
     ;
 /****************************************METODOS********************/
 parametros_metodo	// si posee parametros de entra el metodo
