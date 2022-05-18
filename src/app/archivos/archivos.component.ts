@@ -167,7 +167,6 @@ export class ArchivosComponent implements OnInit {
   @return un verdadero si existe el archivo en listado de archivos
   */
   importaciones(listado: any): boolean {
-    /* console.log(listado) */
     if (listado != undefined) {
       for (let index = 0; index < listado.length; index++) {
         let elemeto = listado[index];
@@ -203,22 +202,18 @@ export class ArchivosComponent implements OnInit {
     if (this.textArea) {
       let datos: any = importaciones.parse(String(this.textArea)); //analisara la parte de importaciones
       if (datos) {
-        
-        /* console.log(datos.array_importaciiones); */
         if (this.importaciones(datos.array_importaciiones)) {
           // verifica que existe el archivo a importar
           this.textoFinalUsar += datos.texto_salida;
-          console.log(this.textoFinalUsar);
           let final: any = crl.parse(String(this.textoFinalUsar)); //analisara la parte de importaciones
           console.log(final)
-          this.listadoText = final.IMAGENES;
-          /* if (final.texto_errores != undefined) {
-            this.textoConsola = 'Resultado' + datos.texto_salida;
+          this.listadoText = final.tabla_habitos.IMAGENES;
+          if (final.texto_errores != undefined) {
+            this.textoConsola = 'Resultado -->' + final.texto_salida;
           } else {
-            this.textoConsola = 'Errores' + String(datos.texto_errores);
-          } */
+            this.textoConsola = 'Errores -->' + String(final.texto_errores);
+          } 
         }
-        //console.log(this.textoFinalUsar)
       }
     }
   }

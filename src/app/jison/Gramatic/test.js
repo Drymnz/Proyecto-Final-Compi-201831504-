@@ -2,6 +2,7 @@ class Reporte {
   constructor() {
     this.texto_salida = "";
     this.texto_errores = "";
+    this.tabla_habitos = undefined;
   }
   appetTexto_salida(testo) {
     if (this.acctivar) {
@@ -10,6 +11,9 @@ class Reporte {
   }
   appetTexto_errores(testo) {
     this.texto_errores += testo;
+  }
+  setTablaHabitos(tabla) {
+    this.tabla_habitos = tabla;
   }
 }
 /* Classe para los metodos */
@@ -147,36 +151,43 @@ function imprimir(raiz, name_metodo) {
   var texto = "";
   var contador = 1;
   texto += "digraph {";
-  texto += '\nNode0[label="' + escapar("Metodo" + " | " + String(name_metodo)) + '"];\n';
+  texto +=
+    '\nNode0[label="' +
+    escapar("Metodo" + " | " + String(name_metodo)) +
+    '"];\n';
 
   recorrido("Node0", raiz);
 
   texto += "}";
   return texto;
 
-  function recorrido(padre,hijos){
-    if(hijos === undefined || hijos === null) return;
-    if(typeof hijos=="string")return;
-    hijos.childs.forEach(nodito=> {
-      if(typeof nodito.nombre=="undefined")return;
-      let nombrehijo="Node"+contador;
-      texto+=nombrehijo+"[label=\"" + escapar(String(nodito.nombre) +" | "+String(nodito.value)) + "\"];\n";
-      texto+=padre+"->"+nombrehijo+";\n";
+  function recorrido(padre, hijos) {
+    if (hijos === undefined || hijos === null) return;
+    if (typeof hijos == "string") return;
+    hijos.childs.forEach((nodito) => {
+      if (typeof nodito.nombre == "undefined") return;
+      let nombrehijo = "Node" + contador;
+      texto +=
+        nombrehijo +
+        '[label="' +
+        escapar(String(nodito.nombre) + " | " + String(nodito.value)) +
+        '"];\n';
+      texto += padre + "->" + nombrehijo + ";\n";
       contador++;
-      recorrido(nombrehijo,nodito);
-    })
+      recorrido(nombrehijo, nodito);
+    });
   }
 
   function escapar(cadena) {
     cadena = cadena.replace("{", " ");
-    cadena = cadena.replace('}', ' ');
-    cadena = cadena.replace('\"', ' ');
-    cadena = cadena.replace('\"', ' ');
-    cadena = cadena.replace('\"', ' ');
-    cadena = cadena.replace('\"', ' ');
-    cadena = cadena.replace('\"', ' ');
-    cadena = cadena.replace('\"', ' ');
-    cadena = cadena.replace('\"', ' ');
+    cadena = cadena.replace("}", " ");
+    cadena = cadena.replace('"', " ");
+    cadena = cadena.replace('"', " ");
+    cadena = cadena.replace('"', " ");
+    cadena = cadena.replace('"', " ");
+    cadena = cadena.replace('"', " ");
+    cadena = cadena.replace('"', " ");
+    cadena = cadena.replace('"', " ");
     return cadena;
   }
 }
@@ -221,193 +232,206 @@ function convertidor(tipo_actual, dato) {
     case TIPOS_VARIALE.Char:
       return Char(dato);
     default:
-      console.log("ERROR");
+      reprotes.texto_errores("El castin esta incorecto");
       return false;
   }
 }
 /* ejeccion de los operador */
 function operador(primer_dato, segundo_dato, tipos_operacion, tipo_actual) {
-  switch (tipos_operacion) {
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.POW:
-      switch (tipo_actual) {
-        /* TIPO INT Y DOUBLE */
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Math.pow(primer_dato, segundo_dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.POR:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return primer_dato * segundo_dato;
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.DIV:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return primer_dato / segundo_dato;
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.MOD:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return primer_dato % segundo_dato;
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.MAS:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(primer_dato) + Number(segundo_dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.MEN:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return primer_dato - segundo_dato;
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.AND:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.AD_AND:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.OR:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.AD:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.MAYOR_IGUAL:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.MENOR:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.IGUAL_IGUAL:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.AD_IGUAL:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.MAYOR:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.MENOR:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    case TIPOS_OPERACION.EQUIVALENCIA:
-      switch (tipo_actual) {
-        case TIPOS_VARIALE.Double:
-        case TIPOS_VARIALE.Int:
-          return Number(dato);
-        default:
-          console.log("ERROR");
-          return false;
-      }
-    /* segun el tipo de operacion realizar la forma */
-    default:
-      console.log("ERROR");
-      return false;
+  try {
+    switch (tipos_operacion) {
+      /* segun el tipo de operacion realizar la forma */
+      case TIPOS_OPERACION.POW:
+        switch (tipo_actual) {
+          /* TIPO INT Y DOUBLE */
+          case TIPOS_VARIALE.Double:
+          case TIPOS_VARIALE.Int:
+          case TIPOS_VARIALE.Char:
+            return Math.pow(Number(primer_dato), Number(segundo_dato));
+          case TIPOS_VARIALE.Boolean:
+            if (primer_dato === "true") {
+              primer_dato = 1;
+            } else if (primer_dato === "false") {
+              primer_dato = 0;
+            }
+            if (segundo_dato === "true") {
+              segundo_dato = 1;
+            } else if (segundo_dato === "false") {
+              segundo_dato -= 0;
+            }
+            return Math.pow(Number(primer_dato), Number(segundo_dato));
+          default:
+            reprotes.texto_errores("El castin esta incorecto");
+            return false;
+        }
+      /* segun el tipo de operacion realizar la forma */
+      case TIPOS_OPERACION.POR:
+        switch (tipo_actual) {
+          case TIPOS_VARIALE.Double:
+          case TIPOS_VARIALE.Int:
+          case TIPOS_VARIALE.Char:
+            return primer_dato * segundo_dato;
+          default:
+            reprotes.texto_errores("El castin esta incorecto");
+            return false;
+        }
+      /* segun el tipo de operacion realizar la forma */
+      case TIPOS_OPERACION.DIV:
+        switch (tipo_actual) {
+          case TIPOS_VARIALE.Double:
+          case TIPOS_VARIALE.Int:
+          case TIPOS_VARIALE.Char:
+            return primer_dato / segundo_dato;
+          default:
+            reprotes.texto_errores("El castin esta incorecto");
+            return false;
+        }
+      /* segun el tipo de operacion realizar la forma */
+      case TIPOS_OPERACION.MOD:
+        switch (tipo_actual) {
+          case TIPOS_VARIALE.Double:
+          case TIPOS_VARIALE.Int:
+          case TIPOS_VARIALE.Char:
+            return primer_dato % segundo_dato;
+          default:
+            reprotes.texto_errores("El castin esta incorecto");
+            return false;
+        }
+      /* segun el tipo de operacion realizar la forma */
+      case TIPOS_OPERACION.MAS:
+        switch (tipo_actual) {
+          case TIPOS_VARIALE.Double:
+          case TIPOS_VARIALE.Int:
+          case TIPOS_VARIALE.Char:
+            return Number(primer_dato) + Number(segundo_dato);
+          default:
+            reprotes.texto_errores("El castin esta incorecto");
+            return false;
+        }
+      /* segun el tipo de operacion realizar la forma */
+      case TIPOS_OPERACION.MEN:
+        switch (tipo_actual) {
+          case TIPOS_VARIALE.Double:
+          case TIPOS_VARIALE.Int:
+          case TIPOS_VARIALE.Char:
+            return Number(primer_dato) - Number(segundo_dato);
+          default:
+            reprotes.texto_errores("El castin esta incorecto");
+            return false;
+        }
+      /* segun el tipo de operacion realizar la forma */
+      case TIPOS_OPERACION.AND:
+        return primer_dato && segundo_dato;
+      case TIPOS_OPERACION.AD_AND:
+        return primer_dato || segundo_dato;
+      /* segun el tipo de operacion realizar la forma */
+      case TIPOS_OPERACION.OR:
+        return primer_dato || segundo_dato;
+      /* segun el tipo de operacion realizar la forma */
+      case TIPOS_OPERACION.AD:
+        return  ! segundo_dato;
+      /* segun el tipo de operacion realizar la forma */
+      case TIPOS_OPERACION.MAYOR_IGUAL:
+        return primer_dato >= segundo_dato;
+      /* segun el tipo de operacion realizar la forma */
+      case TIPOS_OPERACION.MENOR:
+        return primer_dato < segundo_dato;
+      /* segun el tipo de operacion realizar la forma */
+      case TIPOS_OPERACION.IGUAL_IGUAL:
+        return primer_dato === segundo_dato;
+      /* segun el tipo de operacion realizar la forma */
+      case TIPOS_OPERACION.AD_IGUAL:
+        return primer_dato != segundo_dato;
+      /* segun el tipo de operacion realizar la forma */
+      case TIPOS_OPERACION.MAYOR:
+        return primer_dato > segundo_dato;
+      /* segun el tipo de operacion realizar la forma */
+      case TIPOS_OPERACION.MENOR:
+        return primer_dato < segundo_dato;
+      /* segun el tipo de operacion realizar la forma */
+      case TIPOS_OPERACION.EQUIVALENCIA:
+        switch (tipo_actual) {
+          case TIPOS_VARIALE.Double:
+          case TIPOS_VARIALE.Int:
+            return Number(dato);
+          default:
+            reprotes.texto_errores("El castin esta incorecto");
+            return false;
+        }
+      /* segun el tipo de operacion realizar la forma */
+      default:
+        reprotes.texto_errores("El castin esta incorecto");
+        return false;
+    }
+  } catch (error) {
+    reprotes.texto_errores("El castin esta incorecto");
+    return undefined;
   }
 }
+function ejecutar(reportes) {
+  let listado = reportes.tabla_habitos.listadoMetodos;
+  console.log(listado);
+  reportes.texto_salida = "todo bien";
+  let metodo_principal = realizar(reportes.tabla_habitos.listadoMetodos);
+  if (metodo_principal != undefined) {
+    console.log(metodo_principal.nodo);
+    reportes.texto_salida += recurimiento_nodo_ejecucion(metodo_principal.nodo);
+  }
+  function realizar(array) {
+    let retunar_dato = undefined;
+    array.forEach((element) => {
+      if (
+        element.tipo === "Void" &&
+        element.id === "Principal" &&
+        element.parametros === undefined
+      ) {
+        console.log("si existe el metodo");
+        retunar_dato = element;
+      }
+    });
+    return retunar_dato;
+  }
+
+  function recurimiento_nodo_ejecucion(hijos) {
+    if (hijos === undefined || hijos === null) return;
+    if (typeof hijos == "string") return;
+    hijos.childs.forEach((nodito) => {
+      switch (typeof nodito) {
+        case "undefined":
+          return "";
+        case "ArbolNodo":
+          switch (nodito.nombre) {
+            case "Cuerpo":
+              return recurimiento_nodo_ejecucion(nodito);
+            case "Usar":
+              nodo_usar(nodito);
+              return recurimiento_nodo_ejecucion(nodito);
+            default:
+              return recurimiento_nodo_ejecucion(nodito);
+          }
+        default:
+          return "";
+      }
+    });
+  }
+  function nodo_usar(nodito) {
+    console.log(nodito.childs[0]);
+    console.log(nodito.childs[0].childs[0]);
+  }
+}
+/* 
+    this.texto_salida = "";
+    this.texto_errores = "";
+    this.tabla_habitos =undefined;
+
+    this.incerteza = 0.5;
+    this.listadoStatico = new Array();
+    this.listadoLocal = new Array();
+    this.listadoMetodos = new Array();
+    this.IMAGENES = new Array(); 
+*/
 
 let metodo = false;
 let reprotes = new Reporte();
 let tabla = new TablaHabito();
 let tipos_variable_actual = undefined;
-
